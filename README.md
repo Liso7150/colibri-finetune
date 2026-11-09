@@ -18,9 +18,14 @@ forward+backward through 40 MoE layers peaks at **~1.9 GB VRAM**.
    shared-expert linears train; packed MoE experts stay frozen.
 4. **Merge** — `scripts/merge_lora_qwen36.py` applies `W += (alpha/r)·(B@A)`
    shard-by-shard into a copy of the bf16 base.
-5. **Convert + serve** — convert the merged checkpoint to a Colibri container
-   (`coli convert --ebits 4 --gs 64`) and benchmark before/after. The original
-   container is never modified; promote the candidate only if it measures better.
+5. **Convert + verify** — `scripts/run_finetune_eval.py` chains merge → convert
+   (`--ebits 4 --gs 64`) → candidate serve → execution-verified before/after
+   benchmarks (hard + base suites, greedy, no-think) → comparison graph →
+   `results/finetune_verdict.json`. The original container is never modified;
+   promote the candidate only with zero regressions. Requires the engine
+   checkout (`D:/Colibri`) for `bench_best_model.py` and `c/tools/convert_qwen36.py`.
+6. **Graph** — `scripts/make_finetune_graph.py` renders passes + training loss
+   into `results/bench_finetune_comparison.png` and prints the winner.
 
 ## Usage
 
@@ -29,6 +34,7 @@ python scripts/make_sft_data.py
 python scripts/airllm_train_qwen36.py --smoke          # feasibility gate
 python scripts/airllm_train_qwen36.py --epochs 2 --lr 5e-5 --rank 16
 python scripts/merge_lora_qwen36.py --adapter D:/colibri-models/qwen36-lora-adapter.pt
+python scripts/run_finetune_eval.py    # merge+convert+bench+graph in one chain
 ```
 
 ## Credits
