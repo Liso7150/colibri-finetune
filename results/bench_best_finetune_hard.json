@@ -1,0 +1,340 @@
+{
+ "summary": {
+  "total": 12,
+  "passed": 12,
+  "pass_at_1": 1.0,
+  "initial_passed": 12,
+  "initial_pass_rate": 1.0,
+  "repair_lift": 0,
+  "repairs_used": 0,
+  "by_difficulty": {
+   "easy": {
+    "total": 0,
+    "passed": 0
+   },
+   "medium": {
+    "total": 6,
+    "passed": 6
+   },
+   "hard": {
+    "total": 6,
+    "passed": 6
+   }
+  },
+  "best_of": 1,
+  "repair_rounds": 0,
+  "completion_tokens": 2329,
+  "generation_s": 173.97,
+  "tokens_per_s": 13.39,
+  "wall_s": 175.18,
+  "model": "qwen36-35b-lora",
+  "base": "http://127.0.0.1:8185/v1",
+  "max_tokens": 700,
+  "temp": 0.0,
+  "top_p": 1.0,
+  "no_think": true,
+  "effort": null
+ },
+ "rows": [
+  {
+   "id": "expr_eval",
+   "difficulty": "hard",
+   "passed": true,
+   "initial_passed": true,
+   "repairs": 0,
+   "chosen_passed": true,
+   "chosen": {
+    "code": "def expr_eval(expr):\n    tokens = tokenize(expr)\n    pos = [0]\n    result = parse_expr(tokens, pos)\n    return float(result)\n\ndef tokenize(expr):\n    tokens = []\n    i = 0\n    s = expr\n    n = len(s)\n    while i < n:\n        c = s[i]\n        if c.isspace():\n            i += 1\n            continue\n        if c in '+-*/()':\n            tokens.append(c)\n            i += 1\n        elif c.isdigit() or c == '.':\n            j = i\n            while j < n and (s[j].isdigit() or s[j] == '.'):\n                j += 1\n            tokens.append(s[i:j])\n            i = j\n        else:\n            i += 1\n    return tokens\n\ndef parse_expr(tokens, pos):\n    return parse_add_sub(tokens, pos)\n\ndef parse_add_sub(tokens, pos):\n    left = parse_mul_div(tokens, pos)\n    while pos[0] < len(tokens) and tokens[pos[0]] in ('+', '-'):\n        op = tokens[pos[0]]\n        pos[0] += 1\n        right = parse_mul_div(tokens, pos)\n        if op == '+':\n            left = left + right\n        else:\n            left = left - right\n    return left\n\ndef parse_mul_div(tokens, pos):\n    left = parse_unary(tokens, pos)\n    while pos[0] < len(tokens) and tokens[pos[0]] in ('*', '/'):\n        op = tokens[pos[0]]\n        pos[0] += 1\n        right = parse_unary(tokens, pos)\n        if op == '*':\n            left = left * right\n        else:\n            left = left / right\n    return left\n\ndef parse_unary(tokens, pos):\n    if pos[0] < len(tokens) and tokens[pos[0]] == '-':\n        pos[0] += 1\n        return -parse_unary(tokens, pos)\n    if pos[0] < len(tokens) and tokens[pos[0]] == '+':\n        pos[0] += 1\n        return parse_unary(tokens, pos)\n    return parse_primary(tokens, pos)\n\ndef parse_primary(tokens, pos):\n    if pos[0] < len(tokens) and tokens[pos[0]] == '(':\n        pos[0] += 1\n        val = parse_expr(tokens, pos)\n        if pos[0] < len(tokens) and tokens[pos[0]] == ')':\n            pos[0] += 1\n        return val\n    if pos[0] < len(tokens):\n        tok = tokens[pos[0]]\n        pos[0] += 1\n        return float(tok)\n    return 0.0\n",
+    "time_s": 32.192,
+    "completion_tokens": 626,
+    "tokens_per_s": 19.45,
+    "exec_error": null
+   },
+   "attempts": [
+    {
+     "stage": "initial",
+     "passed": true,
+     "time_s": 32.192,
+     "completion_tokens": 626,
+     "exec_error": null,
+     "content_head": "```python\ndef expr_eval(expr):\n    tokens = tokenize(expr)\n    pos = [0]\n    result = parse_expr(tokens, pos)\n    return float(result)\n\ndef tokenize(expr):\n    "
+    }
+   ]
+  },
+  {
+   "id": "parse_csv_line",
+   "difficulty": "hard",
+   "passed": true,
+   "initial_passed": true,
+   "repairs": 0,
+   "chosen_passed": true,
+   "chosen": {
+    "code": "def parse_csv_line(line):\n    fields = []\n    current = []\n    in_quotes = False\n    i = 0\n    n = len(line)\n    while i < n:\n        c = line[i]\n        if in_quotes:\n            if c == '\"':\n                if i + 1 < n and line[i + 1] == '\"':\n                    current.append('\"')\n                    i += 2\n                    continue\n                else:\n                    in_quotes = False\n                    i += 1\n                    continue\n            else:\n                current.append(c)\n                i += 1\n        else:\n            if c == '\"':\n                in_quotes = True\n                i += 1\n            elif c == ',':\n                fields.append(''.join(current))\n                current = []\n                i += 1\n            else:\n                current.append(c)\n                i += 1\n    fields.append(''.join(current))\n    return fields\n",
+    "time_s": 14.555,
+    "completion_tokens": 215,
+    "tokens_per_s": 14.77,
+    "exec_error": null
+   },
+   "attempts": [
+    {
+     "stage": "initial",
+     "passed": true,
+     "time_s": 14.555,
+     "completion_tokens": 215,
+     "exec_error": null,
+     "content_head": "```python\ndef parse_csv_line(line):\n    fields = []\n    current = []\n    in_quotes = False\n    i = 0\n    n = len(line)\n    while i < n:\n        c = line[i]\n    "
+    }
+   ]
+  },
+  {
+   "id": "rotate_matrix",
+   "difficulty": "medium",
+   "passed": true,
+   "initial_passed": true,
+   "repairs": 0,
+   "chosen_passed": true,
+   "chosen": {
+    "code": "def rotate_matrix(m):\n    n = len(m)\n    for i in range(n // 2):\n        for j in range((n + 1) // 2):\n            m[i][j], m[j][n - 1 - i], m[n - 1 - i][n - 1 - j], m[n - 1 - j][i] = m[n - 1 - j][i], m[i][j], m[j][n - 1 - i], m[n - 1 - i][n - 1 - j]\n    return m\n",
+    "time_s": 9.63,
+    "completion_tokens": 131,
+    "tokens_per_s": 13.6,
+    "exec_error": null
+   },
+   "attempts": [
+    {
+     "stage": "initial",
+     "passed": true,
+     "time_s": 9.63,
+     "completion_tokens": 131,
+     "exec_error": null,
+     "content_head": "```python\ndef rotate_matrix(m):\n    n = len(m)\n    for i in range(n // 2):\n        for j in range((n + 1) // 2):\n            m[i][j], m[j][n - 1 - i], m[n - 1 -"
+    }
+   ]
+  },
+  {
+   "id": "min_window_substring",
+   "difficulty": "hard",
+   "passed": true,
+   "initial_passed": true,
+   "repairs": 0,
+   "chosen_passed": true,
+   "chosen": {
+    "code": "def min_window(s, t):\n    if not s or not t:\n        return ''\n    from collections import Counter\n    need = Counter(t)\n    missing = len(t)\n    i = J = I = 0\n    for j, c in enumerate(s, 1):\n        if need[c] > 0:\n            missing -= 1\n        need[c] -= 1\n        if missing == 0:\n            while need[s[i]] < 0:\n                need[s[i]] += 1\n                i += 1\n            if J == 0 or j - i < J - I:\n                I, J = i, j\n            need[s[i]] += 1\n            missing += 1\n            i += 1\n    return '' if J == 0 else s[I:J]\n",
+    "time_s": 13.219,
+    "completion_tokens": 187,
+    "tokens_per_s": 14.15,
+    "exec_error": null
+   },
+   "attempts": [
+    {
+     "stage": "initial",
+     "passed": true,
+     "time_s": 13.219,
+     "completion_tokens": 187,
+     "exec_error": null,
+     "content_head": "```python\ndef min_window(s, t):\n    if not s or not t:\n        return ''\n    from collections import Counter\n    need = Counter(t)\n    missing = len(t)\n    i = "
+    }
+   ]
+  },
+  {
+   "id": "can_word_break",
+   "difficulty": "medium",
+   "passed": true,
+   "initial_passed": true,
+   "repairs": 0,
+   "chosen_passed": true,
+   "chosen": {
+    "code": "def can_word_break(s, words):\n    word_set = set(words)\n    n = len(s)\n    dp = [False] * (n + 1)\n    dp[0] = True\n    for i in range(1, n + 1):\n        for j in range(i):\n            if dp[j] and s[j:i] in word_set:\n                dp[i] = True\n                break\n    return dp[n]\n",
+    "time_s": 10.086,
+    "completion_tokens": 103,
+    "tokens_per_s": 10.21,
+    "exec_error": null
+   },
+   "attempts": [
+    {
+     "stage": "initial",
+     "passed": true,
+     "time_s": 10.086,
+     "completion_tokens": 103,
+     "exec_error": null,
+     "content_head": "```python\ndef can_word_break(s, words):\n    word_set = set(words)\n    n = len(s)\n    dp = [False] * (n + 1)\n    dp[0] = True\n    for i in range(1, n + 1):\n     "
+    }
+   ]
+  },
+  {
+   "id": "kth_smallest_sorted_matrix",
+   "difficulty": "medium",
+   "passed": true,
+   "initial_passed": true,
+   "repairs": 0,
+   "chosen_passed": true,
+   "chosen": {
+    "code": "import heapq\n\ndef kth_smallest(matrix, k):\n    if not matrix or not matrix[0]:\n        return None\n    m, n = len(matrix), len(matrix[0])\n    heap = []\n    for i in range(min(m, k)):\n        heapq.heappush(heap, (matrix[i][0], i, 0))\n    count = 0\n    while heap:\n        val, r, c = heapq.heappop(heap)\n        count += 1\n        if count == k:\n            return val\n        if c + 1 < n:\n            heapq.heappush(heap, (matrix[r][c + 1], r, c + 1))\n    return None\n",
+    "time_s": 12.673,
+    "completion_tokens": 161,
+    "tokens_per_s": 12.7,
+    "exec_error": null
+   },
+   "attempts": [
+    {
+     "stage": "initial",
+     "passed": true,
+     "time_s": 12.673,
+     "completion_tokens": 161,
+     "exec_error": null,
+     "content_head": "```python\nimport heapq\n\ndef kth_smallest(matrix, k):\n    if not matrix or not matrix[0]:\n        return None\n    m, n = len(matrix), len(matrix[0])\n    heap = ["
+    }
+   ]
+  },
+  {
+   "id": "json_pointer",
+   "difficulty": "hard",
+   "passed": true,
+   "initial_passed": true,
+   "repairs": 0,
+   "chosen_passed": true,
+   "chosen": {
+    "code": "def json_pointer(obj, pointer):\n    if pointer == '':\n        return obj\n    parts = pointer.split('/')\n    current = obj\n    for part in parts[1:]:\n        part = part.replace('~1', '/').replace('~0', '~')\n        if isinstance(current, list):\n            try:\n                idx = int(part)\n            except ValueError:\n                raise IndexError(f\"List index must be integer, got '{part}'\")\n            if idx < 0 or idx >= len(current):\n                raise IndexError(f\"Index {idx} out of range for list of length {len(current)}\")\n            current = current[idx]\n        else:\n            if not isinstance(current, dict):\n                raise KeyError(f\"Cannot index into non-dict type with '{part}'\")\n            if part not in current:\n                raise KeyError(part)\n            current = current[part]\n    return current\n",
+    "time_s": 17.134,
+    "completion_tokens": 202,
+    "tokens_per_s": 11.79,
+    "exec_error": null
+   },
+   "attempts": [
+    {
+     "stage": "initial",
+     "passed": true,
+     "time_s": 17.134,
+     "completion_tokens": 202,
+     "exec_error": null,
+     "content_head": "```python\ndef json_pointer(obj, pointer):\n    if pointer == '':\n        return obj\n    parts = pointer.split('/')\n    current = obj\n    for part in parts[1:]:\n "
+    }
+   ]
+  },
+  {
+   "id": "rle_roundtrip",
+   "difficulty": "medium",
+   "passed": true,
+   "initial_passed": true,
+   "repairs": 0,
+   "chosen_passed": true,
+   "chosen": {
+    "code": "def rle_encode(s):\n    if not s:\n        return ''\n    res = []\n    count = 1\n    for i in range(1, len(s)):\n        if s[i] == s[i-1]:\n            count += 1\n        else:\n            res.append(str(count) + s[i-1])\n            count = 1\n    res.append(str(count) + s[-1])\n    return ''.join(res)\n\ndef rle_decode(s):\n    res = []\n    i = 0\n    while i < len(s):\n        j = i\n        while j < len(s) and s[j].isdigit():\n            j += 1\n        count = int(s[i:j])\n        char = s[j]\n        res.append(char * count)\n        i = j + 1\n    return ''.join(res)\n",
+    "time_s": 16.214,
+    "completion_tokens": 194,
+    "tokens_per_s": 11.96,
+    "exec_error": null
+   },
+   "attempts": [
+    {
+     "stage": "initial",
+     "passed": true,
+     "time_s": 16.214,
+     "completion_tokens": 194,
+     "exec_error": null,
+     "content_head": "```python\ndef rle_encode(s):\n    if not s:\n        return ''\n    res = []\n    count = 1\n    for i in range(1, len(s)):\n        if s[i] == s[i-1]:\n            co"
+    }
+   ]
+  },
+  {
+   "id": "lexicographic_topo",
+   "difficulty": "hard",
+   "passed": true,
+   "initial_passed": true,
+   "repairs": 0,
+   "chosen_passed": true,
+   "chosen": {
+    "code": "import heapq\ndef topo_smallest(n, edges):\n    adj = [[] for _ in range(n)]\n    indeg = [0] * n\n    for u, v in edges:\n        adj[u].append(v)\n        indeg[v] += 1\n    heap = [i for i in range(n) if indeg[i] == 0]\n    heapq.heapify(heap)\n    order = []\n    while heap:\n        u = heapq.heappop(heap)\n        order.append(u)\n        for v in adj[u]:\n            indeg[v] -= 1\n            if indeg[v] == 0:\n                heapq.heappush(heap, v)\n    return order if len(order) == n else []\n",
+    "time_s": 14.658,
+    "completion_tokens": 167,
+    "tokens_per_s": 11.39,
+    "exec_error": null
+   },
+   "attempts": [
+    {
+     "stage": "initial",
+     "passed": true,
+     "time_s": 14.658,
+     "completion_tokens": 167,
+     "exec_error": null,
+     "content_head": "```python\nimport heapq\ndef topo_smallest(n, edges):\n    adj = [[] for _ in range(n)]\n    indeg = [0] * n\n    for u, v in edges:\n        adj[u].append(v)\n       "
+    }
+   ]
+  },
+  {
+   "id": "atoi",
+   "difficulty": "medium",
+   "passed": true,
+   "initial_passed": true,
+   "repairs": 0,
+   "chosen_passed": true,
+   "chosen": {
+    "code": "def my_atoi(s):\n    INT_MAX = 2**31 - 1\n    INT_MIN = -2**31\n    i = 0\n    n = len(s)\n    while i < n and s[i] == ' ':\n        i += 1\n    if i == n:\n        return 0\n    sign = 1\n    if s[i] == '+':\n        i += 1\n    elif s[i] == '-':\n        sign = -1\n        i += 1\n    num = 0\n    while i < n and s[i].isdigit():\n        num = num * 10 + int(s[i])\n        i += 1\n    num *= sign\n    if num < INT_MIN:\n        return INT_MIN\n    if num > INT_MAX:\n        return INT_MAX\n    return num\n",
+    "time_s": 15.444,
+    "completion_tokens": 193,
+    "tokens_per_s": 12.5,
+    "exec_error": null
+   },
+   "attempts": [
+    {
+     "stage": "initial",
+     "passed": true,
+     "time_s": 15.444,
+     "completion_tokens": 193,
+     "exec_error": null,
+     "content_head": "```python\ndef my_atoi(s):\n    INT_MAX = 2**31 - 1\n    INT_MIN = -2**31\n    i = 0\n    n = len(s)\n    while i < n and s[i] == ' ':\n        i += 1\n    if i == n:\n "
+    }
+   ]
+  },
+  {
+   "id": "simplify_path",
+   "difficulty": "hard",
+   "passed": true,
+   "initial_passed": true,
+   "repairs": 0,
+   "chosen_passed": true,
+   "chosen": {
+    "code": "def simplify_path(path):\n    stack = []\n    for part in path.split('/'):\n        if part == '' or part == '.':\n            continue\n        if part == '..':\n            if stack:\n                stack.pop()\n        else:\n            stack.append(part)\n    return '/' + '/'.join(stack)\n",
+    "time_s": 9.488,
+    "completion_tokens": 75,
+    "tokens_per_s": 7.9,
+    "exec_error": null
+   },
+   "attempts": [
+    {
+     "stage": "initial",
+     "passed": true,
+     "time_s": 9.488,
+     "completion_tokens": 75,
+     "exec_error": null,
+     "content_head": "```python\ndef simplify_path(path):\n    stack = []\n    for part in path.split('/'):\n        if part == '' or part == '.':\n            continue\n        if part =="
+    }
+   ]
+  },
+  {
+   "id": "lis_length",
+   "difficulty": "medium",
+   "passed": true,
+   "initial_passed": true,
+   "repairs": 0,
+   "chosen_passed": true,
+   "chosen": {
+    "code": "def lis_length(nums):\n    import bisect\n    tails = []\n    for x in nums:\n        i = bisect.bisect_left(tails, x)\n        if i == len(tails):\n            tails.append(x)\n        else:\n            tails[i] = x\n    return len(tails)\n",
+    "time_s": 8.681,
+    "completion_tokens": 75,
+    "tokens_per_s": 8.64,
+    "exec_error": null
+   },
+   "attempts": [
+    {
+     "stage": "initial",
+     "passed": true,
+     "time_s": 8.681,
+     "completion_tokens": 75,
+     "exec_error": null,
+     "content_head": "```python\ndef lis_length(nums):\n    import bisect\n    tails = []\n    for x in nums:\n        i = bisect.bisect_left(tails, x)\n        if i == len(tails):\n       "
+    }
+   ]
+  }
+ ]
+}

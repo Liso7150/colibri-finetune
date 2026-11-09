@@ -1,0 +1,290 @@
+{
+ "summary": {
+  "total": 10,
+  "passed": 10,
+  "pass_at_1": 1.0,
+  "initial_passed": 10,
+  "initial_pass_rate": 1.0,
+  "repair_lift": 0,
+  "repairs_used": 0,
+  "by_difficulty": {
+   "easy": {
+    "total": 2,
+    "passed": 2
+   },
+   "medium": {
+    "total": 4,
+    "passed": 4
+   },
+   "hard": {
+    "total": 4,
+    "passed": 4
+   }
+  },
+  "best_of": 1,
+  "repair_rounds": 0,
+  "completion_tokens": 812,
+  "generation_s": 96.9,
+  "tokens_per_s": 8.38,
+  "wall_s": 97.88,
+  "model": "qwen36-35b-lora",
+  "base": "http://127.0.0.1:8185/v1",
+  "max_tokens": 700,
+  "temp": 0.0,
+  "top_p": 1.0,
+  "no_think": true,
+  "effort": null
+ },
+ "rows": [
+  {
+   "id": "sum_even",
+   "difficulty": "easy",
+   "passed": true,
+   "initial_passed": true,
+   "repairs": 0,
+   "chosen_passed": true,
+   "chosen": {
+    "code": "def sum_even(lst):\n    return sum(x for x in lst if x % 2 == 0)\n",
+    "time_s": 6.39,
+    "completion_tokens": 28,
+    "tokens_per_s": 4.38,
+    "exec_error": null
+   },
+   "attempts": [
+    {
+     "stage": "initial",
+     "passed": true,
+     "time_s": 6.39,
+     "completion_tokens": 28,
+     "exec_error": null,
+     "content_head": "```python\ndef sum_even(lst):\n    return sum(x for x in lst if x % 2 == 0)\n```"
+    }
+   ]
+  },
+  {
+   "id": "count_vowels",
+   "difficulty": "easy",
+   "passed": true,
+   "initial_passed": true,
+   "repairs": 0,
+   "chosen_passed": true,
+   "chosen": {
+    "code": "def count_vowels(s):\n    return sum(1 for c in s.lower() if c in 'aeiou')\n",
+    "time_s": 7.199,
+    "completion_tokens": 31,
+    "tokens_per_s": 4.31,
+    "exec_error": null
+   },
+   "attempts": [
+    {
+     "stage": "initial",
+     "passed": true,
+     "time_s": 7.199,
+     "completion_tokens": 31,
+     "exec_error": null,
+     "content_head": "```python\ndef count_vowels(s):\n    return sum(1 for c in s.lower() if c in 'aeiou')\n```"
+    }
+   ]
+  },
+  {
+   "id": "flatten",
+   "difficulty": "medium",
+   "passed": true,
+   "initial_passed": true,
+   "repairs": 0,
+   "chosen_passed": true,
+   "chosen": {
+    "code": "def flatten(lst):\n    result = []\n    for item in lst:\n        if isinstance(item, list):\n            result.extend(flatten(item))\n        else:\n            result.append(item)\n    return result\n",
+    "time_s": 8.29,
+    "completion_tokens": 51,
+    "tokens_per_s": 6.15,
+    "exec_error": null
+   },
+   "attempts": [
+    {
+     "stage": "initial",
+     "passed": true,
+     "time_s": 8.29,
+     "completion_tokens": 51,
+     "exec_error": null,
+     "content_head": "```python\ndef flatten(lst):\n    result = []\n    for item in lst:\n        if isinstance(item, list):\n            result.extend(flatten(item))\n        else:\n     "
+    }
+   ]
+  },
+  {
+   "id": "binary_search",
+   "difficulty": "medium",
+   "passed": true,
+   "initial_passed": true,
+   "repairs": 0,
+   "chosen_passed": true,
+   "chosen": {
+    "code": "def binary_search(arr, target):\n    lo, hi = 0, len(arr) - 1\n    while lo <= hi:\n        mid = (lo + hi) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            lo = mid + 1\n        else:\n            hi = mid - 1\n    return -1\n",
+    "time_s": 10.226,
+    "completion_tokens": 93,
+    "tokens_per_s": 9.09,
+    "exec_error": null
+   },
+   "attempts": [
+    {
+     "stage": "initial",
+     "passed": true,
+     "time_s": 10.226,
+     "completion_tokens": 93,
+     "exec_error": null,
+     "content_head": "```python\ndef binary_search(arr, target):\n    lo, hi = 0, len(arr) - 1\n    while lo <= hi:\n        mid = (lo + hi) // 2\n        if arr[mid] == target:\n         "
+    }
+   ]
+  },
+  {
+   "id": "second_largest",
+   "difficulty": "medium",
+   "passed": true,
+   "initial_passed": true,
+   "repairs": 0,
+   "chosen_passed": true,
+   "chosen": {
+    "code": "def second_largest(lst):\n    distinct = sorted(set(lst), reverse=True)\n    return distinct[1] if len(distinct) >= 2 else None\n",
+    "time_s": 7.371,
+    "completion_tokens": 39,
+    "tokens_per_s": 5.29,
+    "exec_error": null
+   },
+   "attempts": [
+    {
+     "stage": "initial",
+     "passed": true,
+     "time_s": 7.371,
+     "completion_tokens": 39,
+     "exec_error": null,
+     "content_head": "```python\ndef second_largest(lst):\n    distinct = sorted(set(lst), reverse=True)\n    return distinct[1] if len(distinct) >= 2 else None\n```"
+    }
+   ]
+  },
+  {
+   "id": "merge_intervals",
+   "difficulty": "hard",
+   "passed": true,
+   "initial_passed": true,
+   "repairs": 0,
+   "chosen_passed": true,
+   "chosen": {
+    "code": "def merge_intervals(intervals):\n    if not intervals:\n        return []\n    intervals.sort(key=lambda x: x[0])\n    merged = [intervals[0]]\n    for start, end in intervals[1:]:\n        if start <= merged[-1][1]:\n            merged[-1][1] = max(merged[-1][1], end)\n        else:\n            merged.append([start, end])\n    return merged\n",
+    "time_s": 10.818,
+    "completion_tokens": 102,
+    "tokens_per_s": 9.43,
+    "exec_error": null
+   },
+   "attempts": [
+    {
+     "stage": "initial",
+     "passed": true,
+     "time_s": 10.818,
+     "completion_tokens": 102,
+     "exec_error": null,
+     "content_head": "```python\ndef merge_intervals(intervals):\n    if not intervals:\n        return []\n    intervals.sort(key=lambda x: x[0])\n    merged = [intervals[0]]\n    for sta"
+    }
+   ]
+  },
+  {
+   "id": "valid_parentheses",
+   "difficulty": "hard",
+   "passed": true,
+   "initial_passed": true,
+   "repairs": 0,
+   "chosen_passed": true,
+   "chosen": {
+    "code": "def valid_parentheses(s):\n    stack = []\n    mapping = {')': '(', ']': '[', '}': '{'}\n    for c in s:\n        if c in '([{':\n            stack.append(c)\n        elif c in ')]}':\n            if not stack or stack.pop() != mapping[c]:\n                return False\n    return not stack\n",
+    "time_s": 9.508,
+    "completion_tokens": 86,
+    "tokens_per_s": 9.04,
+    "exec_error": null
+   },
+   "attempts": [
+    {
+     "stage": "initial",
+     "passed": true,
+     "time_s": 9.508,
+     "completion_tokens": 86,
+     "exec_error": null,
+     "content_head": "```python\ndef valid_parentheses(s):\n    stack = []\n    mapping = {')': '(', ']': '[', '}': '{'}\n    for c in s:\n        if c in '([{':\n            stack.append("
+    }
+   ]
+  },
+  {
+   "id": "fib",
+   "difficulty": "medium",
+   "passed": true,
+   "initial_passed": true,
+   "repairs": 0,
+   "chosen_passed": true,
+   "chosen": {
+    "code": "def fib(n):\n    if n <= 0:\n        return []\n    if n == 1:\n        return [0]\n    result = [0, 1]\n    for i in range(2, n):\n        result.append(result[-1] + result[-2])\n    return result\n",
+    "time_s": 8.965,
+    "completion_tokens": 73,
+    "tokens_per_s": 8.14,
+    "exec_error": null
+   },
+   "attempts": [
+    {
+     "stage": "initial",
+     "passed": true,
+     "time_s": 8.965,
+     "completion_tokens": 73,
+     "exec_error": null,
+     "content_head": "```python\ndef fib(n):\n    if n <= 0:\n        return []\n    if n == 1:\n        return [0]\n    result = [0, 1]\n    for i in range(2, n):\n        result.append(res"
+    }
+   ]
+  },
+  {
+   "id": "lru_cache",
+   "difficulty": "hard",
+   "passed": true,
+   "initial_passed": true,
+   "repairs": 0,
+   "chosen_passed": true,
+   "chosen": {
+    "code": "class LRUCache:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.order = []\n        self.map = {}\n\n    def get(self, key):\n        if key not in self.map:\n            return -1\n        self.order.remove(key)\n        self.order.append(key)\n        return self.map[key]\n\n    def put(self, key, value):\n        if key in self.map:\n            self.order.remove(key)\n        elif len(self.map) >= self.capacity:\n            evicted = self.order.pop(0)\n            del self.map[evicted]\n        self.map[key] = value\n        self.order.append(key)\n",
+    "time_s": 13.435,
+    "completion_tokens": 152,
+    "tokens_per_s": 11.31,
+    "exec_error": null
+   },
+   "attempts": [
+    {
+     "stage": "initial",
+     "passed": true,
+     "time_s": 13.435,
+     "completion_tokens": 152,
+     "exec_error": null,
+     "content_head": "```python\nclass LRUCache:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.order = []\n        self.map = {}\n\n    def get(self, ke"
+    }
+   ]
+  },
+  {
+   "id": "topo_sort",
+   "difficulty": "hard",
+   "passed": true,
+   "initial_passed": true,
+   "repairs": 0,
+   "chosen_passed": true,
+   "chosen": {
+    "code": "def topo_sort(n, edges):\n    adj = [[] for _ in range(n)]\n    indeg = [0] * n\n    for u, v in edges:\n        adj[u].append(v)\n        indeg[v] += 1\n    from collections import deque\n    q = deque([i for i in range(n) if indeg[i] == 0])\n    order = []\n    while q:\n        u = q.popleft()\n        order.append(u)\n        for v in adj[u]:\n            indeg[v] -= 1\n            if indeg[v] == 0:\n                q.append(v)\n    return order if len(order) == n else []\n",
+    "time_s": 14.698,
+    "completion_tokens": 157,
+    "tokens_per_s": 10.68,
+    "exec_error": null
+   },
+   "attempts": [
+    {
+     "stage": "initial",
+     "passed": true,
+     "time_s": 14.698,
+     "completion_tokens": 157,
+     "exec_error": null,
+     "content_head": "```python\ndef topo_sort(n, edges):\n    adj = [[] for _ in range(n)]\n    indeg = [0] * n\n    for u, v in edges:\n        adj[u].append(v)\n        indeg[v] += 1\n  "
+    }
+   ]
+  }
+ ]
+}

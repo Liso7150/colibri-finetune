@@ -1,0 +1,15 @@
+{
+  "original": {
+    "hard": "12/12",
+    "base": "10/10",
+    "tok_s_hard": 15.58
+  },
+  "candidate": {
+    "hard": "12/12",
+    "base": "10/10",
+    "tok_s_hard": 13.39
+  },
+  "regression": false,
+  "recommendation": "promote candidate (no regression)",
+  "note": "hard suite overlaps SFT training data (retention); base suite mostly held out (generalization)"
+}
