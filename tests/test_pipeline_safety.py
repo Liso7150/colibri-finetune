@@ -241,7 +241,7 @@ class PreflightTests(Fixtures):
         self.assertFalse(self.results.exists())
 
     def test_env_root_and_explicit_engine_runtime(self):
-        with mock.patch.dict(os.environ, {"COLIBRI_ENGINE_ROOT": str(self.engine)}):
+        with mock.patch.dict(os.environ, {"FENNEC_ENGINE_ROOT": str(self.engine)}):
             args = evaluation.parse_args(self.argv[2:] + ["--engine-python", sys.executable])
         self.assertEqual(evaluation.preflight(args)["engine_root"], self.engine)
 

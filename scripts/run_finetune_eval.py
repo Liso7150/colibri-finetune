@@ -25,9 +25,9 @@ SUITE_ROOT = SCRIPTS.parent
 
 def parse_args(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--engine-root", default=os.environ.get("COLIBRI_ENGINE_ROOT") or
+    ap.add_argument("--engine-root", default=os.environ.get("FENNEC_ENGINE_ROOT") or
                     ("D:/Colibri" if os.name == "nt" else None))
-    ap.add_argument("--models-dir", default="D:/colibri-models")
+    ap.add_argument("--models-dir", default="D:/fennec-models")
     ap.add_argument("--results-dir", default=str(SUITE_ROOT / "results"))
     ap.add_argument("--engine-python", help="explicit runtime for engine tools; otherwise current interpreter")
     ap.add_argument("--base", help="bf16 source; defaults under models-dir")
@@ -42,7 +42,7 @@ def parse_args(argv=None):
     ap.add_argument("--preflight-only", action="store_true")
     args = ap.parse_args(argv)
     if not args.engine_root:
-        ap.error("set --engine-root or COLIBRI_ENGINE_ROOT")
+        ap.error("set --engine-root or FENNEC_ENGINE_ROOT")
     if not 1 <= args.port <= 65535:
         ap.error("port must be in [1, 65535]")
     if "graph" in args.stages and "evaluate" not in args.stages:

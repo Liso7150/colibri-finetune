@@ -193,9 +193,9 @@ def merge(base, adapter, out, scaling=None):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--base", default="D:/colibri-models/Qwen3.6-35B-A3B-bf16")
-    ap.add_argument("--adapter", default="D:/colibri-models/qwen36-lora-adapter.pt")
-    ap.add_argument("--out", default="D:/colibri-models/Qwen3.6-35B-A3B-bf16-lora")
+    ap.add_argument("--base", default="D:/fennec-models/Qwen3.6-35B-A3B-bf16")
+    ap.add_argument("--adapter", default="D:/fennec-models/qwen36-lora-adapter.pt")
+    ap.add_argument("--out", default="D:/fennec-models/Qwen3.6-35B-A3B-bf16-lora")
     ap.add_argument("--scaling", type=float, help="explicit alpha/r; required for legacy adapters")
     args = ap.parse_args(argv)
     merge(args.base, args.adapter, args.out, args.scaling)

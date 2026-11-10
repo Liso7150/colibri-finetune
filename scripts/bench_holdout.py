@@ -1,4 +1,4 @@
-"""Frozen, local Colibri structured-reasoning benchmark (stdlib only).
+"""Frozen, local Fennec structured-reasoning benchmark (stdlib only).
 
 Never executes model output, starts a server, or promotes/deletes a model.
 Use --manifest-only --out manifest.json for an entirely offline validation.
@@ -874,7 +874,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--base", default="http://127.0.0.1:8184/v1")
     parser.add_argument("--model")
-    parser.add_argument("--api-key-env", default="COLIBRI_API_KEY")
+    parser.add_argument("--api-key-env", default="FENNEC_API_KEY")
     parser.add_argument("--model-path", help="local model/config directory; never hashes giant weights")
     parser.add_argument("--out", help="new report file (required except for --compare); refuses overwrite")
     parser.add_argument("--max-tokens", type=positive_int, default=384)

@@ -1,4 +1,4 @@
-# Colibri Fine-tune
+# Fennec Fine-tune
 
 Streamed LoRA fine-tuning of large MoE models (Qwen3.6-35B-A3B) on a small GPU,
 built on **[AirLLM](https://github.com/lyogavin/airllm)**. The frozen bf16 base is
@@ -17,7 +17,7 @@ forward+backward through 40 MoE layers peaks at **~1.9 GB VRAM**.
 ## Pipeline
 
 1. **Download** the bf16 source — `scripts/download_qwen36_bf16.py`
-   (`Qwen/Qwen3.6-35B-A3B` → `D:/colibri-models`, cache in `D:/.cache`).
+   (`Qwen/Qwen3.6-35B-A3B` → `D:/fennec-models`, cache in `D:/.cache`).
 2. **Build SFT data** — `scripts/make_sft_data.py` author coding tasks and
    *executes* each reference solution against unit tests, keeping only verified
    correct examples → `data/sft_coding_verified.jsonl`.
@@ -48,8 +48,8 @@ quality-first: a candidate is chosen only with at least one gain and zero
 regressions; ties keep the incumbent.
 
 ```bash
-COLIBRI_API_KEY=local python scripts/bench_holdout.py \
-  --model qwen36-35b --model-path D:/colibri-models/qwen36-35b \
+FENNEC_API_KEY=local python scripts/bench_holdout.py \
+  --model qwen36-35b --model-path D:/fennec-models/qwen36-35b \
   --out results/holdout_run_qwen36-35b.json
 ```
 
@@ -70,7 +70,7 @@ The suite was not used for training and remains a holdout.
 python scripts/make_sft_data.py
 python scripts/airllm_train_qwen36.py --smoke          # feasibility gate
 python scripts/airllm_train_qwen36.py --epochs 2 --lr 5e-5 --rank 16
-python scripts/merge_lora_qwen36.py --adapter D:/colibri-models/qwen36-lora-adapter.pt
+python scripts/merge_lora_qwen36.py --adapter D:/fennec-models/qwen36-lora-adapter.pt
 python scripts/run_finetune_eval.py    # merge+convert+bench+graph in one chain
 ```
 
@@ -78,7 +78,7 @@ python scripts/run_finetune_eval.py    # merge+convert+bench+graph in one chain
 
 - **[AirLLM](https://github.com/lyogavin/airllm)** — layer-streamed inference and
   the streamed LoRA trainer this pipeline uses.
-- **[Colibri](https://github.com/JustVugg/colibri)** — the inference engine that
-  serves the converted container.
+- **[JustVugg/colibri](https://github.com/JustVugg/colibri)** — the base idea of the
+  inference engine that serves the converted container.
 
-Part of the [Colibri suite](https://github.com/Liso7150/colibri-environment-setup).
+Part of the [Fennec suite](https://github.com/Liso7150/fennec-environment-setup).
