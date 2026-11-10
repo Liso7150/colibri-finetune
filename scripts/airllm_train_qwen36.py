@@ -11,13 +11,18 @@ from pathlib import Path
 import random
 import time
 
+# The installer writes these roots to ~/.fennec/config.json; FENNEC_MODELS and
+# FENNEC_CACHE win, and nothing assumes a D: drive.
+MODELS = Path(os.environ.get("FENNEC_MODELS") or Path.home() / "fennec-models")
+CACHE = Path(os.environ.get("FENNEC_CACHE") or Path.home() / ".cache" / "fennec")
+
 
 def parse_args(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--model", default="D:/fennec-models/Qwen3.6-35B-A3B-bf16")
-    ap.add_argument("--shards", default="D:/.cache/airllm-qwen36-shards")
+    ap.add_argument("--model", default=str(MODELS / "Qwen3.6-35B-A3B-bf16"))
+    ap.add_argument("--shards", default=str(CACHE / "airllm-qwen36-shards"))
     ap.add_argument("--data", default=str(Path(__file__).resolve().parents[1] / "data/sft_coding_verified.jsonl"))
-    ap.add_argument("--out", default="D:/fennec-models/qwen36-lora-adapter.pt")
+    ap.add_argument("--out", default=str(MODELS / "qwen36-lora-adapter.pt"))
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--preflight-only", action="store_true", help="paths/data only; no torch, tokenizer or model imports")
     ap.add_argument("--steps", type=int, default=40, help="positive step cap (maximum 100000)")

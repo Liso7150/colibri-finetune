@@ -1,0 +1,84 @@
+{
+  "generated_at": "2026-11-10 20:46:21",
+  "host": {
+    "platform": "Windows-11-10.0.26300-SP0",
+    "cpu_count": 22,
+    "python": "3.14.7",
+    "home_volume_gib": 275.0
+  },
+  "prompts": [
+    "Reply with exactly the single word: pong",
+    "Name the capital of France in one short sentence.",
+    "Write a Python one-liner that reverses a list."
+  ],
+  "tokens": 24,
+  "model": {
+    "engine": "D:/colibri-models/qwen36-35b",
+    "airllm": "D:/colibri-models/Qwen3.6-35B-A3B-bf16"
+  },
+  "engine": {
+    "status": "ok",
+    "command": [
+      "D:/Colibri/.venv/Scripts/python.exe",
+      "D:\\Colibri\\c\\coli",
+      "serve",
+      "--model",
+      "D:\\colibri-models\\qwen36-35b",
+      "--auto-tier",
+      "--policy",
+      "quality",
+      "--ctx",
+      "4096",
+      "--ngen",
+      "40",
+      "--port",
+      "8197",
+      "--api-key",
+      "local"
+    ],
+    "log": "D:\\Colibri-Suite\\fennec-finetune\\results\\engine_vs_airllm_engine.log",
+    "backend": "vulkan",
+    "port": 8197,
+    "startup_s": 41.51,
+    "model_id": "qwen3.6-colibri",
+    "runs": [
+      {
+        "text": "pong",
+        "ttft_s": 0.604,
+        "seconds": 0.808,
+        "prompt": "Reply with exactly the single word: pong",
+        "approx_tokens": 1,
+        "tokens_per_s": 4.902
+      },
+      {
+        "text": "The capital of France is Paris.",
+        "ttft_s": 0.868,
+        "seconds": 1.703,
+        "prompt": "Name the capital of France in one short sentence.",
+        "approx_tokens": 6,
+        "tokens_per_s": 5.988
+      },
+      {
+        "text": "```python\nreversed_list = my_list[::-1]\n```",
+        "ttft_s": 0.862,
+        "seconds": 2.042,
+        "prompt": "Write a Python one-liner that reverses a list.",
+        "approx_tokens": 5,
+        "tokens_per_s": 3.39
+      }
+    ],
+    "median_tokens_per_s": 4.902,
+    "median_ttft_s": 0.862
+  },
+  "airllm": {
+    "status": "error",
+    "model": "D:\\colibri-models\\Qwen3.6-35B-A3B-bf16",
+    "max_new_tokens": 24,
+    "torch": {
+      "version": "2.15.0+cpu",
+      "cuda": false
+    },
+    "error": "load failed: ValueError: invalid literal for int() with base 10: 'layers'",
+    "load_s": 0.53
+  }
+}

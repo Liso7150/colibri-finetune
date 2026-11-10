@@ -10,12 +10,14 @@ Solutions are stdlib-only and reinforce the patterns the eval rewards: clean
 edge-case handling, list/tuple type consistency, correct algorithms.
 """
 import json
+import os
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
 
-OUT = Path(r"D:/Colibri/results/sft_coding_verified.jsonl")
+ENGINE_ROOT = Path(os.environ.get("FENNEC_HOME") or Path.home() / "Colibri")
+OUT = Path(os.environ.get("FENNEC_RESULTS") or ENGINE_ROOT / "results") / "sft_coding_verified.jsonl"
 
 # (instruction, solution_code, test_code). test_code asserts against the solution.
 BANK = [
