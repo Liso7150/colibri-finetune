@@ -1,0 +1,132 @@
+{
+  "engine": "http://127.0.0.1:8197",
+  "model": "qwen3.6-colibri",
+  "max_tokens": 8,
+  "temperature": 0,
+  "pairs": 2,
+  "host": {
+    "platform": "Windows-11-10.0.26300-SP0",
+    "cpu_count": 22,
+    "python": "3.12.10"
+  },
+  "compact_stats": {
+    "chars_before": 52543,
+    "chars_after": 19413,
+    "elided": 3,
+    "deduped": 1,
+    "budget_chars": 48000,
+    "result_chars": 6000
+  },
+  "arms": {
+    "old": {
+      "chars": 25068,
+      "messages": 10,
+      "prompt_tokens": 9594,
+      "est_prompt_tokens": 6267,
+      "completion_tokens": 8
+    },
+    "new": {
+      "chars": 19066,
+      "messages": 10,
+      "prompt_tokens": 6995,
+      "est_prompt_tokens": 4766,
+      "completion_tokens": 8
+    }
+  },
+  "trials": [
+    {
+      "ttft_s": 72.125,
+      "seconds": 72.516,
+      "chars": 25068,
+      "usage": {
+        "prompt_tokens": 9594,
+        "completion_tokens": 8,
+        "total_tokens": 9602
+      },
+      "pair": 0,
+      "order": [
+        "old",
+        "new"
+      ],
+      "arm": "old"
+    },
+    {
+      "ttft_s": 51.906,
+      "seconds": 52.219,
+      "chars": 19066,
+      "usage": {
+        "prompt_tokens": 6995,
+        "completion_tokens": 8,
+        "total_tokens": 7003
+      },
+      "pair": 0,
+      "order": [
+        "old",
+        "new"
+      ],
+      "arm": "new"
+    },
+    {
+      "ttft_s": 50.375,
+      "seconds": 50.719,
+      "chars": 19066,
+      "usage": {
+        "prompt_tokens": 6995,
+        "completion_tokens": 8,
+        "total_tokens": 7003
+      },
+      "pair": 1,
+      "order": [
+        "new",
+        "old"
+      ],
+      "arm": "new"
+    },
+    {
+      "ttft_s": 69.281,
+      "seconds": 69.546,
+      "chars": 25068,
+      "usage": {
+        "prompt_tokens": 9594,
+        "completion_tokens": 8,
+        "total_tokens": 9602
+      },
+      "pair": 1,
+      "order": [
+        "new",
+        "old"
+      ],
+      "arm": "old"
+    }
+  ],
+  "summary": {
+    "old": {
+      "trials": 2,
+      "chars": 25068,
+      "prompt_tokens": 9594,
+      "est_prompt_tokens": 6267,
+      "median_ttft_s": 70.703,
+      "median_seconds": 71.031,
+      "min_ttft_s": 69.281,
+      "max_ttft_s": 72.125
+    },
+    "new": {
+      "trials": 2,
+      "chars": 19066,
+      "prompt_tokens": 6995,
+      "est_prompt_tokens": 4766,
+      "median_ttft_s": 51.141,
+      "median_seconds": 51.469,
+      "min_ttft_s": 50.375,
+      "max_ttft_s": 51.906
+    },
+    "delta": {
+      "chars": 6002,
+      "chars_pct": 23.9,
+      "ttft_s": 19.562,
+      "ttft_pct": 27.7,
+      "seconds_s": 19.562,
+      "prompt_tokens": 2599
+    }
+  }
+}
