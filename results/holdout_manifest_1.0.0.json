@@ -1,0 +1,1433 @@
+{
+  "report_version": 1,
+  "mode": "manifest",
+  "run_status": "manifest_only",
+  "created_utc": "2026-11-10T07:26:52.864979+00:00",
+  "manifest": {
+    "suite_version": "colibri-holdout-1.0.0",
+    "cases_sha256": "4a627cfc04ca16937b76ff99cd9c6b1d3cc30368fa9ecaf05c9c1239540dcc85",
+    "case_count": 60,
+    "family_counts": {
+      "decimal_half_even": 5,
+      "ipv4_cidr": 5,
+      "iso_calendar": 5,
+      "json_merge_patch": 5,
+      "levenshtein": 5,
+      "python_closure_iterator": 5,
+      "regex_fullmatch": 5,
+      "relational_division": 5,
+      "semver_prerelease": 5,
+      "sql_group_null_distinct": 5,
+      "utc_timezone": 5,
+      "utf8_base64": 5
+    },
+    "disclaimer": "Measures structured reasoning and Python code tracing, NOT sandboxed program execution or proof of the best model generally. Frozen independent fixtures use families disjoint from the old training bank; prior model exposure cannot be ruled out. Treat subsequent training on this suite as contamination.",
+    "cases": [
+      {
+        "expected": {
+          "a": "z",
+          "c": {
+            "d": "e"
+          }
+        },
+        "family": "json_merge_patch",
+        "id": "json_merge_patch.01",
+        "input": {
+          "patch": {
+            "a": "z",
+            "c": {
+              "f": null
+            }
+          },
+          "target": {
+            "a": "b",
+            "c": {
+              "d": "e",
+              "f": "g"
+            }
+          }
+        },
+        "instruction": "Return the RFC 7396 JSON Merge Patch result. An object patch recurses into objects (a non-object target becomes {}); null-valued object members delete keys, including harmless deletion of absent keys. Arrays are replaced whole. Any non-object patch, including null, replaces the entire target."
+      },
+      {
+        "expected": {
+          "a": [
+            3
+          ],
+          "keep": true
+        },
+        "family": "json_merge_patch",
+        "id": "json_merge_patch.02",
+        "input": {
+          "patch": {
+            "a": [
+              3
+            ],
+            "missing": null
+          },
+          "target": {
+            "a": [
+              1,
+              2
+            ],
+            "keep": true
+          }
+        },
+        "instruction": "Return the RFC 7396 JSON Merge Patch result. An object patch recurses into objects (a non-object target becomes {}); null-valued object members delete keys, including harmless deletion of absent keys. Arrays are replaced whole. Any non-object patch, including null, replaces the entire target."
+      },
+      {
+        "expected": {
+          "new": {
+            "v": 0
+          }
+        },
+        "family": "json_merge_patch",
+        "id": "json_merge_patch.03",
+        "input": {
+          "patch": {
+            "new": {
+              "gone": null,
+              "v": 0
+            }
+          },
+          "target": [
+            1,
+            2
+          ]
+        },
+        "instruction": "Return the RFC 7396 JSON Merge Patch result. An object patch recurses into objects (a non-object target becomes {}); null-valued object members delete keys, including harmless deletion of absent keys. Arrays are replaced whole. Any non-object patch, including null, replaces the entire target."
+      },
+      {
+        "expected": null,
+        "family": "json_merge_patch",
+        "id": "json_merge_patch.04",
+        "input": {
+          "patch": null,
+          "target": {
+            "a": 1
+          }
+        },
+        "instruction": "Return the RFC 7396 JSON Merge Patch result. An object patch recurses into objects (a non-object target becomes {}); null-valued object members delete keys, including harmless deletion of absent keys. Arrays are replaced whole. Any non-object patch, including null, replaces the entire target."
+      },
+      {
+        "expected": {
+          "empty": {},
+          "nested": {
+            "a": 1
+          },
+          "x": {}
+        },
+        "family": "json_merge_patch",
+        "id": "json_merge_patch.05",
+        "input": {
+          "patch": {
+            "empty": {},
+            "nested": {},
+            "x": {}
+          },
+          "target": {
+            "nested": {
+              "a": 1
+            },
+            "x": 1
+          }
+        },
+        "instruction": "Return the RFC 7396 JSON Merge Patch result. An object patch recurses into objects (a non-object target becomes {}); null-valued object members delete keys, including harmless deletion of absent keys. Arrays are replaced whole. Any non-object patch, including null, replaces the entire target."
+      },
+      {
+        "expected": [
+          -1,
+          -1,
+          -1
+        ],
+        "family": "semver_prerelease",
+        "id": "semver_prerelease.01",
+        "input": {
+          "pairs": [
+            [
+              "1.0.0-alpha",
+              "1.0.0"
+            ],
+            [
+              "1.0.0-alpha",
+              "1.0.0-alpha.1"
+            ],
+            [
+              "1.0.0-alpha.1",
+              "1.0.0-alpha.beta"
+            ]
+          ]
+        },
+        "instruction": "All inputs are valid SemVer 2.0.0 versions. For each [left,right] return -1, 0, or 1 for lower, equal, or higher precedence, as an array. Compare major/minor/patch numerically first. Ignore all +build metadata. A prerelease is lower than the corresponding release. Compare dot-separated prerelease identifiers left to right: all-ASCII-digit identifiers compare numerically and are lower than nonnumeric identifiers; nonnumeric identifiers compare by ASCII lexical order, case-sensitive. If shared identifiers tie, the shorter list is lower. Numeric identifiers have no leading zeros; hyphens inside identifiers are literal."
+      },
+      {
+        "expected": [
+          -1,
+          -1,
+          -1
+        ],
+        "family": "semver_prerelease",
+        "id": "semver_prerelease.02",
+        "input": {
+          "pairs": [
+            [
+              "1.0.0-beta.2",
+              "1.0.0-beta.11"
+            ],
+            [
+              "1.0.0-2",
+              "1.0.0-10"
+            ],
+            [
+              "1.0.0-9",
+              "1.0.0-A"
+            ]
+          ]
+        },
+        "instruction": "All inputs are valid SemVer 2.0.0 versions. For each [left,right] return -1, 0, or 1 for lower, equal, or higher precedence, as an array. Compare major/minor/patch numerically first. Ignore all +build metadata. A prerelease is lower than the corresponding release. Compare dot-separated prerelease identifiers left to right: all-ASCII-digit identifiers compare numerically and are lower than nonnumeric identifiers; nonnumeric identifiers compare by ASCII lexical order, case-sensitive. If shared identifiers tie, the shorter list is lower. Numeric identifiers have no leading zeros; hyphens inside identifiers are literal."
+      },
+      {
+        "expected": [
+          0,
+          0,
+          1
+        ],
+        "family": "semver_prerelease",
+        "id": "semver_prerelease.03",
+        "input": {
+          "pairs": [
+            [
+              "1.2.3+build.9",
+              "1.2.3+build.10"
+            ],
+            [
+              "1.0.0-rc.1+x",
+              "1.0.0-rc.1+y"
+            ],
+            [
+              "1.0.1-alpha",
+              "1.0.0"
+            ]
+          ]
+        },
+        "instruction": "All inputs are valid SemVer 2.0.0 versions. For each [left,right] return -1, 0, or 1 for lower, equal, or higher precedence, as an array. Compare major/minor/patch numerically first. Ignore all +build metadata. A prerelease is lower than the corresponding release. Compare dot-separated prerelease identifiers left to right: all-ASCII-digit identifiers compare numerically and are lower than nonnumeric identifiers; nonnumeric identifiers compare by ASCII lexical order, case-sensitive. If shared identifiers tie, the shorter list is lower. Numeric identifiers have no leading zeros; hyphens inside identifiers are literal."
+      },
+      {
+        "expected": [
+          -1,
+          1,
+          -1
+        ],
+        "family": "semver_prerelease",
+        "id": "semver_prerelease.04",
+        "input": {
+          "pairs": [
+            [
+              "1.0.0-B",
+              "1.0.0-a"
+            ],
+            [
+              "1.0.0-alpha-1",
+              "1.0.0-alpha.1"
+            ],
+            [
+              "1.0.0-1",
+              "1.0.0-01a"
+            ]
+          ]
+        },
+        "instruction": "All inputs are valid SemVer 2.0.0 versions. For each [left,right] return -1, 0, or 1 for lower, equal, or higher precedence, as an array. Compare major/minor/patch numerically first. Ignore all +build metadata. A prerelease is lower than the corresponding release. Compare dot-separated prerelease identifiers left to right: all-ASCII-digit identifiers compare numerically and are lower than nonnumeric identifiers; nonnumeric identifiers compare by ASCII lexical order, case-sensitive. If shared identifiers tie, the shorter list is lower. Numeric identifiers have no leading zeros; hyphens inside identifiers are literal."
+      },
+      {
+        "expected": [
+          1,
+          1,
+          0
+        ],
+        "family": "semver_prerelease",
+        "id": "semver_prerelease.05",
+        "input": {
+          "pairs": [
+            [
+              "2.0.0-alpha",
+              "1.99.99"
+            ],
+            [
+              "1.10.0",
+              "1.9.9"
+            ],
+            [
+              "0.0.0",
+              "0.0.0"
+            ]
+          ]
+        },
+        "instruction": "All inputs are valid SemVer 2.0.0 versions. For each [left,right] return -1, 0, or 1 for lower, equal, or higher precedence, as an array. Compare major/minor/patch numerically first. Ignore all +build metadata. A prerelease is lower than the corresponding release. Compare dot-separated prerelease identifiers left to right: all-ASCII-digit identifiers compare numerically and are lower than nonnumeric identifiers; nonnumeric identifiers compare by ASCII lexical order, case-sensitive. If shared identifiers tie, the shorter list is lower. Numeric identifiers have no leading zeros; hyphens inside identifiers are literal."
+      },
+      {
+        "expected": [
+          true,
+          true,
+          false
+        ],
+        "family": "ipv4_cidr",
+        "id": "ipv4_cidr.01",
+        "input": {
+          "addresses": [
+            "192.168.1.0",
+            "192.168.1.255",
+            "192.168.2.0"
+          ],
+          "cidr": "192.168.1.0/24"
+        },
+        "instruction": "Return one boolean per IPv4 address for membership in the CIDR. Mask any host bits in the supplied network address. Include network and broadcast addresses: this is membership, not usable-host enumeration."
+      },
+      {
+        "expected": [
+          true,
+          true,
+          true
+        ],
+        "family": "ipv4_cidr",
+        "id": "ipv4_cidr.02",
+        "input": {
+          "addresses": [
+            "0.0.0.0",
+            "255.255.255.255",
+            "8.8.8.8"
+          ],
+          "cidr": "0.0.0.0/0"
+        },
+        "instruction": "Return one boolean per IPv4 address for membership in the CIDR. Mask any host bits in the supplied network address. Include network and broadcast addresses: this is membership, not usable-host enumeration."
+      },
+      {
+        "expected": [
+          true,
+          false,
+          false
+        ],
+        "family": "ipv4_cidr",
+        "id": "ipv4_cidr.03",
+        "input": {
+          "addresses": [
+            "203.0.113.7",
+            "203.0.113.6",
+            "203.0.113.8"
+          ],
+          "cidr": "203.0.113.7/32"
+        },
+        "instruction": "Return one boolean per IPv4 address for membership in the CIDR. Mask any host bits in the supplied network address. Include network and broadcast addresses: this is membership, not usable-host enumeration."
+      },
+      {
+        "expected": [
+          true,
+          true,
+          false
+        ],
+        "family": "ipv4_cidr",
+        "id": "ipv4_cidr.04",
+        "input": {
+          "addresses": [
+            "198.51.100.10",
+            "198.51.100.11",
+            "198.51.100.12"
+          ],
+          "cidr": "198.51.100.10/31"
+        },
+        "instruction": "Return one boolean per IPv4 address for membership in the CIDR. Mask any host bits in the supplied network address. Include network and broadcast addresses: this is membership, not usable-host enumeration."
+      },
+      {
+        "expected": [
+          true,
+          true,
+          false,
+          false
+        ],
+        "family": "ipv4_cidr",
+        "id": "ipv4_cidr.05",
+        "input": {
+          "addresses": [
+            "10.0.0.0",
+            "10.255.255.255",
+            "11.0.0.0",
+            "9.255.255.255"
+          ],
+          "cidr": "10.42.3.9/8"
+        },
+        "instruction": "Return one boolean per IPv4 address for membership in the CIDR. Mask any host bits in the supplied network address. Include network and broadcast addresses: this is membership, not usable-host enumeration."
+      },
+      {
+        "expected": {
+          "days_until_other": 2,
+          "iso_week": 9,
+          "iso_weekday": 3,
+          "iso_year": 2024,
+          "shifted": "2024-03-01"
+        },
+        "family": "iso_calendar",
+        "id": "iso_calendar.01",
+        "input": {
+          "add_days": 2,
+          "date": "2024-02-28",
+          "other": "2024-03-01"
+        },
+        "instruction": "Use the proleptic Gregorian calendar. Return an object with shifted (date + add_days, YYYY-MM-DD), days_until_other (other minus date in whole days), and iso_year, iso_week, iso_weekday for the ORIGINAL date. ISO weeks start Monday (weekday 1); week 1 contains January 4. Sunday is weekday 7."
+      },
+      {
+        "expected": {
+          "days_until_other": -1,
+          "iso_week": 53,
+          "iso_weekday": 5,
+          "iso_year": 2020,
+          "shifted": "2020-12-31"
+        },
+        "family": "iso_calendar",
+        "id": "iso_calendar.02",
+        "input": {
+          "add_days": -1,
+          "date": "2021-01-01",
+          "other": "2020-12-31"
+        },
+        "instruction": "Use the proleptic Gregorian calendar. Return an object with shifted (date + add_days, YYYY-MM-DD), days_until_other (other minus date in whole days), and iso_year, iso_week, iso_weekday for the ORIGINAL date. ISO weeks start Monday (weekday 1); week 1 contains January 4. Sunday is weekday 7."
+      },
+      {
+        "expected": {
+          "days_until_other": 2,
+          "iso_week": 1,
+          "iso_weekday": 1,
+          "iso_year": 2020,
+          "shifted": "2020-01-06"
+        },
+        "family": "iso_calendar",
+        "id": "iso_calendar.03",
+        "input": {
+          "add_days": 7,
+          "date": "2019-12-30",
+          "other": "2020-01-01"
+        },
+        "instruction": "Use the proleptic Gregorian calendar. Return an object with shifted (date + add_days, YYYY-MM-DD), days_until_other (other minus date in whole days), and iso_year, iso_week, iso_weekday for the ORIGINAL date. ISO weeks start Monday (weekday 1); week 1 contains January 4. Sunday is weekday 7."
+      },
+      {
+        "expected": {
+          "days_until_other": 1,
+          "iso_week": 9,
+          "iso_weekday": 3,
+          "iso_year": 1900,
+          "shifted": "1900-03-01"
+        },
+        "family": "iso_calendar",
+        "id": "iso_calendar.04",
+        "input": {
+          "add_days": 1,
+          "date": "1900-02-28",
+          "other": "1900-03-01"
+        },
+        "instruction": "Use the proleptic Gregorian calendar. Return an object with shifted (date + add_days, YYYY-MM-DD), days_until_other (other minus date in whole days), and iso_year, iso_week, iso_weekday for the ORIGINAL date. ISO weeks start Monday (weekday 1); week 1 contains January 4. Sunday is weekday 7."
+      },
+      {
+        "expected": {
+          "days_until_other": 365,
+          "iso_week": 9,
+          "iso_weekday": 2,
+          "iso_year": 2000,
+          "shifted": "2001-03-01"
+        },
+        "family": "iso_calendar",
+        "id": "iso_calendar.05",
+        "input": {
+          "add_days": 366,
+          "date": "2000-02-29",
+          "other": "2001-02-28"
+        },
+        "instruction": "Use the proleptic Gregorian calendar. Return an object with shifted (date + add_days, YYYY-MM-DD), days_until_other (other minus date in whole days), and iso_year, iso_week, iso_weekday for the ORIGINAL date. ISO weeks start Monday (weekday 1); week 1 contains January 4. Sunday is weekday 7."
+      },
+      {
+        "expected": {
+          "base64": "Q29saWJyaQ==",
+          "bytes": [
+            67,
+            111,
+            108,
+            105,
+            98,
+            114,
+            105
+          ],
+          "hex": "436f6c69627269"
+        },
+        "family": "utf8_base64",
+        "id": "utf8_base64.01",
+        "input": {
+          "text": "Colibri"
+        },
+        "instruction": "Encode text exactly as supplied in UTF-8, without BOM or Unicode normalization. Return an object: bytes (array of unsigned decimal bytes), hex (lowercase, no separators), base64 (standard RFC 4648 alphabet, with = padding, no line wrapping). Escaped newlines represent actual newline characters."
+      },
+      {
+        "expected": {
+          "base64": "",
+          "bytes": [],
+          "hex": ""
+        },
+        "family": "utf8_base64",
+        "id": "utf8_base64.02",
+        "input": {
+          "text": ""
+        },
+        "instruction": "Encode text exactly as supplied in UTF-8, without BOM or Unicode normalization. Return an object: bytes (array of unsigned decimal bytes), hex (lowercase, no separators), base64 (standard RFC 4648 alphabet, with = padding, no line wrapping). Escaped newlines represent actual newline characters."
+      },
+      {
+        "expected": {
+          "base64": "Y2Fmw6k=",
+          "bytes": [
+            99,
+            97,
+            102,
+            195,
+            169
+          ],
+          "hex": "636166c3a9"
+        },
+        "family": "utf8_base64",
+        "id": "utf8_base64.03",
+        "input": {
+          "text": "café"
+        },
+        "instruction": "Encode text exactly as supplied in UTF-8, without BOM or Unicode normalization. Return an object: bytes (array of unsigned decimal bytes), hex (lowercase, no separators), base64 (standard RFC 4648 alphabet, with = padding, no line wrapping). Escaped newlines represent actual newline characters."
+      },
+      {
+        "expected": {
+          "base64": "QfCfmIAK",
+          "bytes": [
+            65,
+            240,
+            159,
+            152,
+            128,
+            10
+          ],
+          "hex": "41f09f98800a"
+        },
+        "family": "utf8_base64",
+        "id": "utf8_base64.04",
+        "input": {
+          "text": "A😀\n"
+        },
+        "instruction": "Encode text exactly as supplied in UTF-8, without BOM or Unicode normalization. Return an object: bytes (array of unsigned decimal bytes), hex (lowercase, no separators), base64 (standard RFC 4648 alphabet, with = padding, no line wrapping). Escaped newlines represent actual newline characters."
+      },
+      {
+        "expected": {
+          "base64": "ZcyB",
+          "bytes": [
+            101,
+            204,
+            129
+          ],
+          "hex": "65cc81"
+        },
+        "family": "utf8_base64",
+        "id": "utf8_base64.05",
+        "input": {
+          "text": "é"
+        },
+        "instruction": "Encode text exactly as supplied in UTF-8, without BOM or Unicode normalization. Return an object: bytes (array of unsigned decimal bytes), hex (lowercase, no separators), base64 (standard RFC 4648 alphabet, with = padding, no line wrapping). Escaped newlines represent actual newline characters."
+      },
+      {
+        "expected": [
+          true,
+          false,
+          false,
+          true,
+          false
+        ],
+        "family": "regex_fullmatch",
+        "id": "regex_fullmatch.01",
+        "input": {
+          "pattern": "[A-Z]{2}\\d{2}",
+          "strings": [
+            "AB12",
+            "Ab12",
+            "AB123",
+            "AB١٢",
+            "AB12\n"
+          ]
+        },
+        "instruction": "Return a boolean array: Python 3 re.fullmatch(pattern, text) is not None for each string. Default Unicode semantics, no flags. The ENTIRE string must match, including any final newline; \\d includes Unicode decimal digits and \\w includes Unicode alphanumerics and underscore."
+      },
+      {
+        "expected": [
+          true,
+          true,
+          false,
+          false,
+          false
+        ],
+        "family": "regex_fullmatch",
+        "id": "regex_fullmatch.02",
+        "input": {
+          "pattern": "a(?:b|c)*",
+          "strings": [
+            "a",
+            "abcb",
+            "",
+            "acbd",
+            "a\n"
+          ]
+        },
+        "instruction": "Return a boolean array: Python 3 re.fullmatch(pattern, text) is not None for each string. Default Unicode semantics, no flags. The ENTIRE string must match, including any final newline; \\d includes Unicode decimal digits and \\w includes Unicode alphanumerics and underscore."
+      },
+      {
+        "expected": [
+          true,
+          false,
+          true,
+          false,
+          false,
+          true
+        ],
+        "family": "regex_fullmatch",
+        "id": "regex_fullmatch.03",
+        "input": {
+          "pattern": "(?:0|[1-9][0-9]*)(?:\\.[0-9]{2})?",
+          "strings": [
+            "0",
+            "01",
+            "12.30",
+            "12.3",
+            "-1",
+            "0.00"
+          ]
+        },
+        "instruction": "Return a boolean array: Python 3 re.fullmatch(pattern, text) is not None for each string. Default Unicode semantics, no flags. The ENTIRE string must match, including any final newline; \\d includes Unicode decimal digits and \\w includes Unicode alphanumerics and underscore."
+      },
+      {
+        "expected": [
+          true,
+          false,
+          true,
+          false,
+          false
+        ],
+        "family": "regex_fullmatch",
+        "id": "regex_fullmatch.04",
+        "input": {
+          "pattern": "(?P<word>[a-z]+)-(?P=word)",
+          "strings": [
+            "go-go",
+            "go-stop",
+            "a-a",
+            "-",
+            "go-go\n"
+          ]
+        },
+        "instruction": "Return a boolean array: Python 3 re.fullmatch(pattern, text) is not None for each string. Default Unicode semantics, no flags. The ENTIRE string must match, including any final newline; \\d includes Unicode decimal digits and \\w includes Unicode alphanumerics and underscore."
+      },
+      {
+        "expected": [
+          true,
+          false,
+          false,
+          true,
+          false
+        ],
+        "family": "regex_fullmatch",
+        "id": "regex_fullmatch.05",
+        "input": {
+          "pattern": "[^\\W_]+(?:_[^\\W_]+)*",
+          "strings": [
+            "naïve_2",
+            "_x",
+            "a__b",
+            "猫",
+            ""
+          ]
+        },
+        "instruction": "Return a boolean array: Python 3 re.fullmatch(pattern, text) is not None for each string. Default Unicode semantics, no flags. The ENTIRE string must match, including any final newline; \\d includes Unicode decimal digits and \\w includes Unicode alphanumerics and underscore."
+      },
+      {
+        "expected": [
+          [
+            "a",
+            4,
+            3,
+            30
+          ],
+          [
+            "b",
+            2,
+            1,
+            5
+          ],
+          [
+            "c",
+            1,
+            0,
+            null
+          ]
+        ],
+        "family": "sql_group_null_distinct",
+        "id": "sql_group_null_distinct.01",
+        "input": {
+          "query": "SELECT dept, COUNT(*), COUNT(amount), SUM(amount) FROM sales GROUP BY dept ORDER BY dept",
+          "rows": [
+            [
+              "a",
+              "ann",
+              10
+            ],
+            [
+              "a",
+              "ann",
+              null
+            ],
+            [
+              "a",
+              "bob",
+              10
+            ],
+            [
+              "b",
+              null,
+              5
+            ],
+            [
+              "b",
+              "bea",
+              null
+            ],
+            [
+              "c",
+              null,
+              null
+            ],
+            [
+              "a",
+              "ann",
+              10
+            ]
+          ],
+          "schema": "CREATE TABLE sales (dept TEXT, who TEXT, amount INTEGER)"
+        },
+        "instruction": "Return the result of this trusted SQLite query as an array of row arrays, in query order. Input rows follow schema column order; JSON null is SQL NULL. COUNT(*) counts rows; COUNT(expr) and COUNT(DISTINCT expr) ignore NULL. SUM of no non-NULL values is NULL. DISTINCT result rows coalesce duplicates including NULL; SQLite ascending order puts NULL first. Do not return SQL."
+      },
+      {
+        "expected": [
+          [
+            "a",
+            2,
+            1
+          ],
+          [
+            "b",
+            1,
+            1
+          ],
+          [
+            "c",
+            0,
+            0
+          ]
+        ],
+        "family": "sql_group_null_distinct",
+        "id": "sql_group_null_distinct.02",
+        "input": {
+          "query": "SELECT dept, COUNT(DISTINCT who), COUNT(DISTINCT amount) FROM sales GROUP BY dept ORDER BY dept",
+          "rows": [
+            [
+              "a",
+              "ann",
+              10
+            ],
+            [
+              "a",
+              "ann",
+              null
+            ],
+            [
+              "a",
+              "bob",
+              10
+            ],
+            [
+              "b",
+              null,
+              5
+            ],
+            [
+              "b",
+              "bea",
+              null
+            ],
+            [
+              "c",
+              null,
+              null
+            ],
+            [
+              "a",
+              "ann",
+              10
+            ]
+          ],
+          "schema": "CREATE TABLE sales (dept TEXT, who TEXT, amount INTEGER)"
+        },
+        "instruction": "Return the result of this trusted SQLite query as an array of row arrays, in query order. Input rows follow schema column order; JSON null is SQL NULL. COUNT(*) counts rows; COUNT(expr) and COUNT(DISTINCT expr) ignore NULL. SUM of no non-NULL values is NULL. DISTINCT result rows coalesce duplicates including NULL; SQLite ascending order puts NULL first. Do not return SQL."
+      },
+      {
+        "expected": [
+          [
+            "c",
+            0
+          ]
+        ],
+        "family": "sql_group_null_distinct",
+        "id": "sql_group_null_distinct.03",
+        "input": {
+          "query": "SELECT dept, COALESCE(SUM(amount), 0) FROM sales GROUP BY dept HAVING COUNT(amount) = 0 ORDER BY dept",
+          "rows": [
+            [
+              "a",
+              "ann",
+              10
+            ],
+            [
+              "a",
+              "ann",
+              null
+            ],
+            [
+              "a",
+              "bob",
+              10
+            ],
+            [
+              "b",
+              null,
+              5
+            ],
+            [
+              "b",
+              "bea",
+              null
+            ],
+            [
+              "c",
+              null,
+              null
+            ],
+            [
+              "a",
+              "ann",
+              10
+            ]
+          ],
+          "schema": "CREATE TABLE sales (dept TEXT, who TEXT, amount INTEGER)"
+        },
+        "instruction": "Return the result of this trusted SQLite query as an array of row arrays, in query order. Input rows follow schema column order; JSON null is SQL NULL. COUNT(*) counts rows; COUNT(expr) and COUNT(DISTINCT expr) ignore NULL. SUM of no non-NULL values is NULL. DISTINCT result rows coalesce duplicates including NULL; SQLite ascending order puts NULL first. Do not return SQL."
+      },
+      {
+        "expected": [
+          [
+            null,
+            null
+          ],
+          [
+            "u",
+            0
+          ]
+        ],
+        "family": "sql_group_null_distinct",
+        "id": "sql_group_null_distinct.04",
+        "input": {
+          "query": "SELECT DISTINCT who, amount FROM sales ORDER BY who, amount",
+          "rows": [
+            [
+              "x",
+              null,
+              null
+            ],
+            [
+              "x",
+              null,
+              null
+            ],
+            [
+              "x",
+              "u",
+              0
+            ],
+            [
+              "y",
+              "u",
+              0
+            ]
+          ],
+          "schema": "CREATE TABLE sales (dept TEXT, who TEXT, amount INTEGER)"
+        },
+        "instruction": "Return the result of this trusted SQLite query as an array of row arrays, in query order. Input rows follow schema column order; JSON null is SQL NULL. COUNT(*) counts rows; COUNT(expr) and COUNT(DISTINCT expr) ignore NULL. SUM of no non-NULL values is NULL. DISTINCT result rows coalesce duplicates including NULL; SQLite ascending order puts NULL first. Do not return SQL."
+      },
+      {
+        "expected": [
+          [
+            0,
+            0,
+            null,
+            0
+          ]
+        ],
+        "family": "sql_group_null_distinct",
+        "id": "sql_group_null_distinct.05",
+        "input": {
+          "query": "SELECT COUNT(*), COUNT(amount), SUM(amount), COUNT(DISTINCT who) FROM sales",
+          "rows": [],
+          "schema": "CREATE TABLE sales (dept TEXT, who TEXT, amount INTEGER)"
+        },
+        "instruction": "Return the result of this trusted SQLite query as an array of row arrays, in query order. Input rows follow schema column order; JSON null is SQL NULL. COUNT(*) counts rows; COUNT(expr) and COUNT(DISTINCT expr) ignore NULL. SUM of no non-NULL values is NULL. DISTINCT result rows coalesce duplicates including NULL; SQLite ascending order puts NULL first. Do not return SQL."
+      },
+      {
+        "expected": [
+          2,
+          2,
+          2
+        ],
+        "family": "python_closure_iterator",
+        "id": "python_closure_iterator.01",
+        "input": {
+          "code": "funcs = [lambda: i for i in range(3)]\nresult = [f() for f in funcs]"
+        },
+        "instruction": "Trace the following Python 3 code and return only the final value of result as JSON. Closures resolve free variables at call time; default arguments bind at definition. Iterators are consumed left-to-right, including partial consumption by zip's final unsuccessful step. Do not return code."
+      },
+      {
+        "expected": [
+          10,
+          11,
+          12
+        ],
+        "family": "python_closure_iterator",
+        "id": "python_closure_iterator.02",
+        "input": {
+          "code": "funcs = [lambda x, i=i: x + i for i in range(3)]\nresult = [f(10) for f in funcs]"
+        },
+        "instruction": "Trace the following Python 3 code and return only the final value of result as JSON. Closures resolve free variables at call time; default arguments bind at definition. Iterators are consumed left-to-right, including partial consumption by zip's final unsuccessful step. Do not return code."
+      },
+      {
+        "expected": [
+          1,
+          [
+            [
+              2,
+              3
+            ]
+          ],
+          []
+        ],
+        "family": "python_closure_iterator",
+        "id": "python_closure_iterator.03",
+        "input": {
+          "code": "it = iter([1, 2, 3, 4])\na = next(it)\nb = list(zip(it, it))\nresult = [a, [list(pair) for pair in b], list(it)]"
+        },
+        "instruction": "Trace the following Python 3 code and return only the final value of result as JSON. Closures resolve free variables at call time; default arguments bind at definition. Iterators are consumed left-to-right, including partial consumption by zip's final unsuccessful step. Do not return code."
+      },
+      {
+        "expected": [
+          1,
+          2,
+          11,
+          3
+        ],
+        "family": "python_closure_iterator",
+        "id": "python_closure_iterator.04",
+        "input": {
+          "code": "def counter(n):\n    def step():\n        nonlocal n\n        n += 1\n        return n\n    return step\na = counter(0)\nb = counter(10)\nresult = [a(), a(), b(), a()]"
+        },
+        "instruction": "Trace the following Python 3 code and return only the final value of result as JSON. Closures resolve free variables at call time; default arguments bind at definition. Iterators are consumed left-to-right, including partial consumption by zip's final unsuccessful step. Do not return code."
+      },
+      {
+        "expected": [
+          2,
+          [
+            10,
+            6
+          ],
+          []
+        ],
+        "family": "python_closure_iterator",
+        "id": "python_closure_iterator.05",
+        "input": {
+          "code": "xs = [1, 2]\ng = (x * 2 for x in xs)\nxs.append(3)\nfirst = next(g)\nxs[1] = 5\nresult = [first, list(g), list(g)]"
+        },
+        "instruction": "Trace the following Python 3 code and return only the final value of result as JSON. Closures resolve free variables at call time; default arguments bind at definition. Iterators are consumed left-to-right, including partial consumption by zip's final unsuccessful step. Do not return code."
+      },
+      {
+        "expected": {
+          "converted": "2024-02-29T10:45:00-08:00",
+          "utc": "2024-02-29T18:45:00Z"
+        },
+        "family": "utc_timezone",
+        "id": "utc_timezone.01",
+        "input": {
+          "target_offset": "-08:00",
+          "timestamp": "2024-03-01T00:15:00+05:30"
+        },
+        "instruction": "Convert the timestamp's instant to UTC and to target_offset. Offsets are FIXED numeric UTC offsets, with no DST or named-zone rules. Return {utc, converted}, both strings with seconds and no fractional seconds. Use YYYY-MM-DDTHH:MM:SSZ for utc and YYYY-MM-DDTHH:MM:SS+HH:MM (or -HH:MM) for converted; zero target offset must be +00:00."
+      },
+      {
+        "expected": {
+          "converted": "2024-01-01T15:30:00+14:00",
+          "utc": "2024-01-01T01:30:00Z"
+        },
+        "family": "utc_timezone",
+        "id": "utc_timezone.02",
+        "input": {
+          "target_offset": "+14:00",
+          "timestamp": "2023-12-31T23:30:00-02:00"
+        },
+        "instruction": "Convert the timestamp's instant to UTC and to target_offset. Offsets are FIXED numeric UTC offsets, with no DST or named-zone rules. Return {utc, converted}, both strings with seconds and no fractional seconds. Use YYYY-MM-DDTHH:MM:SSZ for utc and YYYY-MM-DDTHH:MM:SS+HH:MM (or -HH:MM) for converted; zero target offset must be +00:00."
+      },
+      {
+        "expected": {
+          "converted": "1999-12-31T12:00:00-12:00",
+          "utc": "2000-01-01T00:00:00Z"
+        },
+        "family": "utc_timezone",
+        "id": "utc_timezone.03",
+        "input": {
+          "target_offset": "-12:00",
+          "timestamp": "2000-01-01T00:00:00Z"
+        },
+        "instruction": "Convert the timestamp's instant to UTC and to target_offset. Offsets are FIXED numeric UTC offsets, with no DST or named-zone rules. Return {utc, converted}, both strings with seconds and no fractional seconds. Use YYYY-MM-DDTHH:MM:SSZ for utc and YYYY-MM-DDTHH:MM:SS+HH:MM (or -HH:MM) for converted; zero target offset must be +00:00."
+      },
+      {
+        "expected": {
+          "converted": "2024-06-01T06:15:30+00:00",
+          "utc": "2024-06-01T06:15:30Z"
+        },
+        "family": "utc_timezone",
+        "id": "utc_timezone.04",
+        "input": {
+          "target_offset": "+00:00",
+          "timestamp": "2024-06-01T12:00:30+05:45"
+        },
+        "instruction": "Convert the timestamp's instant to UTC and to target_offset. Offsets are FIXED numeric UTC offsets, with no DST or named-zone rules. Return {utc, converted}, both strings with seconds and no fractional seconds. Use YYYY-MM-DDTHH:MM:SSZ for utc and YYYY-MM-DDTHH:MM:SS+HH:MM (or -HH:MM) for converted; zero target offset must be +00:00."
+      },
+      {
+        "expected": {
+          "converted": "2023-12-31T00:10:00-10:00",
+          "utc": "2023-12-31T10:10:00Z"
+        },
+        "family": "utc_timezone",
+        "id": "utc_timezone.05",
+        "input": {
+          "target_offset": "-10:00",
+          "timestamp": "2024-01-01T00:10:00+14:00"
+        },
+        "instruction": "Convert the timestamp's instant to UTC and to target_offset. Offsets are FIXED numeric UTC offsets, with no DST or named-zone rules. Return {utc, converted}, both strings with seconds and no fractional seconds. Use YYYY-MM-DDTHH:MM:SSZ for utc and YYYY-MM-DDTHH:MM:SS+HH:MM (or -HH:MM) for converted; zero target offset must be +00:00."
+      },
+      {
+        "expected": [
+          "2",
+          "4",
+          "-2",
+          "-4"
+        ],
+        "family": "decimal_half_even",
+        "id": "decimal_half_even.01",
+        "input": {
+          "quantum": "1",
+          "values": [
+            "2.5",
+            "3.5",
+            "-2.5",
+            "-3.5"
+          ]
+        },
+        "instruction": "Construct exact Decimal values from the strings. Quantize each to the exponent of quantum with ROUND_HALF_EVEN (nearest, ties to an even last retained digit), sufficient precision 50. Return an array of fixed-point strings (Python format(value, 'f')), preserving trailing fractional zeros and negative zero. 1E+1 means rounding to tens, not a step of one."
+      },
+      {
+        "expected": [
+          "1.22",
+          "1.24",
+          "-1.22",
+          "-1.24"
+        ],
+        "family": "decimal_half_even",
+        "id": "decimal_half_even.02",
+        "input": {
+          "quantum": "0.01",
+          "values": [
+            "1.225",
+            "1.235",
+            "-1.225",
+            "-1.235"
+          ]
+        },
+        "instruction": "Construct exact Decimal values from the strings. Quantize each to the exponent of quantum with ROUND_HALF_EVEN (nearest, ties to an even last retained digit), sufficient precision 50. Return an array of fixed-point strings (Python format(value, 'f')), preserving trailing fractional zeros and negative zero. 1E+1 means rounding to tens, not a step of one."
+      },
+      {
+        "expected": [
+          "0.00",
+          "-0.00",
+          "0.02",
+          "-0.02"
+        ],
+        "family": "decimal_half_even",
+        "id": "decimal_half_even.03",
+        "input": {
+          "quantum": "0.01",
+          "values": [
+            "0.005",
+            "-0.005",
+            "0.015",
+            "-0.015"
+          ]
+        },
+        "instruction": "Construct exact Decimal values from the strings. Quantize each to the exponent of quantum with ROUND_HALF_EVEN (nearest, ties to an even last retained digit), sufficient precision 50. Return an array of fixed-point strings (Python format(value, 'f')), preserving trailing fractional zeros and negative zero. 1E+1 means rounding to tens, not a step of one."
+      },
+      {
+        "expected": [
+          "10.00",
+          "99.98",
+          "1.20"
+        ],
+        "family": "decimal_half_even",
+        "id": "decimal_half_even.04",
+        "input": {
+          "quantum": "0.01",
+          "values": [
+            "9.995",
+            "99.985",
+            "1.200"
+          ]
+        },
+        "instruction": "Construct exact Decimal values from the strings. Quantize each to the exponent of quantum with ROUND_HALF_EVEN (nearest, ties to an even last retained digit), sufficient precision 50. Return an array of fixed-point strings (Python format(value, 'f')), preserving trailing fractional zeros and negative zero. 1E+1 means rounding to tens, not a step of one."
+      },
+      {
+        "expected": [
+          "140",
+          "160",
+          "-140",
+          "-160"
+        ],
+        "family": "decimal_half_even",
+        "id": "decimal_half_even.05",
+        "input": {
+          "quantum": "1E+1",
+          "values": [
+            "145",
+            "155",
+            "-145",
+            "-155"
+          ]
+        },
+        "instruction": "Construct exact Decimal values from the strings. Quantize each to the exponent of quantum with ROUND_HALF_EVEN (nearest, ties to an even last retained digit), sufficient precision 50. Return an array of fixed-point strings (Python format(value, 'f')), preserving trailing fractional zeros and negative zero. 1E+1 means rounding to tens, not a step of one."
+      },
+      {
+        "expected": 3,
+        "family": "levenshtein",
+        "id": "levenshtein.01",
+        "input": {
+          "left": "kitten",
+          "right": "sitting"
+        },
+        "instruction": "Return the integer Levenshtein edit distance from left to right. Insertion, deletion and substitution each cost 1; matching costs 0. No transposition operation. Compare Unicode code points case-sensitively with no normalization."
+      },
+      {
+        "expected": 3,
+        "family": "levenshtein",
+        "id": "levenshtein.02",
+        "input": {
+          "left": "",
+          "right": "abc"
+        },
+        "instruction": "Return the integer Levenshtein edit distance from left to right. Insertion, deletion and substitution each cost 1; matching costs 0. No transposition operation. Compare Unicode code points case-sensitively with no normalization."
+      },
+      {
+        "expected": 0,
+        "family": "levenshtein",
+        "id": "levenshtein.03",
+        "input": {
+          "left": "same",
+          "right": "same"
+        },
+        "instruction": "Return the integer Levenshtein edit distance from left to right. Insertion, deletion and substitution each cost 1; matching costs 0. No transposition operation. Compare Unicode code points case-sensitively with no normalization."
+      },
+      {
+        "expected": 2,
+        "family": "levenshtein",
+        "id": "levenshtein.04",
+        "input": {
+          "left": "ab",
+          "right": "ba"
+        },
+        "instruction": "Return the integer Levenshtein edit distance from left to right. Insertion, deletion and substitution each cost 1; matching costs 0. No transposition operation. Compare Unicode code points case-sensitively with no normalization."
+      },
+      {
+        "expected": 2,
+        "family": "levenshtein",
+        "id": "levenshtein.05",
+        "input": {
+          "left": "café",
+          "right": "café"
+        },
+        "instruction": "Return the integer Levenshtein edit distance from left to right. Insertion, deletion and substitution each cost 1; matching costs 0. No transposition operation. Compare Unicode code points case-sensitively with no normalization."
+      },
+      {
+        "expected": [
+          "a"
+        ],
+        "family": "relational_division",
+        "id": "relational_division.01",
+        "input": {
+          "assignments": [
+            [
+              "a",
+              "red"
+            ],
+            [
+              "a",
+              "blue"
+            ],
+            [
+              "b",
+              "red"
+            ],
+            [
+              "c",
+              "blue"
+            ]
+          ],
+          "entities": [
+            "a",
+            "b",
+            "c"
+          ],
+          "forbidden": [],
+          "required": [
+            "red",
+            "blue"
+          ]
+        },
+        "instruction": "Return the lexically sorted distinct entity names from entities whose assigned tags contain EVERY required tag and NO forbidden tag. Assignments are [entity,tag] pairs; duplicates have no effect. An empty required set is vacuously satisfied, including entities with no assignments. Ignore owners not listed in entities."
+      },
+      {
+        "expected": [
+          "a"
+        ],
+        "family": "relational_division",
+        "id": "relational_division.02",
+        "input": {
+          "assignments": [
+            [
+              "a",
+              "red"
+            ],
+            [
+              "a",
+              "red"
+            ],
+            [
+              "b",
+              "red"
+            ],
+            [
+              "b",
+              "blocked"
+            ]
+          ],
+          "entities": [
+            "a",
+            "b",
+            "c"
+          ],
+          "forbidden": [
+            "blocked"
+          ],
+          "required": [
+            "red"
+          ]
+        },
+        "instruction": "Return the lexically sorted distinct entity names from entities whose assigned tags contain EVERY required tag and NO forbidden tag. Assignments are [entity,tag] pairs; duplicates have no effect. An empty required set is vacuously satisfied, including entities with no assignments. Ignore owners not listed in entities."
+      },
+      {
+        "expected": [
+          "a",
+          "b",
+          "c"
+        ],
+        "family": "relational_division",
+        "id": "relational_division.03",
+        "input": {
+          "assignments": [
+            [
+              "a",
+              "x"
+            ]
+          ],
+          "entities": [
+            "a",
+            "b",
+            "c"
+          ],
+          "forbidden": [],
+          "required": []
+        },
+        "instruction": "Return the lexically sorted distinct entity names from entities whose assigned tags contain EVERY required tag and NO forbidden tag. Assignments are [entity,tag] pairs; duplicates have no effect. An empty required set is vacuously satisfied, including entities with no assignments. Ignore owners not listed in entities."
+      },
+      {
+        "expected": [
+          "b",
+          "c"
+        ],
+        "family": "relational_division",
+        "id": "relational_division.04",
+        "input": {
+          "assignments": [
+            [
+              "a",
+              "x"
+            ],
+            [
+              "b",
+              "y"
+            ]
+          ],
+          "entities": [
+            "a",
+            "b",
+            "c"
+          ],
+          "forbidden": [
+            "x"
+          ],
+          "required": []
+        },
+        "instruction": "Return the lexically sorted distinct entity names from entities whose assigned tags contain EVERY required tag and NO forbidden tag. Assignments are [entity,tag] pairs; duplicates have no effect. An empty required set is vacuously satisfied, including entities with no assignments. Ignore owners not listed in entities."
+      },
+      {
+        "expected": [],
+        "family": "relational_division",
+        "id": "relational_division.05",
+        "input": {
+          "assignments": [
+            [
+              "a",
+              "r"
+            ],
+            [
+              "b",
+              "r"
+            ],
+            [
+              "outside",
+              "missing"
+            ]
+          ],
+          "entities": [
+            "a",
+            "b"
+          ],
+          "forbidden": [],
+          "required": [
+            "r",
+            "missing"
+          ]
+        },
+        "instruction": "Return the lexically sorted distinct entity names from entities whose assigned tags contain EVERY required tag and NO forbidden tag. Assignments are [entity,tag] pairs; duplicates have no effect. An empty required set is vacuously satisfied, including entities with no assignments. Ignore owners not listed in entities."
+      }
+    ]
+  },
+  "suite_sha256": "4a627cfc04ca16937b76ff99cd9c6b1d3cc30368fa9ecaf05c9c1239540dcc85",
+  "settings": {
+    "max_tokens": 384,
+    "timeout_seconds": 120.0,
+    "temperature": 0,
+    "stream": false,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    },
+    "warmup_requests": 1,
+    "system_prompt": "Return exactly one JSON value answering the task. No Markdown, code fences, explanation, or additional text. Use JSON null/true/false, not Python literals. Object key order is irrelevant; array order and all value types (including booleans versus integers and integers versus floats) must match exactly.",
+    "scoring": "strict-json-types-v1",
+    "retry_count": 0
+  },
+  "selection": {
+    "kind": "full",
+    "limit": null,
+    "case_ids": [
+      "json_merge_patch.01",
+      "json_merge_patch.02",
+      "json_merge_patch.03",
+      "json_merge_patch.04",
+      "json_merge_patch.05",
+      "semver_prerelease.01",
+      "semver_prerelease.02",
+      "semver_prerelease.03",
+      "semver_prerelease.04",
+      "semver_prerelease.05",
+      "ipv4_cidr.01",
+      "ipv4_cidr.02",
+      "ipv4_cidr.03",
+      "ipv4_cidr.04",
+      "ipv4_cidr.05",
+      "iso_calendar.01",
+      "iso_calendar.02",
+      "iso_calendar.03",
+      "iso_calendar.04",
+      "iso_calendar.05",
+      "utf8_base64.01",
+      "utf8_base64.02",
+      "utf8_base64.03",
+      "utf8_base64.04",
+      "utf8_base64.05",
+      "regex_fullmatch.01",
+      "regex_fullmatch.02",
+      "regex_fullmatch.03",
+      "regex_fullmatch.04",
+      "regex_fullmatch.05",
+      "sql_group_null_distinct.01",
+      "sql_group_null_distinct.02",
+      "sql_group_null_distinct.03",
+      "sql_group_null_distinct.04",
+      "sql_group_null_distinct.05",
+      "python_closure_iterator.01",
+      "python_closure_iterator.02",
+      "python_closure_iterator.03",
+      "python_closure_iterator.04",
+      "python_closure_iterator.05",
+      "utc_timezone.01",
+      "utc_timezone.02",
+      "utc_timezone.03",
+      "utc_timezone.04",
+      "utc_timezone.05",
+      "decimal_half_even.01",
+      "decimal_half_even.02",
+      "decimal_half_even.03",
+      "decimal_half_even.04",
+      "decimal_half_even.05",
+      "levenshtein.01",
+      "levenshtein.02",
+      "levenshtein.03",
+      "levenshtein.04",
+      "levenshtein.05",
+      "relational_division.01",
+      "relational_division.02",
+      "relational_division.03",
+      "relational_division.04",
+      "relational_division.05"
+    ]
+  },
+  "engine": {
+    "endpoint": "http://127.0.0.1:8184/v1",
+    "requested_model": null,
+    "model_path": null,
+    "launch_settings": "not independently attested"
+  },
+  "runtime": {
+    "python": "3.14.7",
+    "sqlite": "3.50.4",
+    "platform": "win32"
+  },
+  "model_validation": null,
+  "warmup": null,
+  "results": [],
+  "summary": null
+}

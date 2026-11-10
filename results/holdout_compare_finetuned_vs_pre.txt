@@ -1,0 +1,638 @@
+{
+  "suite_version": "colibri-holdout-1.0.0",
+  "suite_sha256": "4a627cfc04ca16937b76ff99cd9c6b1d3cc30368fa9ecaf05c9c1239540dcc85",
+  "gains": [
+    "iso_calendar.01",
+    "sql_group_null_distinct.01",
+    "decimal_half_even.04",
+    "relational_division.01"
+  ],
+  "regressions": [
+    "levenshtein.01",
+    "relational_division.03"
+  ],
+  "ties": 54,
+  "per_task": [
+    {
+      "id": "json_merge_patch.01",
+      "family": "json_merge_patch",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "json_merge_patch.02",
+      "family": "json_merge_patch",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "json_merge_patch.03",
+      "family": "json_merge_patch",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    },
+    {
+      "id": "json_merge_patch.04",
+      "family": "json_merge_patch",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "json_merge_patch.05",
+      "family": "json_merge_patch",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    },
+    {
+      "id": "semver_prerelease.01",
+      "family": "semver_prerelease",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "semver_prerelease.02",
+      "family": "semver_prerelease",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "semver_prerelease.03",
+      "family": "semver_prerelease",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    },
+    {
+      "id": "semver_prerelease.04",
+      "family": "semver_prerelease",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    },
+    {
+      "id": "semver_prerelease.05",
+      "family": "semver_prerelease",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    },
+    {
+      "id": "ipv4_cidr.01",
+      "family": "ipv4_cidr",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "ipv4_cidr.02",
+      "family": "ipv4_cidr",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "ipv4_cidr.03",
+      "family": "ipv4_cidr",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "ipv4_cidr.04",
+      "family": "ipv4_cidr",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "ipv4_cidr.05",
+      "family": "ipv4_cidr",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "iso_calendar.01",
+      "family": "iso_calendar",
+      "original_passed": false,
+      "candidate_passed": true,
+      "outcome": "gain"
+    },
+    {
+      "id": "iso_calendar.02",
+      "family": "iso_calendar",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    },
+    {
+      "id": "iso_calendar.03",
+      "family": "iso_calendar",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    },
+    {
+      "id": "iso_calendar.04",
+      "family": "iso_calendar",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    },
+    {
+      "id": "iso_calendar.05",
+      "family": "iso_calendar",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    },
+    {
+      "id": "utf8_base64.01",
+      "family": "utf8_base64",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "utf8_base64.02",
+      "family": "utf8_base64",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "utf8_base64.03",
+      "family": "utf8_base64",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "utf8_base64.04",
+      "family": "utf8_base64",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    },
+    {
+      "id": "utf8_base64.05",
+      "family": "utf8_base64",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    },
+    {
+      "id": "regex_fullmatch.01",
+      "family": "regex_fullmatch",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    },
+    {
+      "id": "regex_fullmatch.02",
+      "family": "regex_fullmatch",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    },
+    {
+      "id": "regex_fullmatch.03",
+      "family": "regex_fullmatch",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "regex_fullmatch.04",
+      "family": "regex_fullmatch",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    },
+    {
+      "id": "regex_fullmatch.05",
+      "family": "regex_fullmatch",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "sql_group_null_distinct.01",
+      "family": "sql_group_null_distinct",
+      "original_passed": false,
+      "candidate_passed": true,
+      "outcome": "gain"
+    },
+    {
+      "id": "sql_group_null_distinct.02",
+      "family": "sql_group_null_distinct",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    },
+    {
+      "id": "sql_group_null_distinct.03",
+      "family": "sql_group_null_distinct",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    },
+    {
+      "id": "sql_group_null_distinct.04",
+      "family": "sql_group_null_distinct",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    },
+    {
+      "id": "sql_group_null_distinct.05",
+      "family": "sql_group_null_distinct",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "python_closure_iterator.01",
+      "family": "python_closure_iterator",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "python_closure_iterator.02",
+      "family": "python_closure_iterator",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "python_closure_iterator.03",
+      "family": "python_closure_iterator",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    },
+    {
+      "id": "python_closure_iterator.04",
+      "family": "python_closure_iterator",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "python_closure_iterator.05",
+      "family": "python_closure_iterator",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    },
+    {
+      "id": "utc_timezone.01",
+      "family": "utc_timezone",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "utc_timezone.02",
+      "family": "utc_timezone",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    },
+    {
+      "id": "utc_timezone.03",
+      "family": "utc_timezone",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "utc_timezone.04",
+      "family": "utc_timezone",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "utc_timezone.05",
+      "family": "utc_timezone",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "decimal_half_even.01",
+      "family": "decimal_half_even",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    },
+    {
+      "id": "decimal_half_even.02",
+      "family": "decimal_half_even",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "decimal_half_even.03",
+      "family": "decimal_half_even",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "decimal_half_even.04",
+      "family": "decimal_half_even",
+      "original_passed": false,
+      "candidate_passed": true,
+      "outcome": "gain"
+    },
+    {
+      "id": "decimal_half_even.05",
+      "family": "decimal_half_even",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    },
+    {
+      "id": "levenshtein.01",
+      "family": "levenshtein",
+      "original_passed": true,
+      "candidate_passed": false,
+      "outcome": "regression"
+    },
+    {
+      "id": "levenshtein.02",
+      "family": "levenshtein",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "levenshtein.03",
+      "family": "levenshtein",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "levenshtein.04",
+      "family": "levenshtein",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "levenshtein.05",
+      "family": "levenshtein",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    },
+    {
+      "id": "relational_division.01",
+      "family": "relational_division",
+      "original_passed": false,
+      "candidate_passed": true,
+      "outcome": "gain"
+    },
+    {
+      "id": "relational_division.02",
+      "family": "relational_division",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "relational_division.03",
+      "family": "relational_division",
+      "original_passed": true,
+      "candidate_passed": false,
+      "outcome": "regression"
+    },
+    {
+      "id": "relational_division.04",
+      "family": "relational_division",
+      "original_passed": true,
+      "candidate_passed": true,
+      "outcome": "tie_correct"
+    },
+    {
+      "id": "relational_division.05",
+      "family": "relational_division",
+      "original_passed": false,
+      "candidate_passed": false,
+      "outcome": "tie_incorrect"
+    }
+  ],
+  "original": {
+    "aggregate": {
+      "passed": 32,
+      "total": 60,
+      "recorded": 60,
+      "request_failures": 0,
+      "accuracy": 0.5333333333333333
+    },
+    "per_family": {
+      "decimal_half_even": {
+        "passed": 2,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.4
+      },
+      "ipv4_cidr": {
+        "passed": 5,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 1.0
+      },
+      "iso_calendar": {
+        "passed": 0,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.0
+      },
+      "json_merge_patch": {
+        "passed": 3,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.6
+      },
+      "levenshtein": {
+        "passed": 4,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.8
+      },
+      "python_closure_iterator": {
+        "passed": 3,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.6
+      },
+      "regex_fullmatch": {
+        "passed": 2,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.4
+      },
+      "relational_division": {
+        "passed": 3,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.6
+      },
+      "semver_prerelease": {
+        "passed": 2,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.4
+      },
+      "sql_group_null_distinct": {
+        "passed": 1,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.2
+      },
+      "utc_timezone": {
+        "passed": 4,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.8
+      },
+      "utf8_base64": {
+        "passed": 3,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.6
+      }
+    },
+    "median_wall_seconds": 2.905710999999883,
+    "median_completion_tokens_per_wall_second": 4.47007756790299,
+    "speed_note": "Request wall time includes prompt processing and HTTP; not engine decode throughput. Warmup excluded."
+  },
+  "candidate": {
+    "aggregate": {
+      "passed": 34,
+      "total": 60,
+      "recorded": 60,
+      "request_failures": 0,
+      "accuracy": 0.5666666666666667
+    },
+    "per_family": {
+      "decimal_half_even": {
+        "passed": 3,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.6
+      },
+      "ipv4_cidr": {
+        "passed": 5,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 1.0
+      },
+      "iso_calendar": {
+        "passed": 1,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.2
+      },
+      "json_merge_patch": {
+        "passed": 3,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.6
+      },
+      "levenshtein": {
+        "passed": 3,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.6
+      },
+      "python_closure_iterator": {
+        "passed": 3,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.6
+      },
+      "regex_fullmatch": {
+        "passed": 2,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.4
+      },
+      "relational_division": {
+        "passed": 3,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.6
+      },
+      "semver_prerelease": {
+        "passed": 2,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.4
+      },
+      "sql_group_null_distinct": {
+        "passed": 2,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.4
+      },
+      "utc_timezone": {
+        "passed": 4,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.8
+      },
+      "utf8_base64": {
+        "passed": 3,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.6
+      }
+    },
+    "median_wall_seconds": 3.644253700000263,
+    "median_completion_tokens_per_wall_second": 3.8178185511674387,
+    "speed_note": "Request wall time includes prompt processing and HTTP; not engine decode throughput. Warmup excluded."
+  },
+  "recommendation": "keep_original",
+  "assessment": "preliminary_not_statistical_significance",
+  "policy": "Quality first: choose candidate only with at least one gain and zero regressions. Ties or speed alone never promote. No automatic promotion or deletion.",
+  "comparability_note": "Endpoint and model identity may differ; generation/scoring settings must match. Server launch settings and weight identity are not independently attested.",
+  "disclaimer": "Measures structured reasoning and Python code tracing, NOT sandboxed program execution or proof of the best model generally. Frozen independent fixtures use families disjoint from the old training bank; prior model exposure cannot be ruled out. Treat subsequent training on this suite as contamination."
+}

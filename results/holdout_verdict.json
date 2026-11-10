@@ -1,0 +1,31 @@
+{
+  "suite_version": "colibri-holdout-1.0.0",
+  "suite_sha256": "4a627cfc04ca16937b76ff99cd9c6b1d3cc30368fa9ecaf05c9c1239540dcc85",
+  "incumbent": {
+    "model_id": "qwen36-35b",
+    "role": "fine-tuned int4 gs64",
+    "passed": 32,
+    "total": 60,
+    "accuracy": 0.5333333333333333,
+    "request_failures": 0
+  },
+  "candidate": {
+    "model_id": "qwen36-35b-pre-finetune",
+    "role": "base int4 container",
+    "passed": 34,
+    "total": 60,
+    "accuracy": 0.5666666666666667,
+    "request_failures": 0
+  },
+  "gains": 4,
+  "regressions": 2,
+  "ties": 54,
+  "policy": "Quality first: choose candidate only with at least one gain and zero regressions; ties keep the incumbent.",
+  "recommendation": "keep_original",
+  "decision": "qwen36-35b (fine-tuned) remains the production model",
+  "notes": [
+    "Aggregate accuracy favors the baseline by 2 cases, but it regresses levenshtein.01 and relational_division.03, which the per-case policy forbids.",
+    "Scores are not a statistical-significance claim and do not measure sandboxed execution.",
+    "No further LoRA was trained on this suite; it stays a holdout."
+  ]
+}

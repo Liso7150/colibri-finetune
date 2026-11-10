@@ -27,6 +27,33 @@ forward+backward through 40 MoE layers peaks at **~1.9 GB VRAM**.
 6. **Graph** — `scripts/make_finetune_graph.py` renders passes + training loss
    into `results/bench_finetune_comparison.png` and prints the winner.
 
+### Frozen holdout (60 cases)
+
+`scripts/bench_holdout.py` is a stdlib-only, pinned benchmark across 12
+structured-reasoning families (JSON merge patch, semver, CIDR, ISO calendar,
+decimal rounding, ...) with exact JSON scoring. It never executes model output,
+starts servers, or deletes models. Validate it offline with
+`--manifest-only --out manifest.json`, run it against a serving engine with
+`--model <id> --model-path <dir> --out report.json`, and compare two completed
+reports with `--compare original.json candidate.json`. The comparison policy is
+quality-first: a candidate is chosen only with at least one gain and zero
+regressions; ties keep the incumbent.
+
+```bash
+COLIBRI_API_KEY=local python scripts/bench_holdout.py \
+  --model qwen36-35b --model-path D:/colibri-models/qwen36-35b \
+  --out results/holdout_run_qwen36-35b.json
+```
+
+**Result (2026-11-10):** fine-tuned `qwen36-35b` scored **32/60**, base
+`qwen36-35b-pre-finetune` scored **34/60**. The base gains 4 cases but
+regresses 2 (`levenshtein.01`, `relational_division.03`), so the
+zero-regression policy keeps the fine-tuned model. Evidence:
+`results/holdout_run_qwen36-35b_finetuned.json`,
+`results/holdout_run_qwen36-35b-pre.json`,
+`results/holdout_compare_finetuned_vs_pre.txt`, `results/holdout_verdict.json`.
+The suite was not used for training and remains a holdout.
+
 ## Usage
 
 ```bash

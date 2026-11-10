@@ -1,0 +1,2979 @@
+{
+  "report_version": 1,
+  "mode": "benchmark",
+  "run_status": "complete",
+  "created_utc": "2026-11-10T07:32:48.342057+00:00",
+  "manifest": {
+    "suite_version": "colibri-holdout-1.0.0",
+    "cases_sha256": "4a627cfc04ca16937b76ff99cd9c6b1d3cc30368fa9ecaf05c9c1239540dcc85",
+    "case_count": 60,
+    "family_counts": {
+      "decimal_half_even": 5,
+      "ipv4_cidr": 5,
+      "iso_calendar": 5,
+      "json_merge_patch": 5,
+      "levenshtein": 5,
+      "python_closure_iterator": 5,
+      "regex_fullmatch": 5,
+      "relational_division": 5,
+      "semver_prerelease": 5,
+      "sql_group_null_distinct": 5,
+      "utc_timezone": 5,
+      "utf8_base64": 5
+    },
+    "disclaimer": "Measures structured reasoning and Python code tracing, NOT sandboxed program execution or proof of the best model generally. Frozen independent fixtures use families disjoint from the old training bank; prior model exposure cannot be ruled out. Treat subsequent training on this suite as contamination.",
+    "cases": [
+      {
+        "expected": {
+          "a": "z",
+          "c": {
+            "d": "e"
+          }
+        },
+        "family": "json_merge_patch",
+        "id": "json_merge_patch.01",
+        "input": {
+          "patch": {
+            "a": "z",
+            "c": {
+              "f": null
+            }
+          },
+          "target": {
+            "a": "b",
+            "c": {
+              "d": "e",
+              "f": "g"
+            }
+          }
+        },
+        "instruction": "Return the RFC 7396 JSON Merge Patch result. An object patch recurses into objects (a non-object target becomes {}); null-valued object members delete keys, including harmless deletion of absent keys. Arrays are replaced whole. Any non-object patch, including null, replaces the entire target."
+      },
+      {
+        "expected": {
+          "a": [
+            3
+          ],
+          "keep": true
+        },
+        "family": "json_merge_patch",
+        "id": "json_merge_patch.02",
+        "input": {
+          "patch": {
+            "a": [
+              3
+            ],
+            "missing": null
+          },
+          "target": {
+            "a": [
+              1,
+              2
+            ],
+            "keep": true
+          }
+        },
+        "instruction": "Return the RFC 7396 JSON Merge Patch result. An object patch recurses into objects (a non-object target becomes {}); null-valued object members delete keys, including harmless deletion of absent keys. Arrays are replaced whole. Any non-object patch, including null, replaces the entire target."
+      },
+      {
+        "expected": {
+          "new": {
+            "v": 0
+          }
+        },
+        "family": "json_merge_patch",
+        "id": "json_merge_patch.03",
+        "input": {
+          "patch": {
+            "new": {
+              "gone": null,
+              "v": 0
+            }
+          },
+          "target": [
+            1,
+            2
+          ]
+        },
+        "instruction": "Return the RFC 7396 JSON Merge Patch result. An object patch recurses into objects (a non-object target becomes {}); null-valued object members delete keys, including harmless deletion of absent keys. Arrays are replaced whole. Any non-object patch, including null, replaces the entire target."
+      },
+      {
+        "expected": null,
+        "family": "json_merge_patch",
+        "id": "json_merge_patch.04",
+        "input": {
+          "patch": null,
+          "target": {
+            "a": 1
+          }
+        },
+        "instruction": "Return the RFC 7396 JSON Merge Patch result. An object patch recurses into objects (a non-object target becomes {}); null-valued object members delete keys, including harmless deletion of absent keys. Arrays are replaced whole. Any non-object patch, including null, replaces the entire target."
+      },
+      {
+        "expected": {
+          "empty": {},
+          "nested": {
+            "a": 1
+          },
+          "x": {}
+        },
+        "family": "json_merge_patch",
+        "id": "json_merge_patch.05",
+        "input": {
+          "patch": {
+            "empty": {},
+            "nested": {},
+            "x": {}
+          },
+          "target": {
+            "nested": {
+              "a": 1
+            },
+            "x": 1
+          }
+        },
+        "instruction": "Return the RFC 7396 JSON Merge Patch result. An object patch recurses into objects (a non-object target becomes {}); null-valued object members delete keys, including harmless deletion of absent keys. Arrays are replaced whole. Any non-object patch, including null, replaces the entire target."
+      },
+      {
+        "expected": [
+          -1,
+          -1,
+          -1
+        ],
+        "family": "semver_prerelease",
+        "id": "semver_prerelease.01",
+        "input": {
+          "pairs": [
+            [
+              "1.0.0-alpha",
+              "1.0.0"
+            ],
+            [
+              "1.0.0-alpha",
+              "1.0.0-alpha.1"
+            ],
+            [
+              "1.0.0-alpha.1",
+              "1.0.0-alpha.beta"
+            ]
+          ]
+        },
+        "instruction": "All inputs are valid SemVer 2.0.0 versions. For each [left,right] return -1, 0, or 1 for lower, equal, or higher precedence, as an array. Compare major/minor/patch numerically first. Ignore all +build metadata. A prerelease is lower than the corresponding release. Compare dot-separated prerelease identifiers left to right: all-ASCII-digit identifiers compare numerically and are lower than nonnumeric identifiers; nonnumeric identifiers compare by ASCII lexical order, case-sensitive. If shared identifiers tie, the shorter list is lower. Numeric identifiers have no leading zeros; hyphens inside identifiers are literal."
+      },
+      {
+        "expected": [
+          -1,
+          -1,
+          -1
+        ],
+        "family": "semver_prerelease",
+        "id": "semver_prerelease.02",
+        "input": {
+          "pairs": [
+            [
+              "1.0.0-beta.2",
+              "1.0.0-beta.11"
+            ],
+            [
+              "1.0.0-2",
+              "1.0.0-10"
+            ],
+            [
+              "1.0.0-9",
+              "1.0.0-A"
+            ]
+          ]
+        },
+        "instruction": "All inputs are valid SemVer 2.0.0 versions. For each [left,right] return -1, 0, or 1 for lower, equal, or higher precedence, as an array. Compare major/minor/patch numerically first. Ignore all +build metadata. A prerelease is lower than the corresponding release. Compare dot-separated prerelease identifiers left to right: all-ASCII-digit identifiers compare numerically and are lower than nonnumeric identifiers; nonnumeric identifiers compare by ASCII lexical order, case-sensitive. If shared identifiers tie, the shorter list is lower. Numeric identifiers have no leading zeros; hyphens inside identifiers are literal."
+      },
+      {
+        "expected": [
+          0,
+          0,
+          1
+        ],
+        "family": "semver_prerelease",
+        "id": "semver_prerelease.03",
+        "input": {
+          "pairs": [
+            [
+              "1.2.3+build.9",
+              "1.2.3+build.10"
+            ],
+            [
+              "1.0.0-rc.1+x",
+              "1.0.0-rc.1+y"
+            ],
+            [
+              "1.0.1-alpha",
+              "1.0.0"
+            ]
+          ]
+        },
+        "instruction": "All inputs are valid SemVer 2.0.0 versions. For each [left,right] return -1, 0, or 1 for lower, equal, or higher precedence, as an array. Compare major/minor/patch numerically first. Ignore all +build metadata. A prerelease is lower than the corresponding release. Compare dot-separated prerelease identifiers left to right: all-ASCII-digit identifiers compare numerically and are lower than nonnumeric identifiers; nonnumeric identifiers compare by ASCII lexical order, case-sensitive. If shared identifiers tie, the shorter list is lower. Numeric identifiers have no leading zeros; hyphens inside identifiers are literal."
+      },
+      {
+        "expected": [
+          -1,
+          1,
+          -1
+        ],
+        "family": "semver_prerelease",
+        "id": "semver_prerelease.04",
+        "input": {
+          "pairs": [
+            [
+              "1.0.0-B",
+              "1.0.0-a"
+            ],
+            [
+              "1.0.0-alpha-1",
+              "1.0.0-alpha.1"
+            ],
+            [
+              "1.0.0-1",
+              "1.0.0-01a"
+            ]
+          ]
+        },
+        "instruction": "All inputs are valid SemVer 2.0.0 versions. For each [left,right] return -1, 0, or 1 for lower, equal, or higher precedence, as an array. Compare major/minor/patch numerically first. Ignore all +build metadata. A prerelease is lower than the corresponding release. Compare dot-separated prerelease identifiers left to right: all-ASCII-digit identifiers compare numerically and are lower than nonnumeric identifiers; nonnumeric identifiers compare by ASCII lexical order, case-sensitive. If shared identifiers tie, the shorter list is lower. Numeric identifiers have no leading zeros; hyphens inside identifiers are literal."
+      },
+      {
+        "expected": [
+          1,
+          1,
+          0
+        ],
+        "family": "semver_prerelease",
+        "id": "semver_prerelease.05",
+        "input": {
+          "pairs": [
+            [
+              "2.0.0-alpha",
+              "1.99.99"
+            ],
+            [
+              "1.10.0",
+              "1.9.9"
+            ],
+            [
+              "0.0.0",
+              "0.0.0"
+            ]
+          ]
+        },
+        "instruction": "All inputs are valid SemVer 2.0.0 versions. For each [left,right] return -1, 0, or 1 for lower, equal, or higher precedence, as an array. Compare major/minor/patch numerically first. Ignore all +build metadata. A prerelease is lower than the corresponding release. Compare dot-separated prerelease identifiers left to right: all-ASCII-digit identifiers compare numerically and are lower than nonnumeric identifiers; nonnumeric identifiers compare by ASCII lexical order, case-sensitive. If shared identifiers tie, the shorter list is lower. Numeric identifiers have no leading zeros; hyphens inside identifiers are literal."
+      },
+      {
+        "expected": [
+          true,
+          true,
+          false
+        ],
+        "family": "ipv4_cidr",
+        "id": "ipv4_cidr.01",
+        "input": {
+          "addresses": [
+            "192.168.1.0",
+            "192.168.1.255",
+            "192.168.2.0"
+          ],
+          "cidr": "192.168.1.0/24"
+        },
+        "instruction": "Return one boolean per IPv4 address for membership in the CIDR. Mask any host bits in the supplied network address. Include network and broadcast addresses: this is membership, not usable-host enumeration."
+      },
+      {
+        "expected": [
+          true,
+          true,
+          true
+        ],
+        "family": "ipv4_cidr",
+        "id": "ipv4_cidr.02",
+        "input": {
+          "addresses": [
+            "0.0.0.0",
+            "255.255.255.255",
+            "8.8.8.8"
+          ],
+          "cidr": "0.0.0.0/0"
+        },
+        "instruction": "Return one boolean per IPv4 address for membership in the CIDR. Mask any host bits in the supplied network address. Include network and broadcast addresses: this is membership, not usable-host enumeration."
+      },
+      {
+        "expected": [
+          true,
+          false,
+          false
+        ],
+        "family": "ipv4_cidr",
+        "id": "ipv4_cidr.03",
+        "input": {
+          "addresses": [
+            "203.0.113.7",
+            "203.0.113.6",
+            "203.0.113.8"
+          ],
+          "cidr": "203.0.113.7/32"
+        },
+        "instruction": "Return one boolean per IPv4 address for membership in the CIDR. Mask any host bits in the supplied network address. Include network and broadcast addresses: this is membership, not usable-host enumeration."
+      },
+      {
+        "expected": [
+          true,
+          true,
+          false
+        ],
+        "family": "ipv4_cidr",
+        "id": "ipv4_cidr.04",
+        "input": {
+          "addresses": [
+            "198.51.100.10",
+            "198.51.100.11",
+            "198.51.100.12"
+          ],
+          "cidr": "198.51.100.10/31"
+        },
+        "instruction": "Return one boolean per IPv4 address for membership in the CIDR. Mask any host bits in the supplied network address. Include network and broadcast addresses: this is membership, not usable-host enumeration."
+      },
+      {
+        "expected": [
+          true,
+          true,
+          false,
+          false
+        ],
+        "family": "ipv4_cidr",
+        "id": "ipv4_cidr.05",
+        "input": {
+          "addresses": [
+            "10.0.0.0",
+            "10.255.255.255",
+            "11.0.0.0",
+            "9.255.255.255"
+          ],
+          "cidr": "10.42.3.9/8"
+        },
+        "instruction": "Return one boolean per IPv4 address for membership in the CIDR. Mask any host bits in the supplied network address. Include network and broadcast addresses: this is membership, not usable-host enumeration."
+      },
+      {
+        "expected": {
+          "days_until_other": 2,
+          "iso_week": 9,
+          "iso_weekday": 3,
+          "iso_year": 2024,
+          "shifted": "2024-03-01"
+        },
+        "family": "iso_calendar",
+        "id": "iso_calendar.01",
+        "input": {
+          "add_days": 2,
+          "date": "2024-02-28",
+          "other": "2024-03-01"
+        },
+        "instruction": "Use the proleptic Gregorian calendar. Return an object with shifted (date + add_days, YYYY-MM-DD), days_until_other (other minus date in whole days), and iso_year, iso_week, iso_weekday for the ORIGINAL date. ISO weeks start Monday (weekday 1); week 1 contains January 4. Sunday is weekday 7."
+      },
+      {
+        "expected": {
+          "days_until_other": -1,
+          "iso_week": 53,
+          "iso_weekday": 5,
+          "iso_year": 2020,
+          "shifted": "2020-12-31"
+        },
+        "family": "iso_calendar",
+        "id": "iso_calendar.02",
+        "input": {
+          "add_days": -1,
+          "date": "2021-01-01",
+          "other": "2020-12-31"
+        },
+        "instruction": "Use the proleptic Gregorian calendar. Return an object with shifted (date + add_days, YYYY-MM-DD), days_until_other (other minus date in whole days), and iso_year, iso_week, iso_weekday for the ORIGINAL date. ISO weeks start Monday (weekday 1); week 1 contains January 4. Sunday is weekday 7."
+      },
+      {
+        "expected": {
+          "days_until_other": 2,
+          "iso_week": 1,
+          "iso_weekday": 1,
+          "iso_year": 2020,
+          "shifted": "2020-01-06"
+        },
+        "family": "iso_calendar",
+        "id": "iso_calendar.03",
+        "input": {
+          "add_days": 7,
+          "date": "2019-12-30",
+          "other": "2020-01-01"
+        },
+        "instruction": "Use the proleptic Gregorian calendar. Return an object with shifted (date + add_days, YYYY-MM-DD), days_until_other (other minus date in whole days), and iso_year, iso_week, iso_weekday for the ORIGINAL date. ISO weeks start Monday (weekday 1); week 1 contains January 4. Sunday is weekday 7."
+      },
+      {
+        "expected": {
+          "days_until_other": 1,
+          "iso_week": 9,
+          "iso_weekday": 3,
+          "iso_year": 1900,
+          "shifted": "1900-03-01"
+        },
+        "family": "iso_calendar",
+        "id": "iso_calendar.04",
+        "input": {
+          "add_days": 1,
+          "date": "1900-02-28",
+          "other": "1900-03-01"
+        },
+        "instruction": "Use the proleptic Gregorian calendar. Return an object with shifted (date + add_days, YYYY-MM-DD), days_until_other (other minus date in whole days), and iso_year, iso_week, iso_weekday for the ORIGINAL date. ISO weeks start Monday (weekday 1); week 1 contains January 4. Sunday is weekday 7."
+      },
+      {
+        "expected": {
+          "days_until_other": 365,
+          "iso_week": 9,
+          "iso_weekday": 2,
+          "iso_year": 2000,
+          "shifted": "2001-03-01"
+        },
+        "family": "iso_calendar",
+        "id": "iso_calendar.05",
+        "input": {
+          "add_days": 366,
+          "date": "2000-02-29",
+          "other": "2001-02-28"
+        },
+        "instruction": "Use the proleptic Gregorian calendar. Return an object with shifted (date + add_days, YYYY-MM-DD), days_until_other (other minus date in whole days), and iso_year, iso_week, iso_weekday for the ORIGINAL date. ISO weeks start Monday (weekday 1); week 1 contains January 4. Sunday is weekday 7."
+      },
+      {
+        "expected": {
+          "base64": "Q29saWJyaQ==",
+          "bytes": [
+            67,
+            111,
+            108,
+            105,
+            98,
+            114,
+            105
+          ],
+          "hex": "436f6c69627269"
+        },
+        "family": "utf8_base64",
+        "id": "utf8_base64.01",
+        "input": {
+          "text": "Colibri"
+        },
+        "instruction": "Encode text exactly as supplied in UTF-8, without BOM or Unicode normalization. Return an object: bytes (array of unsigned decimal bytes), hex (lowercase, no separators), base64 (standard RFC 4648 alphabet, with = padding, no line wrapping). Escaped newlines represent actual newline characters."
+      },
+      {
+        "expected": {
+          "base64": "",
+          "bytes": [],
+          "hex": ""
+        },
+        "family": "utf8_base64",
+        "id": "utf8_base64.02",
+        "input": {
+          "text": ""
+        },
+        "instruction": "Encode text exactly as supplied in UTF-8, without BOM or Unicode normalization. Return an object: bytes (array of unsigned decimal bytes), hex (lowercase, no separators), base64 (standard RFC 4648 alphabet, with = padding, no line wrapping). Escaped newlines represent actual newline characters."
+      },
+      {
+        "expected": {
+          "base64": "Y2Fmw6k=",
+          "bytes": [
+            99,
+            97,
+            102,
+            195,
+            169
+          ],
+          "hex": "636166c3a9"
+        },
+        "family": "utf8_base64",
+        "id": "utf8_base64.03",
+        "input": {
+          "text": "café"
+        },
+        "instruction": "Encode text exactly as supplied in UTF-8, without BOM or Unicode normalization. Return an object: bytes (array of unsigned decimal bytes), hex (lowercase, no separators), base64 (standard RFC 4648 alphabet, with = padding, no line wrapping). Escaped newlines represent actual newline characters."
+      },
+      {
+        "expected": {
+          "base64": "QfCfmIAK",
+          "bytes": [
+            65,
+            240,
+            159,
+            152,
+            128,
+            10
+          ],
+          "hex": "41f09f98800a"
+        },
+        "family": "utf8_base64",
+        "id": "utf8_base64.04",
+        "input": {
+          "text": "A😀\n"
+        },
+        "instruction": "Encode text exactly as supplied in UTF-8, without BOM or Unicode normalization. Return an object: bytes (array of unsigned decimal bytes), hex (lowercase, no separators), base64 (standard RFC 4648 alphabet, with = padding, no line wrapping). Escaped newlines represent actual newline characters."
+      },
+      {
+        "expected": {
+          "base64": "ZcyB",
+          "bytes": [
+            101,
+            204,
+            129
+          ],
+          "hex": "65cc81"
+        },
+        "family": "utf8_base64",
+        "id": "utf8_base64.05",
+        "input": {
+          "text": "é"
+        },
+        "instruction": "Encode text exactly as supplied in UTF-8, without BOM or Unicode normalization. Return an object: bytes (array of unsigned decimal bytes), hex (lowercase, no separators), base64 (standard RFC 4648 alphabet, with = padding, no line wrapping). Escaped newlines represent actual newline characters."
+      },
+      {
+        "expected": [
+          true,
+          false,
+          false,
+          true,
+          false
+        ],
+        "family": "regex_fullmatch",
+        "id": "regex_fullmatch.01",
+        "input": {
+          "pattern": "[A-Z]{2}\\d{2}",
+          "strings": [
+            "AB12",
+            "Ab12",
+            "AB123",
+            "AB١٢",
+            "AB12\n"
+          ]
+        },
+        "instruction": "Return a boolean array: Python 3 re.fullmatch(pattern, text) is not None for each string. Default Unicode semantics, no flags. The ENTIRE string must match, including any final newline; \\d includes Unicode decimal digits and \\w includes Unicode alphanumerics and underscore."
+      },
+      {
+        "expected": [
+          true,
+          true,
+          false,
+          false,
+          false
+        ],
+        "family": "regex_fullmatch",
+        "id": "regex_fullmatch.02",
+        "input": {
+          "pattern": "a(?:b|c)*",
+          "strings": [
+            "a",
+            "abcb",
+            "",
+            "acbd",
+            "a\n"
+          ]
+        },
+        "instruction": "Return a boolean array: Python 3 re.fullmatch(pattern, text) is not None for each string. Default Unicode semantics, no flags. The ENTIRE string must match, including any final newline; \\d includes Unicode decimal digits and \\w includes Unicode alphanumerics and underscore."
+      },
+      {
+        "expected": [
+          true,
+          false,
+          true,
+          false,
+          false,
+          true
+        ],
+        "family": "regex_fullmatch",
+        "id": "regex_fullmatch.03",
+        "input": {
+          "pattern": "(?:0|[1-9][0-9]*)(?:\\.[0-9]{2})?",
+          "strings": [
+            "0",
+            "01",
+            "12.30",
+            "12.3",
+            "-1",
+            "0.00"
+          ]
+        },
+        "instruction": "Return a boolean array: Python 3 re.fullmatch(pattern, text) is not None for each string. Default Unicode semantics, no flags. The ENTIRE string must match, including any final newline; \\d includes Unicode decimal digits and \\w includes Unicode alphanumerics and underscore."
+      },
+      {
+        "expected": [
+          true,
+          false,
+          true,
+          false,
+          false
+        ],
+        "family": "regex_fullmatch",
+        "id": "regex_fullmatch.04",
+        "input": {
+          "pattern": "(?P<word>[a-z]+)-(?P=word)",
+          "strings": [
+            "go-go",
+            "go-stop",
+            "a-a",
+            "-",
+            "go-go\n"
+          ]
+        },
+        "instruction": "Return a boolean array: Python 3 re.fullmatch(pattern, text) is not None for each string. Default Unicode semantics, no flags. The ENTIRE string must match, including any final newline; \\d includes Unicode decimal digits and \\w includes Unicode alphanumerics and underscore."
+      },
+      {
+        "expected": [
+          true,
+          false,
+          false,
+          true,
+          false
+        ],
+        "family": "regex_fullmatch",
+        "id": "regex_fullmatch.05",
+        "input": {
+          "pattern": "[^\\W_]+(?:_[^\\W_]+)*",
+          "strings": [
+            "naïve_2",
+            "_x",
+            "a__b",
+            "猫",
+            ""
+          ]
+        },
+        "instruction": "Return a boolean array: Python 3 re.fullmatch(pattern, text) is not None for each string. Default Unicode semantics, no flags. The ENTIRE string must match, including any final newline; \\d includes Unicode decimal digits and \\w includes Unicode alphanumerics and underscore."
+      },
+      {
+        "expected": [
+          [
+            "a",
+            4,
+            3,
+            30
+          ],
+          [
+            "b",
+            2,
+            1,
+            5
+          ],
+          [
+            "c",
+            1,
+            0,
+            null
+          ]
+        ],
+        "family": "sql_group_null_distinct",
+        "id": "sql_group_null_distinct.01",
+        "input": {
+          "query": "SELECT dept, COUNT(*), COUNT(amount), SUM(amount) FROM sales GROUP BY dept ORDER BY dept",
+          "rows": [
+            [
+              "a",
+              "ann",
+              10
+            ],
+            [
+              "a",
+              "ann",
+              null
+            ],
+            [
+              "a",
+              "bob",
+              10
+            ],
+            [
+              "b",
+              null,
+              5
+            ],
+            [
+              "b",
+              "bea",
+              null
+            ],
+            [
+              "c",
+              null,
+              null
+            ],
+            [
+              "a",
+              "ann",
+              10
+            ]
+          ],
+          "schema": "CREATE TABLE sales (dept TEXT, who TEXT, amount INTEGER)"
+        },
+        "instruction": "Return the result of this trusted SQLite query as an array of row arrays, in query order. Input rows follow schema column order; JSON null is SQL NULL. COUNT(*) counts rows; COUNT(expr) and COUNT(DISTINCT expr) ignore NULL. SUM of no non-NULL values is NULL. DISTINCT result rows coalesce duplicates including NULL; SQLite ascending order puts NULL first. Do not return SQL."
+      },
+      {
+        "expected": [
+          [
+            "a",
+            2,
+            1
+          ],
+          [
+            "b",
+            1,
+            1
+          ],
+          [
+            "c",
+            0,
+            0
+          ]
+        ],
+        "family": "sql_group_null_distinct",
+        "id": "sql_group_null_distinct.02",
+        "input": {
+          "query": "SELECT dept, COUNT(DISTINCT who), COUNT(DISTINCT amount) FROM sales GROUP BY dept ORDER BY dept",
+          "rows": [
+            [
+              "a",
+              "ann",
+              10
+            ],
+            [
+              "a",
+              "ann",
+              null
+            ],
+            [
+              "a",
+              "bob",
+              10
+            ],
+            [
+              "b",
+              null,
+              5
+            ],
+            [
+              "b",
+              "bea",
+              null
+            ],
+            [
+              "c",
+              null,
+              null
+            ],
+            [
+              "a",
+              "ann",
+              10
+            ]
+          ],
+          "schema": "CREATE TABLE sales (dept TEXT, who TEXT, amount INTEGER)"
+        },
+        "instruction": "Return the result of this trusted SQLite query as an array of row arrays, in query order. Input rows follow schema column order; JSON null is SQL NULL. COUNT(*) counts rows; COUNT(expr) and COUNT(DISTINCT expr) ignore NULL. SUM of no non-NULL values is NULL. DISTINCT result rows coalesce duplicates including NULL; SQLite ascending order puts NULL first. Do not return SQL."
+      },
+      {
+        "expected": [
+          [
+            "c",
+            0
+          ]
+        ],
+        "family": "sql_group_null_distinct",
+        "id": "sql_group_null_distinct.03",
+        "input": {
+          "query": "SELECT dept, COALESCE(SUM(amount), 0) FROM sales GROUP BY dept HAVING COUNT(amount) = 0 ORDER BY dept",
+          "rows": [
+            [
+              "a",
+              "ann",
+              10
+            ],
+            [
+              "a",
+              "ann",
+              null
+            ],
+            [
+              "a",
+              "bob",
+              10
+            ],
+            [
+              "b",
+              null,
+              5
+            ],
+            [
+              "b",
+              "bea",
+              null
+            ],
+            [
+              "c",
+              null,
+              null
+            ],
+            [
+              "a",
+              "ann",
+              10
+            ]
+          ],
+          "schema": "CREATE TABLE sales (dept TEXT, who TEXT, amount INTEGER)"
+        },
+        "instruction": "Return the result of this trusted SQLite query as an array of row arrays, in query order. Input rows follow schema column order; JSON null is SQL NULL. COUNT(*) counts rows; COUNT(expr) and COUNT(DISTINCT expr) ignore NULL. SUM of no non-NULL values is NULL. DISTINCT result rows coalesce duplicates including NULL; SQLite ascending order puts NULL first. Do not return SQL."
+      },
+      {
+        "expected": [
+          [
+            null,
+            null
+          ],
+          [
+            "u",
+            0
+          ]
+        ],
+        "family": "sql_group_null_distinct",
+        "id": "sql_group_null_distinct.04",
+        "input": {
+          "query": "SELECT DISTINCT who, amount FROM sales ORDER BY who, amount",
+          "rows": [
+            [
+              "x",
+              null,
+              null
+            ],
+            [
+              "x",
+              null,
+              null
+            ],
+            [
+              "x",
+              "u",
+              0
+            ],
+            [
+              "y",
+              "u",
+              0
+            ]
+          ],
+          "schema": "CREATE TABLE sales (dept TEXT, who TEXT, amount INTEGER)"
+        },
+        "instruction": "Return the result of this trusted SQLite query as an array of row arrays, in query order. Input rows follow schema column order; JSON null is SQL NULL. COUNT(*) counts rows; COUNT(expr) and COUNT(DISTINCT expr) ignore NULL. SUM of no non-NULL values is NULL. DISTINCT result rows coalesce duplicates including NULL; SQLite ascending order puts NULL first. Do not return SQL."
+      },
+      {
+        "expected": [
+          [
+            0,
+            0,
+            null,
+            0
+          ]
+        ],
+        "family": "sql_group_null_distinct",
+        "id": "sql_group_null_distinct.05",
+        "input": {
+          "query": "SELECT COUNT(*), COUNT(amount), SUM(amount), COUNT(DISTINCT who) FROM sales",
+          "rows": [],
+          "schema": "CREATE TABLE sales (dept TEXT, who TEXT, amount INTEGER)"
+        },
+        "instruction": "Return the result of this trusted SQLite query as an array of row arrays, in query order. Input rows follow schema column order; JSON null is SQL NULL. COUNT(*) counts rows; COUNT(expr) and COUNT(DISTINCT expr) ignore NULL. SUM of no non-NULL values is NULL. DISTINCT result rows coalesce duplicates including NULL; SQLite ascending order puts NULL first. Do not return SQL."
+      },
+      {
+        "expected": [
+          2,
+          2,
+          2
+        ],
+        "family": "python_closure_iterator",
+        "id": "python_closure_iterator.01",
+        "input": {
+          "code": "funcs = [lambda: i for i in range(3)]\nresult = [f() for f in funcs]"
+        },
+        "instruction": "Trace the following Python 3 code and return only the final value of result as JSON. Closures resolve free variables at call time; default arguments bind at definition. Iterators are consumed left-to-right, including partial consumption by zip's final unsuccessful step. Do not return code."
+      },
+      {
+        "expected": [
+          10,
+          11,
+          12
+        ],
+        "family": "python_closure_iterator",
+        "id": "python_closure_iterator.02",
+        "input": {
+          "code": "funcs = [lambda x, i=i: x + i for i in range(3)]\nresult = [f(10) for f in funcs]"
+        },
+        "instruction": "Trace the following Python 3 code and return only the final value of result as JSON. Closures resolve free variables at call time; default arguments bind at definition. Iterators are consumed left-to-right, including partial consumption by zip's final unsuccessful step. Do not return code."
+      },
+      {
+        "expected": [
+          1,
+          [
+            [
+              2,
+              3
+            ]
+          ],
+          []
+        ],
+        "family": "python_closure_iterator",
+        "id": "python_closure_iterator.03",
+        "input": {
+          "code": "it = iter([1, 2, 3, 4])\na = next(it)\nb = list(zip(it, it))\nresult = [a, [list(pair) for pair in b], list(it)]"
+        },
+        "instruction": "Trace the following Python 3 code and return only the final value of result as JSON. Closures resolve free variables at call time; default arguments bind at definition. Iterators are consumed left-to-right, including partial consumption by zip's final unsuccessful step. Do not return code."
+      },
+      {
+        "expected": [
+          1,
+          2,
+          11,
+          3
+        ],
+        "family": "python_closure_iterator",
+        "id": "python_closure_iterator.04",
+        "input": {
+          "code": "def counter(n):\n    def step():\n        nonlocal n\n        n += 1\n        return n\n    return step\na = counter(0)\nb = counter(10)\nresult = [a(), a(), b(), a()]"
+        },
+        "instruction": "Trace the following Python 3 code and return only the final value of result as JSON. Closures resolve free variables at call time; default arguments bind at definition. Iterators are consumed left-to-right, including partial consumption by zip's final unsuccessful step. Do not return code."
+      },
+      {
+        "expected": [
+          2,
+          [
+            10,
+            6
+          ],
+          []
+        ],
+        "family": "python_closure_iterator",
+        "id": "python_closure_iterator.05",
+        "input": {
+          "code": "xs = [1, 2]\ng = (x * 2 for x in xs)\nxs.append(3)\nfirst = next(g)\nxs[1] = 5\nresult = [first, list(g), list(g)]"
+        },
+        "instruction": "Trace the following Python 3 code and return only the final value of result as JSON. Closures resolve free variables at call time; default arguments bind at definition. Iterators are consumed left-to-right, including partial consumption by zip's final unsuccessful step. Do not return code."
+      },
+      {
+        "expected": {
+          "converted": "2024-02-29T10:45:00-08:00",
+          "utc": "2024-02-29T18:45:00Z"
+        },
+        "family": "utc_timezone",
+        "id": "utc_timezone.01",
+        "input": {
+          "target_offset": "-08:00",
+          "timestamp": "2024-03-01T00:15:00+05:30"
+        },
+        "instruction": "Convert the timestamp's instant to UTC and to target_offset. Offsets are FIXED numeric UTC offsets, with no DST or named-zone rules. Return {utc, converted}, both strings with seconds and no fractional seconds. Use YYYY-MM-DDTHH:MM:SSZ for utc and YYYY-MM-DDTHH:MM:SS+HH:MM (or -HH:MM) for converted; zero target offset must be +00:00."
+      },
+      {
+        "expected": {
+          "converted": "2024-01-01T15:30:00+14:00",
+          "utc": "2024-01-01T01:30:00Z"
+        },
+        "family": "utc_timezone",
+        "id": "utc_timezone.02",
+        "input": {
+          "target_offset": "+14:00",
+          "timestamp": "2023-12-31T23:30:00-02:00"
+        },
+        "instruction": "Convert the timestamp's instant to UTC and to target_offset. Offsets are FIXED numeric UTC offsets, with no DST or named-zone rules. Return {utc, converted}, both strings with seconds and no fractional seconds. Use YYYY-MM-DDTHH:MM:SSZ for utc and YYYY-MM-DDTHH:MM:SS+HH:MM (or -HH:MM) for converted; zero target offset must be +00:00."
+      },
+      {
+        "expected": {
+          "converted": "1999-12-31T12:00:00-12:00",
+          "utc": "2000-01-01T00:00:00Z"
+        },
+        "family": "utc_timezone",
+        "id": "utc_timezone.03",
+        "input": {
+          "target_offset": "-12:00",
+          "timestamp": "2000-01-01T00:00:00Z"
+        },
+        "instruction": "Convert the timestamp's instant to UTC and to target_offset. Offsets are FIXED numeric UTC offsets, with no DST or named-zone rules. Return {utc, converted}, both strings with seconds and no fractional seconds. Use YYYY-MM-DDTHH:MM:SSZ for utc and YYYY-MM-DDTHH:MM:SS+HH:MM (or -HH:MM) for converted; zero target offset must be +00:00."
+      },
+      {
+        "expected": {
+          "converted": "2024-06-01T06:15:30+00:00",
+          "utc": "2024-06-01T06:15:30Z"
+        },
+        "family": "utc_timezone",
+        "id": "utc_timezone.04",
+        "input": {
+          "target_offset": "+00:00",
+          "timestamp": "2024-06-01T12:00:30+05:45"
+        },
+        "instruction": "Convert the timestamp's instant to UTC and to target_offset. Offsets are FIXED numeric UTC offsets, with no DST or named-zone rules. Return {utc, converted}, both strings with seconds and no fractional seconds. Use YYYY-MM-DDTHH:MM:SSZ for utc and YYYY-MM-DDTHH:MM:SS+HH:MM (or -HH:MM) for converted; zero target offset must be +00:00."
+      },
+      {
+        "expected": {
+          "converted": "2023-12-31T00:10:00-10:00",
+          "utc": "2023-12-31T10:10:00Z"
+        },
+        "family": "utc_timezone",
+        "id": "utc_timezone.05",
+        "input": {
+          "target_offset": "-10:00",
+          "timestamp": "2024-01-01T00:10:00+14:00"
+        },
+        "instruction": "Convert the timestamp's instant to UTC and to target_offset. Offsets are FIXED numeric UTC offsets, with no DST or named-zone rules. Return {utc, converted}, both strings with seconds and no fractional seconds. Use YYYY-MM-DDTHH:MM:SSZ for utc and YYYY-MM-DDTHH:MM:SS+HH:MM (or -HH:MM) for converted; zero target offset must be +00:00."
+      },
+      {
+        "expected": [
+          "2",
+          "4",
+          "-2",
+          "-4"
+        ],
+        "family": "decimal_half_even",
+        "id": "decimal_half_even.01",
+        "input": {
+          "quantum": "1",
+          "values": [
+            "2.5",
+            "3.5",
+            "-2.5",
+            "-3.5"
+          ]
+        },
+        "instruction": "Construct exact Decimal values from the strings. Quantize each to the exponent of quantum with ROUND_HALF_EVEN (nearest, ties to an even last retained digit), sufficient precision 50. Return an array of fixed-point strings (Python format(value, 'f')), preserving trailing fractional zeros and negative zero. 1E+1 means rounding to tens, not a step of one."
+      },
+      {
+        "expected": [
+          "1.22",
+          "1.24",
+          "-1.22",
+          "-1.24"
+        ],
+        "family": "decimal_half_even",
+        "id": "decimal_half_even.02",
+        "input": {
+          "quantum": "0.01",
+          "values": [
+            "1.225",
+            "1.235",
+            "-1.225",
+            "-1.235"
+          ]
+        },
+        "instruction": "Construct exact Decimal values from the strings. Quantize each to the exponent of quantum with ROUND_HALF_EVEN (nearest, ties to an even last retained digit), sufficient precision 50. Return an array of fixed-point strings (Python format(value, 'f')), preserving trailing fractional zeros and negative zero. 1E+1 means rounding to tens, not a step of one."
+      },
+      {
+        "expected": [
+          "0.00",
+          "-0.00",
+          "0.02",
+          "-0.02"
+        ],
+        "family": "decimal_half_even",
+        "id": "decimal_half_even.03",
+        "input": {
+          "quantum": "0.01",
+          "values": [
+            "0.005",
+            "-0.005",
+            "0.015",
+            "-0.015"
+          ]
+        },
+        "instruction": "Construct exact Decimal values from the strings. Quantize each to the exponent of quantum with ROUND_HALF_EVEN (nearest, ties to an even last retained digit), sufficient precision 50. Return an array of fixed-point strings (Python format(value, 'f')), preserving trailing fractional zeros and negative zero. 1E+1 means rounding to tens, not a step of one."
+      },
+      {
+        "expected": [
+          "10.00",
+          "99.98",
+          "1.20"
+        ],
+        "family": "decimal_half_even",
+        "id": "decimal_half_even.04",
+        "input": {
+          "quantum": "0.01",
+          "values": [
+            "9.995",
+            "99.985",
+            "1.200"
+          ]
+        },
+        "instruction": "Construct exact Decimal values from the strings. Quantize each to the exponent of quantum with ROUND_HALF_EVEN (nearest, ties to an even last retained digit), sufficient precision 50. Return an array of fixed-point strings (Python format(value, 'f')), preserving trailing fractional zeros and negative zero. 1E+1 means rounding to tens, not a step of one."
+      },
+      {
+        "expected": [
+          "140",
+          "160",
+          "-140",
+          "-160"
+        ],
+        "family": "decimal_half_even",
+        "id": "decimal_half_even.05",
+        "input": {
+          "quantum": "1E+1",
+          "values": [
+            "145",
+            "155",
+            "-145",
+            "-155"
+          ]
+        },
+        "instruction": "Construct exact Decimal values from the strings. Quantize each to the exponent of quantum with ROUND_HALF_EVEN (nearest, ties to an even last retained digit), sufficient precision 50. Return an array of fixed-point strings (Python format(value, 'f')), preserving trailing fractional zeros and negative zero. 1E+1 means rounding to tens, not a step of one."
+      },
+      {
+        "expected": 3,
+        "family": "levenshtein",
+        "id": "levenshtein.01",
+        "input": {
+          "left": "kitten",
+          "right": "sitting"
+        },
+        "instruction": "Return the integer Levenshtein edit distance from left to right. Insertion, deletion and substitution each cost 1; matching costs 0. No transposition operation. Compare Unicode code points case-sensitively with no normalization."
+      },
+      {
+        "expected": 3,
+        "family": "levenshtein",
+        "id": "levenshtein.02",
+        "input": {
+          "left": "",
+          "right": "abc"
+        },
+        "instruction": "Return the integer Levenshtein edit distance from left to right. Insertion, deletion and substitution each cost 1; matching costs 0. No transposition operation. Compare Unicode code points case-sensitively with no normalization."
+      },
+      {
+        "expected": 0,
+        "family": "levenshtein",
+        "id": "levenshtein.03",
+        "input": {
+          "left": "same",
+          "right": "same"
+        },
+        "instruction": "Return the integer Levenshtein edit distance from left to right. Insertion, deletion and substitution each cost 1; matching costs 0. No transposition operation. Compare Unicode code points case-sensitively with no normalization."
+      },
+      {
+        "expected": 2,
+        "family": "levenshtein",
+        "id": "levenshtein.04",
+        "input": {
+          "left": "ab",
+          "right": "ba"
+        },
+        "instruction": "Return the integer Levenshtein edit distance from left to right. Insertion, deletion and substitution each cost 1; matching costs 0. No transposition operation. Compare Unicode code points case-sensitively with no normalization."
+      },
+      {
+        "expected": 2,
+        "family": "levenshtein",
+        "id": "levenshtein.05",
+        "input": {
+          "left": "café",
+          "right": "café"
+        },
+        "instruction": "Return the integer Levenshtein edit distance from left to right. Insertion, deletion and substitution each cost 1; matching costs 0. No transposition operation. Compare Unicode code points case-sensitively with no normalization."
+      },
+      {
+        "expected": [
+          "a"
+        ],
+        "family": "relational_division",
+        "id": "relational_division.01",
+        "input": {
+          "assignments": [
+            [
+              "a",
+              "red"
+            ],
+            [
+              "a",
+              "blue"
+            ],
+            [
+              "b",
+              "red"
+            ],
+            [
+              "c",
+              "blue"
+            ]
+          ],
+          "entities": [
+            "a",
+            "b",
+            "c"
+          ],
+          "forbidden": [],
+          "required": [
+            "red",
+            "blue"
+          ]
+        },
+        "instruction": "Return the lexically sorted distinct entity names from entities whose assigned tags contain EVERY required tag and NO forbidden tag. Assignments are [entity,tag] pairs; duplicates have no effect. An empty required set is vacuously satisfied, including entities with no assignments. Ignore owners not listed in entities."
+      },
+      {
+        "expected": [
+          "a"
+        ],
+        "family": "relational_division",
+        "id": "relational_division.02",
+        "input": {
+          "assignments": [
+            [
+              "a",
+              "red"
+            ],
+            [
+              "a",
+              "red"
+            ],
+            [
+              "b",
+              "red"
+            ],
+            [
+              "b",
+              "blocked"
+            ]
+          ],
+          "entities": [
+            "a",
+            "b",
+            "c"
+          ],
+          "forbidden": [
+            "blocked"
+          ],
+          "required": [
+            "red"
+          ]
+        },
+        "instruction": "Return the lexically sorted distinct entity names from entities whose assigned tags contain EVERY required tag and NO forbidden tag. Assignments are [entity,tag] pairs; duplicates have no effect. An empty required set is vacuously satisfied, including entities with no assignments. Ignore owners not listed in entities."
+      },
+      {
+        "expected": [
+          "a",
+          "b",
+          "c"
+        ],
+        "family": "relational_division",
+        "id": "relational_division.03",
+        "input": {
+          "assignments": [
+            [
+              "a",
+              "x"
+            ]
+          ],
+          "entities": [
+            "a",
+            "b",
+            "c"
+          ],
+          "forbidden": [],
+          "required": []
+        },
+        "instruction": "Return the lexically sorted distinct entity names from entities whose assigned tags contain EVERY required tag and NO forbidden tag. Assignments are [entity,tag] pairs; duplicates have no effect. An empty required set is vacuously satisfied, including entities with no assignments. Ignore owners not listed in entities."
+      },
+      {
+        "expected": [
+          "b",
+          "c"
+        ],
+        "family": "relational_division",
+        "id": "relational_division.04",
+        "input": {
+          "assignments": [
+            [
+              "a",
+              "x"
+            ],
+            [
+              "b",
+              "y"
+            ]
+          ],
+          "entities": [
+            "a",
+            "b",
+            "c"
+          ],
+          "forbidden": [
+            "x"
+          ],
+          "required": []
+        },
+        "instruction": "Return the lexically sorted distinct entity names from entities whose assigned tags contain EVERY required tag and NO forbidden tag. Assignments are [entity,tag] pairs; duplicates have no effect. An empty required set is vacuously satisfied, including entities with no assignments. Ignore owners not listed in entities."
+      },
+      {
+        "expected": [],
+        "family": "relational_division",
+        "id": "relational_division.05",
+        "input": {
+          "assignments": [
+            [
+              "a",
+              "r"
+            ],
+            [
+              "b",
+              "r"
+            ],
+            [
+              "outside",
+              "missing"
+            ]
+          ],
+          "entities": [
+            "a",
+            "b"
+          ],
+          "forbidden": [],
+          "required": [
+            "r",
+            "missing"
+          ]
+        },
+        "instruction": "Return the lexically sorted distinct entity names from entities whose assigned tags contain EVERY required tag and NO forbidden tag. Assignments are [entity,tag] pairs; duplicates have no effect. An empty required set is vacuously satisfied, including entities with no assignments. Ignore owners not listed in entities."
+      }
+    ]
+  },
+  "suite_sha256": "4a627cfc04ca16937b76ff99cd9c6b1d3cc30368fa9ecaf05c9c1239540dcc85",
+  "settings": {
+    "max_tokens": 384,
+    "timeout_seconds": 120.0,
+    "temperature": 0,
+    "stream": false,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    },
+    "warmup_requests": 1,
+    "system_prompt": "Return exactly one JSON value answering the task. No Markdown, code fences, explanation, or additional text. Use JSON null/true/false, not Python literals. Object key order is irrelevant; array order and all value types (including booleans versus integers and integers versus floats) must match exactly.",
+    "scoring": "strict-json-types-v1",
+    "retry_count": 0
+  },
+  "selection": {
+    "kind": "full",
+    "limit": null,
+    "case_ids": [
+      "json_merge_patch.01",
+      "json_merge_patch.02",
+      "json_merge_patch.03",
+      "json_merge_patch.04",
+      "json_merge_patch.05",
+      "semver_prerelease.01",
+      "semver_prerelease.02",
+      "semver_prerelease.03",
+      "semver_prerelease.04",
+      "semver_prerelease.05",
+      "ipv4_cidr.01",
+      "ipv4_cidr.02",
+      "ipv4_cidr.03",
+      "ipv4_cidr.04",
+      "ipv4_cidr.05",
+      "iso_calendar.01",
+      "iso_calendar.02",
+      "iso_calendar.03",
+      "iso_calendar.04",
+      "iso_calendar.05",
+      "utf8_base64.01",
+      "utf8_base64.02",
+      "utf8_base64.03",
+      "utf8_base64.04",
+      "utf8_base64.05",
+      "regex_fullmatch.01",
+      "regex_fullmatch.02",
+      "regex_fullmatch.03",
+      "regex_fullmatch.04",
+      "regex_fullmatch.05",
+      "sql_group_null_distinct.01",
+      "sql_group_null_distinct.02",
+      "sql_group_null_distinct.03",
+      "sql_group_null_distinct.04",
+      "sql_group_null_distinct.05",
+      "python_closure_iterator.01",
+      "python_closure_iterator.02",
+      "python_closure_iterator.03",
+      "python_closure_iterator.04",
+      "python_closure_iterator.05",
+      "utc_timezone.01",
+      "utc_timezone.02",
+      "utc_timezone.03",
+      "utc_timezone.04",
+      "utc_timezone.05",
+      "decimal_half_even.01",
+      "decimal_half_even.02",
+      "decimal_half_even.03",
+      "decimal_half_even.04",
+      "decimal_half_even.05",
+      "levenshtein.01",
+      "levenshtein.02",
+      "levenshtein.03",
+      "levenshtein.04",
+      "levenshtein.05",
+      "relational_division.01",
+      "relational_division.02",
+      "relational_division.03",
+      "relational_division.04",
+      "relational_division.05"
+    ]
+  },
+  "engine": {
+    "endpoint": "http://127.0.0.1:8184/v1",
+    "requested_model": "qwen36-35b-pre-finetune",
+    "model_path": {
+      "path": "D:\\colibri-models\\qwen36-35b-pre-finetune",
+      "files": [
+        {
+          "name": "config.json",
+          "bytes": 2081,
+          "status": "hashed",
+          "sha256": "7606939241b64e82308369b308af8abe85d24e70846704c41ed4e0b59687a674"
+        },
+        {
+          "name": "tokenizer.json",
+          "bytes": 12807982,
+          "status": "hashed",
+          "sha256": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42"
+        }
+      ],
+      "weights_hashed": false,
+      "hash_policy": "named assets only; config <=4 MiB, tokenizer <=32 MiB, total <=64 MiB",
+      "identity_warning": "Config/tokenizer hashes do not attest weight identity or server launch settings."
+    },
+    "launch_settings": "not independently attested"
+  },
+  "runtime": {
+    "python": "3.14.7",
+    "sqlite": "3.50.4",
+    "platform": "win32"
+  },
+  "model_validation": {
+    "status": "ok",
+    "request_failure": false,
+    "requested_model": "qwen36-35b-pre-finetune",
+    "raw_response": "{\"object\":\"list\",\"data\":[{\"id\":\"qwen36-35b-pre-finetune\",\"object\":\"model\",\"created\":1794295908,\"owned_by\":\"colibri\",\"input_modalities\":[\"text\"],\"capabilities\":[\"chat\",\"systemone\"],\"context_length\":32768,\"max_model_len\":32768}],\"models\":[{\"name\":\"qwen36-35b-pre-finetune\",\"description\":\"Qwen3.6-35B-A3B, served by colibri; POST /v1/systemone answers typed questions.\",\"release_date\":\"2026-11-10\"}]}",
+    "engine_headers": {
+      "Server": "colibri Python/3.14.7"
+    },
+    "metadata": {
+      "id": "qwen36-35b-pre-finetune",
+      "object": "model",
+      "created": 1794295908,
+      "owned_by": "colibri"
+    },
+    "wall_seconds": 0.006716400000186695
+  },
+  "warmup": {
+    "id": "warmup",
+    "family": "warmup",
+    "status": "ok",
+    "request_failure": false,
+    "passed": true,
+    "finish_reason": "stop",
+    "wall_seconds": 2.2254377999997814,
+    "tokens": {
+      "prompt_tokens": 83,
+      "completion_tokens": 1,
+      "total_tokens": 84
+    },
+    "raw_answer": "null",
+    "raw_response": "{\"id\":\"chatcmpl-156f83b0a2ce4f97ae0ff96e4fc47955\",\"object\":\"chat.completion\",\"created\":1794295968,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"null\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":83,\"completion_tokens\":1,\"total_tokens\":84}}",
+    "parsed_answer": null,
+    "error": null
+  },
+  "results": [
+    {
+      "id": "json_merge_patch.01",
+      "family": "json_merge_patch",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 3.6971031000002768,
+      "tokens": {
+        "prompt_tokens": 173,
+        "completion_tokens": 11,
+        "total_tokens": 184
+      },
+      "raw_answer": "{\"a\":\"z\",\"c\":{\"d\":\"e\"}}",
+      "raw_response": "{\"id\":\"chatcmpl-56c98f13bd4c424ca3dd1f1ba0aca6e5\",\"object\":\"chat.completion\",\"created\":1794295970,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"a\\\":\\\"z\\\",\\\"c\\\":{\\\"d\\\":\\\"e\\\"}}\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":173,\"completion_tokens\":11,\"total_tokens\":184}}",
+      "parsed_answer": {
+        "a": "z",
+        "c": {
+          "d": "e"
+        }
+      },
+      "error": null
+    },
+    {
+      "id": "json_merge_patch.02",
+      "family": "json_merge_patch",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 3.5116696000004595,
+      "tokens": {
+        "prompt_tokens": 165,
+        "completion_tokens": 9,
+        "total_tokens": 174
+      },
+      "raw_answer": "{\"a\":[3],\"keep\":true}",
+      "raw_response": "{\"id\":\"chatcmpl-2b67f0c835f14e2f990a2d8a91c09134\",\"object\":\"chat.completion\",\"created\":1794295974,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"a\\\":[3],\\\"keep\\\":true}\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":165,\"completion_tokens\":9,\"total_tokens\":174}}",
+      "parsed_answer": {
+        "a": [
+          3
+        ],
+        "keep": true
+      },
+      "error": null
+    },
+    {
+      "id": "json_merge_patch.03",
+      "family": "json_merge_patch",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 2.726249999999709,
+      "tokens": {
+        "prompt_tokens": 162,
+        "completion_tokens": 1,
+        "total_tokens": 163
+      },
+      "raw_answer": "null",
+      "raw_response": "{\"id\":\"chatcmpl-6ebc7300288d4778a54b52bf83fc2ee4\",\"object\":\"chat.completion\",\"created\":1794295977,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"null\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":162,\"completion_tokens\":1,\"total_tokens\":163}}",
+      "parsed_answer": null,
+      "error": null
+    },
+    {
+      "id": "json_merge_patch.04",
+      "family": "json_merge_patch",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 2.5196673000000374,
+      "tokens": {
+        "prompt_tokens": 153,
+        "completion_tokens": 1,
+        "total_tokens": 154
+      },
+      "raw_answer": "null",
+      "raw_response": "{\"id\":\"chatcmpl-f52ca66546cf4aa6bbb8e2cd3c7e3611\",\"object\":\"chat.completion\",\"created\":1794295980,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"null\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":153,\"completion_tokens\":1,\"total_tokens\":154}}",
+      "parsed_answer": null,
+      "error": null
+    },
+    {
+      "id": "json_merge_patch.05",
+      "family": "json_merge_patch",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 3.2015581000005113,
+      "tokens": {
+        "prompt_tokens": 170,
+        "completion_tokens": 15,
+        "total_tokens": 185
+      },
+      "raw_answer": "{\"empty\":{},\"nested\":{\"a\":1},\"x\":1}",
+      "raw_response": "{\"id\":\"chatcmpl-951572ecfa7847f8823f8bd8f307e1e6\",\"object\":\"chat.completion\",\"created\":1794295983,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"empty\\\":{},\\\"nested\\\":{\\\"a\\\":1},\\\"x\\\":1}\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":170,\"completion_tokens\":15,\"total_tokens\":185}}",
+      "parsed_answer": {
+        "empty": {},
+        "nested": {
+          "a": 1
+        },
+        "x": 1
+      },
+      "error": null
+    },
+    {
+      "id": "semver_prerelease.01",
+      "family": "semver_prerelease",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 3.8196962000001804,
+      "tokens": {
+        "prompt_tokens": 265,
+        "completion_tokens": 9,
+        "total_tokens": 274
+      },
+      "raw_answer": "[-1, -1, -1]",
+      "raw_response": "{\"id\":\"chatcmpl-3c3a4c6f803f4f1c80e6a9b52293cf7e\",\"object\":\"chat.completion\",\"created\":1794295986,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[-1, -1, -1]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":265,\"completion_tokens\":9,\"total_tokens\":274}}",
+      "parsed_answer": [
+        -1,
+        -1,
+        -1
+      ],
+      "error": null
+    },
+    {
+      "id": "semver_prerelease.02",
+      "family": "semver_prerelease",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 3.6669921000002432,
+      "tokens": {
+        "prompt_tokens": 270,
+        "completion_tokens": 9,
+        "total_tokens": 279
+      },
+      "raw_answer": "[-1, -1, -1]",
+      "raw_response": "{\"id\":\"chatcmpl-bbb1160842b846818f9c933099762f70\",\"object\":\"chat.completion\",\"created\":1794295990,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[-1, -1, -1]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":270,\"completion_tokens\":9,\"total_tokens\":279}}",
+      "parsed_answer": [
+        -1,
+        -1,
+        -1
+      ],
+      "error": null
+    },
+    {
+      "id": "semver_prerelease.03",
+      "family": "semver_prerelease",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 3.738908199999969,
+      "tokens": {
+        "prompt_tokens": 275,
+        "completion_tokens": 9,
+        "total_tokens": 284
+      },
+      "raw_answer": "[0, 0, -1]",
+      "raw_response": "{\"id\":\"chatcmpl-331357180a8c43c48a41c9f7013cd79f\",\"object\":\"chat.completion\",\"created\":1794295993,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[0, 0, -1]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":275,\"completion_tokens\":9,\"total_tokens\":284}}",
+      "parsed_answer": [
+        0,
+        0,
+        -1
+      ],
+      "error": null
+    },
+    {
+      "id": "semver_prerelease.04",
+      "family": "semver_prerelease",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 4.200113400000191,
+      "tokens": {
+        "prompt_tokens": 269,
+        "completion_tokens": 9,
+        "total_tokens": 278
+      },
+      "raw_answer": "[1, 1, -1]",
+      "raw_response": "{\"id\":\"chatcmpl-1a14e0910af04e869af217b58b23dea5\",\"object\":\"chat.completion\",\"created\":1794295997,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[1, 1, -1]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":269,\"completion_tokens\":9,\"total_tokens\":278}}",
+      "parsed_answer": [
+        1,
+        1,
+        -1
+      ],
+      "error": null
+    },
+    {
+      "id": "semver_prerelease.05",
+      "family": "semver_prerelease",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 5.006015300000399,
+      "tokens": {
+        "prompt_tokens": 259,
+        "completion_tokens": 9,
+        "total_tokens": 268
+      },
+      "raw_answer": "[-1, 1, 0]",
+      "raw_response": "{\"id\":\"chatcmpl-c7699a498b3542848ec1a09ba803b247\",\"object\":\"chat.completion\",\"created\":1794296001,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[-1, 1, 0]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":259,\"completion_tokens\":9,\"total_tokens\":268}}",
+      "parsed_answer": [
+        -1,
+        1,
+        0
+      ],
+      "error": null
+    },
+    {
+      "id": "ipv4_cidr.01",
+      "family": "ipv4_cidr",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 3.393531900000198,
+      "tokens": {
+        "prompt_tokens": 179,
+        "completion_tokens": 7,
+        "total_tokens": 186
+      },
+      "raw_answer": "[true, true, false]",
+      "raw_response": "{\"id\":\"chatcmpl-b876bd8b41c14f0db0e63777af1eb505\",\"object\":\"chat.completion\",\"created\":1794296006,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[true, true, false]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":179,\"completion_tokens\":7,\"total_tokens\":186}}",
+      "parsed_answer": [
+        true,
+        true,
+        false
+      ],
+      "error": null
+    },
+    {
+      "id": "ipv4_cidr.02",
+      "family": "ipv4_cidr",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 3.1648807000001398,
+      "tokens": {
+        "prompt_tokens": 168,
+        "completion_tokens": 7,
+        "total_tokens": 175
+      },
+      "raw_answer": "[true, true, true]",
+      "raw_response": "{\"id\":\"chatcmpl-cbc2d127e0564db5a3b21590507239d9\",\"object\":\"chat.completion\",\"created\":1794296010,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[true, true, true]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":168,\"completion_tokens\":7,\"total_tokens\":175}}",
+      "parsed_answer": [
+        true,
+        true,
+        true
+      ],
+      "error": null
+    },
+    {
+      "id": "ipv4_cidr.03",
+      "family": "ipv4_cidr",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 4.631299200000285,
+      "tokens": {
+        "prompt_tokens": 177,
+        "completion_tokens": 7,
+        "total_tokens": 184
+      },
+      "raw_answer": "[true, false, false]",
+      "raw_response": "{\"id\":\"chatcmpl-d72e4a755f3a4939bc2b75a1ab1ce786\",\"object\":\"chat.completion\",\"created\":1794296013,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[true, false, false]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":177,\"completion_tokens\":7,\"total_tokens\":184}}",
+      "parsed_answer": [
+        true,
+        false,
+        false
+      ],
+      "error": null
+    },
+    {
+      "id": "ipv4_cidr.04",
+      "family": "ipv4_cidr",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 4.05915559999994,
+      "tokens": {
+        "prompt_tokens": 185,
+        "completion_tokens": 7,
+        "total_tokens": 192
+      },
+      "raw_answer": "[true, true, false]",
+      "raw_response": "{\"id\":\"chatcmpl-09b832bb861e42869027847ada6d01de\",\"object\":\"chat.completion\",\"created\":1794296017,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[true, true, false]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":185,\"completion_tokens\":7,\"total_tokens\":192}}",
+      "parsed_answer": [
+        true,
+        true,
+        false
+      ],
+      "error": null
+    },
+    {
+      "id": "ipv4_cidr.05",
+      "family": "ipv4_cidr",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 3.621515300000283,
+      "tokens": {
+        "prompt_tokens": 185,
+        "completion_tokens": 9,
+        "total_tokens": 194
+      },
+      "raw_answer": "[true, true, false, false]",
+      "raw_response": "{\"id\":\"chatcmpl-e4c75eca13954583b29dc78d72c90caf\",\"object\":\"chat.completion\",\"created\":1794296022,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[true, true, false, false]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":185,\"completion_tokens\":9,\"total_tokens\":194}}",
+      "parsed_answer": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "error": null
+    },
+    {
+      "id": "iso_calendar.01",
+      "family": "iso_calendar",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 4.877085099999931,
+      "tokens": {
+        "prompt_tokens": 186,
+        "completion_tokens": 40,
+        "total_tokens": 226
+      },
+      "raw_answer": "{\"shifted\":\"2024-03-01\",\"days_until_other\":2,\"iso_year\":2024,\"iso_week\":9,\"iso_weekday\":3}",
+      "raw_response": "{\"id\":\"chatcmpl-496ad743e4c546aea879d21e16478c78\",\"object\":\"chat.completion\",\"created\":1794296025,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"shifted\\\":\\\"2024-03-01\\\",\\\"days_until_other\\\":2,\\\"iso_year\\\":2024,\\\"iso_week\\\":9,\\\"iso_weekday\\\":3}\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":186,\"completion_tokens\":40,\"total_tokens\":226}}",
+      "parsed_answer": {
+        "shifted": "2024-03-01",
+        "days_until_other": 2,
+        "iso_year": 2024,
+        "iso_week": 9,
+        "iso_weekday": 3
+      },
+      "error": null
+    },
+    {
+      "id": "iso_calendar.02",
+      "family": "iso_calendar",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 4.866847399999642,
+      "tokens": {
+        "prompt_tokens": 186,
+        "completion_tokens": 40,
+        "total_tokens": 226
+      },
+      "raw_answer": "{\"date\":\"2020-12-31\",\"days_until_other\":-1,\"iso_year\":2020,\"iso_week\":53,\"iso_weekday\":5}",
+      "raw_response": "{\"id\":\"chatcmpl-cbea06628f504115ab91afd07fa33ff1\",\"object\":\"chat.completion\",\"created\":1794296030,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"date\\\":\\\"2020-12-31\\\",\\\"days_until_other\\\":-1,\\\"iso_year\\\":2020,\\\"iso_week\\\":53,\\\"iso_weekday\\\":5}\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":186,\"completion_tokens\":40,\"total_tokens\":226}}",
+      "parsed_answer": {
+        "date": "2020-12-31",
+        "days_until_other": -1,
+        "iso_year": 2020,
+        "iso_week": 53,
+        "iso_weekday": 5
+      },
+      "error": null
+    },
+    {
+      "id": "iso_calendar.03",
+      "family": "iso_calendar",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 6.5124828000007255,
+      "tokens": {
+        "prompt_tokens": 186,
+        "completion_tokens": 62,
+        "total_tokens": 248
+      },
+      "raw_answer": "{\n  \"shifted\": \"2020-01-06\",\n  \"days_until_other\": -29,\n  \"iso_year\": 2019,\n  \"iso_week\": 1,\n  \"iso_weekday\": 1\n}",
+      "raw_response": "{\"id\":\"chatcmpl-f975adf803e946bd8a8b66ac5b7571d8\",\"object\":\"chat.completion\",\"created\":1794296035,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"shifted\\\": \\\"2020-01-06\\\",\\n  \\\"days_until_other\\\": -29,\\n  \\\"iso_year\\\": 2019,\\n  \\\"iso_week\\\": 1,\\n  \\\"iso_weekday\\\": 1\\n}\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":186,\"completion_tokens\":62,\"total_tokens\":248}}",
+      "parsed_answer": {
+        "shifted": "2020-01-06",
+        "days_until_other": -29,
+        "iso_year": 2019,
+        "iso_week": 1,
+        "iso_weekday": 1
+      },
+      "error": null
+    },
+    {
+      "id": "iso_calendar.04",
+      "family": "iso_calendar",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 4.618776099999195,
+      "tokens": {
+        "prompt_tokens": 186,
+        "completion_tokens": 40,
+        "total_tokens": 226
+      },
+      "raw_answer": "{\"shifted\":\"1900-03-01\",\"days_until_other\":1,\"iso_year\":1900,\"iso_week\":9,\"iso_weekday\":4}",
+      "raw_response": "{\"id\":\"chatcmpl-8a8274466228412191658c98709b6c59\",\"object\":\"chat.completion\",\"created\":1794296041,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"shifted\\\":\\\"1900-03-01\\\",\\\"days_until_other\\\":1,\\\"iso_year\\\":1900,\\\"iso_week\\\":9,\\\"iso_weekday\\\":4}\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":186,\"completion_tokens\":40,\"total_tokens\":226}}",
+      "parsed_answer": {
+        "shifted": "1900-03-01",
+        "days_until_other": 1,
+        "iso_year": 1900,
+        "iso_week": 9,
+        "iso_weekday": 4
+      },
+      "error": null
+    },
+    {
+      "id": "iso_calendar.05",
+      "family": "iso_calendar",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 6.199543400000039,
+      "tokens": {
+        "prompt_tokens": 188,
+        "completion_tokens": 63,
+        "total_tokens": 251
+      },
+      "raw_answer": "{\n  \"shifted\": \"2001-03-01\",\n  \"days_until_other\": -365,\n  \"iso_year\": 2000,\n  \"iso_week\": 9,\n  \"iso_weekday\": 2\n}",
+      "raw_response": "{\"id\":\"chatcmpl-5f42c480fae64b65948e09e5bd95a18c\",\"object\":\"chat.completion\",\"created\":1794296046,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"shifted\\\": \\\"2001-03-01\\\",\\n  \\\"days_until_other\\\": -365,\\n  \\\"iso_year\\\": 2000,\\n  \\\"iso_week\\\": 9,\\n  \\\"iso_weekday\\\": 2\\n}\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":188,\"completion_tokens\":63,\"total_tokens\":251}}",
+      "parsed_answer": {
+        "shifted": "2001-03-01",
+        "days_until_other": -365,
+        "iso_year": 2000,
+        "iso_week": 9,
+        "iso_weekday": 2
+      },
+      "error": null
+    },
+    {
+      "id": "utf8_base64.01",
+      "family": "utf8_base64",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 5.550422499999513,
+      "tokens": {
+        "prompt_tokens": 154,
+        "completion_tokens": 60,
+        "total_tokens": 214
+      },
+      "raw_answer": "{\"bytes\":[67,111,108,105,98,114,105],\"hex\":\"436f6c69627269\",\"base64\":\"Q29saWJyaQ==\"}",
+      "raw_response": "{\"id\":\"chatcmpl-56c34093e7dd491e8ca078589e322c4d\",\"object\":\"chat.completion\",\"created\":1794296052,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"bytes\\\":[67,111,108,105,98,114,105],\\\"hex\\\":\\\"436f6c69627269\\\",\\\"base64\\\":\\\"Q29saWJyaQ==\\\"}\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":154,\"completion_tokens\":60,\"total_tokens\":214}}",
+      "parsed_answer": {
+        "bytes": [
+          67,
+          111,
+          108,
+          105,
+          98,
+          114,
+          105
+        ],
+        "hex": "436f6c69627269",
+        "base64": "Q29saWJyaQ=="
+      },
+      "error": null
+    },
+    {
+      "id": "utf8_base64.02",
+      "family": "utf8_base64",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 2.6769100999999864,
+      "tokens": {
+        "prompt_tokens": 152,
+        "completion_tokens": 11,
+        "total_tokens": 163
+      },
+      "raw_answer": "{\"bytes\":[],\"hex\":\"\",\"base64\":\"\"}",
+      "raw_response": "{\"id\":\"chatcmpl-780d74b62955435cb1f3c2371e4a0a50\",\"object\":\"chat.completion\",\"created\":1794296058,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"bytes\\\":[],\\\"hex\\\":\\\"\\\",\\\"base64\\\":\\\"\\\"}\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":152,\"completion_tokens\":11,\"total_tokens\":163}}",
+      "parsed_answer": {
+        "bytes": [],
+        "hex": "",
+        "base64": ""
+      },
+      "error": null
+    },
+    {
+      "id": "utf8_base64.03",
+      "family": "utf8_base64",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 4.867942299999413,
+      "tokens": {
+        "prompt_tokens": 154,
+        "completion_tokens": 46,
+        "total_tokens": 200
+      },
+      "raw_answer": "{\"bytes\":[99,97,102,195,169],\"hex\":\"636166c3a9\",\"base64\":\"Y2Fmw6k=\"}",
+      "raw_response": "{\"id\":\"chatcmpl-bb53ac64767a4d8e848888a9ec57ac23\",\"object\":\"chat.completion\",\"created\":1794296061,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"bytes\\\":[99,97,102,195,169],\\\"hex\\\":\\\"636166c3a9\\\",\\\"base64\\\":\\\"Y2Fmw6k=\\\"}\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":154,\"completion_tokens\":46,\"total_tokens\":200}}",
+      "parsed_answer": {
+        "bytes": [
+          99,
+          97,
+          102,
+          195,
+          169
+        ],
+        "hex": "636166c3a9",
+        "base64": "Y2Fmw6k="
+      },
+      "error": null
+    },
+    {
+      "id": "utf8_base64.04",
+      "family": "utf8_base64",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 5.291192900000169,
+      "tokens": {
+        "prompt_tokens": 156,
+        "completion_tokens": 51,
+        "total_tokens": 207
+      },
+      "raw_answer": "{\"bytes\":[65,240,159,152,128,10],\"hex\":\"41f09f98800a\",\"base64\":\"Qf7pgwo=\"}",
+      "raw_response": "{\"id\":\"chatcmpl-d4d180d3146f46969a4d97c3a7369a0d\",\"object\":\"chat.completion\",\"created\":1794296065,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"bytes\\\":[65,240,159,152,128,10],\\\"hex\\\":\\\"41f09f98800a\\\",\\\"base64\\\":\\\"Qf7pgwo=\\\"}\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":156,\"completion_tokens\":51,\"total_tokens\":207}}",
+      "parsed_answer": {
+        "bytes": [
+          65,
+          240,
+          159,
+          152,
+          128,
+          10
+        ],
+        "hex": "41f09f98800a",
+        "base64": "Qf7pgwo="
+      },
+      "error": null
+    },
+    {
+      "id": "utf8_base64.05",
+      "family": "utf8_base64",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 3.79148719999921,
+      "tokens": {
+        "prompt_tokens": 154,
+        "completion_tokens": 28,
+        "total_tokens": 182
+      },
+      "raw_answer": "{\"bytes\":[101, 771],\"hex\":\"65cc03\",\"base64\":\"ZcwD\"}",
+      "raw_response": "{\"id\":\"chatcmpl-53cae1647afa4ea5875065bc605f24f7\",\"object\":\"chat.completion\",\"created\":1794296071,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"bytes\\\":[101, 771],\\\"hex\\\":\\\"65cc03\\\",\\\"base64\\\":\\\"ZcwD\\\"}\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":154,\"completion_tokens\":28,\"total_tokens\":182}}",
+      "parsed_answer": {
+        "bytes": [
+          101,
+          771
+        ],
+        "hex": "65cc03",
+        "base64": "ZcwD"
+      },
+      "error": null
+    },
+    {
+      "id": "regex_fullmatch.01",
+      "family": "regex_fullmatch",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 2.975089300000036,
+      "tokens": {
+        "prompt_tokens": 180,
+        "completion_tokens": 11,
+        "total_tokens": 191
+      },
+      "raw_answer": "[true, false, false, false, false]",
+      "raw_response": "{\"id\":\"chatcmpl-268e9c6e716445e0878434ae590f916d\",\"object\":\"chat.completion\",\"created\":1794296075,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[true, false, false, false, false]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":180,\"completion_tokens\":11,\"total_tokens\":191}}",
+      "parsed_answer": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "error": null
+    },
+    {
+      "id": "regex_fullmatch.02",
+      "family": "regex_fullmatch",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 2.864749999999731,
+      "tokens": {
+        "prompt_tokens": 163,
+        "completion_tokens": 11,
+        "total_tokens": 174
+      },
+      "raw_answer": "[true, true, true, false, false]",
+      "raw_response": "{\"id\":\"chatcmpl-30091eeb2f3248d09e4c2844240dcaca\",\"object\":\"chat.completion\",\"created\":1794296078,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[true, true, true, false, false]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":163,\"completion_tokens\":11,\"total_tokens\":174}}",
+      "parsed_answer": [
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
+      "error": null
+    },
+    {
+      "id": "regex_fullmatch.03",
+      "family": "regex_fullmatch",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 3.205505500000072,
+      "tokens": {
+        "prompt_tokens": 192,
+        "completion_tokens": 13,
+        "total_tokens": 205
+      },
+      "raw_answer": "[true, false, true, false, false, true]",
+      "raw_response": "{\"id\":\"chatcmpl-0fc8521e7d8644c78f8252852167d5d0\",\"object\":\"chat.completion\",\"created\":1794296080,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[true, false, true, false, false, true]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":192,\"completion_tokens\":13,\"total_tokens\":205}}",
+      "parsed_answer": [
+        true,
+        false,
+        true,
+        false,
+        false,
+        true
+      ],
+      "error": null
+    },
+    {
+      "id": "regex_fullmatch.04",
+      "family": "regex_fullmatch",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 2.805298400000538,
+      "tokens": {
+        "prompt_tokens": 174,
+        "completion_tokens": 11,
+        "total_tokens": 185
+      },
+      "raw_answer": "[true, false, true, false, true]",
+      "raw_response": "{\"id\":\"chatcmpl-74a009bfda124f9d9ede45ae45380c0a\",\"object\":\"chat.completion\",\"created\":1794296084,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[true, false, true, false, true]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":174,\"completion_tokens\":11,\"total_tokens\":185}}",
+      "parsed_answer": [
+        true,
+        false,
+        true,
+        false,
+        true
+      ],
+      "error": null
+    },
+    {
+      "id": "regex_fullmatch.05",
+      "family": "regex_fullmatch",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 2.8689239999994243,
+      "tokens": {
+        "prompt_tokens": 175,
+        "completion_tokens": 11,
+        "total_tokens": 186
+      },
+      "raw_answer": "[true, false, false, true, false]",
+      "raw_response": "{\"id\":\"chatcmpl-f57801637b774a918e617c280d2ab251\",\"object\":\"chat.completion\",\"created\":1794296086,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[true, false, false, true, false]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":175,\"completion_tokens\":11,\"total_tokens\":186}}",
+      "parsed_answer": [
+        true,
+        false,
+        false,
+        true,
+        false
+      ],
+      "error": null
+    },
+    {
+      "id": "sql_group_null_distinct.01",
+      "family": "sql_group_null_distinct",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 5.141675799999575,
+      "tokens": {
+        "prompt_tokens": 257,
+        "completion_tokens": 37,
+        "total_tokens": 294
+      },
+      "raw_answer": "[[\"a\", 4, 3, 30], [\"b\", 2, 1, 5], [\"c\", 1, 0, null]]",
+      "raw_response": "{\"id\":\"chatcmpl-02f07520e5774cf1bc39285dfe5cdcd2\",\"object\":\"chat.completion\",\"created\":1794296089,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[[\\\"a\\\", 4, 3, 30], [\\\"b\\\", 2, 1, 5], [\\\"c\\\", 1, 0, null]]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":257,\"completion_tokens\":37,\"total_tokens\":294}}",
+      "parsed_answer": [
+        [
+          "a",
+          4,
+          3,
+          30
+        ],
+        [
+          "b",
+          2,
+          1,
+          5
+        ],
+        [
+          "c",
+          1,
+          0,
+          null
+        ]
+      ],
+      "error": null
+    },
+    {
+      "id": "sql_group_null_distinct.02",
+      "family": "sql_group_null_distinct",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 4.959891200000129,
+      "tokens": {
+        "prompt_tokens": 260,
+        "completion_tokens": 28,
+        "total_tokens": 288
+      },
+      "raw_answer": "[[\"a\", 2, 1], [\"b\", 2, 2], [\"c\", 1, 1]]",
+      "raw_response": "{\"id\":\"chatcmpl-e58de936a4974a26861e62f72c0f85bd\",\"object\":\"chat.completion\",\"created\":1794296094,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[[\\\"a\\\", 2, 1], [\\\"b\\\", 2, 2], [\\\"c\\\", 1, 1]]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":260,\"completion_tokens\":28,\"total_tokens\":288}}",
+      "parsed_answer": [
+        [
+          "a",
+          2,
+          1
+        ],
+        [
+          "b",
+          2,
+          2
+        ],
+        [
+          "c",
+          1,
+          1
+        ]
+      ],
+      "error": null
+    },
+    {
+      "id": "sql_group_null_distinct.03",
+      "family": "sql_group_null_distinct",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 4.528563500000018,
+      "tokens": {
+        "prompt_tokens": 266,
+        "completion_tokens": 19,
+        "total_tokens": 285
+      },
+      "raw_answer": "[[\"a\", 0], [\"b\", 0], [\"c\", 0]]",
+      "raw_response": "{\"id\":\"chatcmpl-ac9fb785a71b4dc7ba2d1e8373525fd5\",\"object\":\"chat.completion\",\"created\":1794296099,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[[\\\"a\\\", 0], [\\\"b\\\", 0], [\\\"c\\\", 0]]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":266,\"completion_tokens\":19,\"total_tokens\":285}}",
+      "parsed_answer": [
+        [
+          "a",
+          0
+        ],
+        [
+          "b",
+          0
+        ],
+        [
+          "c",
+          0
+        ]
+      ],
+      "error": null
+    },
+    {
+      "id": "sql_group_null_distinct.04",
+      "family": "sql_group_null_distinct",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 4.008841500000017,
+      "tokens": {
+        "prompt_tokens": 223,
+        "completion_tokens": 18,
+        "total_tokens": 241
+      },
+      "raw_answer": "[[\"x\", null], [\"x\", 0], [\"y\", 0]]",
+      "raw_response": "{\"id\":\"chatcmpl-f284c70fceee415890732c3134dcf654\",\"object\":\"chat.completion\",\"created\":1794296104,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[[\\\"x\\\", null], [\\\"x\\\", 0], [\\\"y\\\", 0]]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":223,\"completion_tokens\":18,\"total_tokens\":241}}",
+      "parsed_answer": [
+        [
+          "x",
+          null
+        ],
+        [
+          "x",
+          0
+        ],
+        [
+          "y",
+          0
+        ]
+      ],
+      "error": null
+    },
+    {
+      "id": "sql_group_null_distinct.05",
+      "family": "sql_group_null_distinct",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 3.593589200000679,
+      "tokens": {
+        "prompt_tokens": 203,
+        "completion_tokens": 11,
+        "total_tokens": 214
+      },
+      "raw_answer": "[[0, 0, null, 0]]",
+      "raw_response": "{\"id\":\"chatcmpl-bc6df97c814b4773bc749fd59a3758fe\",\"object\":\"chat.completion\",\"created\":1794296108,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[[0, 0, null, 0]]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":203,\"completion_tokens\":11,\"total_tokens\":214}}",
+      "parsed_answer": [
+        [
+          0,
+          0,
+          null,
+          0
+        ]
+      ],
+      "error": null
+    },
+    {
+      "id": "python_closure_iterator.01",
+      "family": "python_closure_iterator",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 2.92554360000031,
+      "tokens": {
+        "prompt_tokens": 166,
+        "completion_tokens": 9,
+        "total_tokens": 175
+      },
+      "raw_answer": "[2, 2, 2]",
+      "raw_response": "{\"id\":\"chatcmpl-643d90b1fb1f4afa9fdc163c15ba5316\",\"object\":\"chat.completion\",\"created\":1794296112,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[2, 2, 2]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":166,\"completion_tokens\":9,\"total_tokens\":175}}",
+      "parsed_answer": [
+        2,
+        2,
+        2
+      ],
+      "error": null
+    },
+    {
+      "id": "python_closure_iterator.02",
+      "family": "python_closure_iterator",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 3.1566926999994394,
+      "tokens": {
+        "prompt_tokens": 175,
+        "completion_tokens": 12,
+        "total_tokens": 187
+      },
+      "raw_answer": "[10, 11, 12]",
+      "raw_response": "{\"id\":\"chatcmpl-937a91e36bcc4f59b19c07da23f3e10e\",\"object\":\"chat.completion\",\"created\":1794296115,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[10, 11, 12]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":175,\"completion_tokens\":12,\"total_tokens\":187}}",
+      "parsed_answer": [
+        10,
+        11,
+        12
+      ],
+      "error": null
+    },
+    {
+      "id": "python_closure_iterator.03",
+      "family": "python_closure_iterator",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 3.3006672999999864,
+      "tokens": {
+        "prompt_tokens": 189,
+        "completion_tokens": 14,
+        "total_tokens": 203
+      },
+      "raw_answer": "[1, [[2, 3], [4]], []]",
+      "raw_response": "{\"id\":\"chatcmpl-d04f963ac52f4bf78852fc7bb5147eb5\",\"object\":\"chat.completion\",\"created\":1794296118,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[1, [[2, 3], [4]], []]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":189,\"completion_tokens\":14,\"total_tokens\":203}}",
+      "parsed_answer": [
+        1,
+        [
+          [
+            2,
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        []
+      ],
+      "error": null
+    },
+    {
+      "id": "python_closure_iterator.04",
+      "family": "python_closure_iterator",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 3.4868845000000874,
+      "tokens": {
+        "prompt_tokens": 196,
+        "completion_tokens": 13,
+        "total_tokens": 209
+      },
+      "raw_answer": "[1, 2, 11, 3]",
+      "raw_response": "{\"id\":\"chatcmpl-1f611affaa3f4710b51928d86c7c6351\",\"object\":\"chat.completion\",\"created\":1794296121,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[1, 2, 11, 3]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":196,\"completion_tokens\":13,\"total_tokens\":209}}",
+      "parsed_answer": [
+        1,
+        2,
+        11,
+        3
+      ],
+      "error": null
+    },
+    {
+      "id": "python_closure_iterator.05",
+      "family": "python_closure_iterator",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 3.153341199999886,
+      "tokens": {
+        "prompt_tokens": 193,
+        "completion_tokens": 9,
+        "total_tokens": 202
+      },
+      "raw_answer": "[2, [10], []]",
+      "raw_response": "{\"id\":\"chatcmpl-93e90b34f91c4357be0060e8c93f737c\",\"object\":\"chat.completion\",\"created\":1794296125,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[2, [10], []]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":193,\"completion_tokens\":9,\"total_tokens\":202}}",
+      "parsed_answer": [
+        2,
+        [
+          10
+        ],
+        []
+      ],
+      "error": null
+    },
+    {
+      "id": "utc_timezone.01",
+      "family": "utc_timezone",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 5.40928779999922,
+      "tokens": {
+        "prompt_tokens": 212,
+        "completion_tokens": 52,
+        "total_tokens": 264
+      },
+      "raw_answer": "{\"utc\":\"2024-02-29T18:45:00Z\",\"converted\":\"2024-02-29T10:45:00-08:00\"}",
+      "raw_response": "{\"id\":\"chatcmpl-3e742ea113da421f84f62c17ce21f6c4\",\"object\":\"chat.completion\",\"created\":1794296128,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"utc\\\":\\\"2024-02-29T18:45:00Z\\\",\\\"converted\\\":\\\"2024-02-29T10:45:00-08:00\\\"}\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":212,\"completion_tokens\":52,\"total_tokens\":264}}",
+      "parsed_answer": {
+        "utc": "2024-02-29T18:45:00Z",
+        "converted": "2024-02-29T10:45:00-08:00"
+      },
+      "error": null
+    },
+    {
+      "id": "utc_timezone.02",
+      "family": "utc_timezone",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 5.378196200000275,
+      "tokens": {
+        "prompt_tokens": 211,
+        "completion_tokens": 52,
+        "total_tokens": 263
+      },
+      "raw_answer": "{\"utc\":\"2024-01-01T01:30:00Z\",\"converted\":\"2024-01-02T15:30:00+14:00\"}",
+      "raw_response": "{\"id\":\"chatcmpl-52d7f55360ea4c4bb814a8547532d609\",\"object\":\"chat.completion\",\"created\":1794296133,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"utc\\\":\\\"2024-01-01T01:30:00Z\\\",\\\"converted\\\":\\\"2024-01-02T15:30:00+14:00\\\"}\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":211,\"completion_tokens\":52,\"total_tokens\":263}}",
+      "parsed_answer": {
+        "utc": "2024-01-01T01:30:00Z",
+        "converted": "2024-01-02T15:30:00+14:00"
+      },
+      "error": null
+    },
+    {
+      "id": "utc_timezone.03",
+      "family": "utc_timezone",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 5.27145179999934,
+      "tokens": {
+        "prompt_tokens": 207,
+        "completion_tokens": 52,
+        "total_tokens": 259
+      },
+      "raw_answer": "{\"utc\":\"2000-01-01T00:00:00Z\",\"converted\":\"1999-12-31T12:00:00-12:00\"}",
+      "raw_response": "{\"id\":\"chatcmpl-de9596c466e645fcbcf0998aed8b1427\",\"object\":\"chat.completion\",\"created\":1794296138,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"utc\\\":\\\"2000-01-01T00:00:00Z\\\",\\\"converted\\\":\\\"1999-12-31T12:00:00-12:00\\\"}\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":207,\"completion_tokens\":52,\"total_tokens\":259}}",
+      "parsed_answer": {
+        "utc": "2000-01-01T00:00:00Z",
+        "converted": "1999-12-31T12:00:00-12:00"
+      },
+      "error": null
+    },
+    {
+      "id": "utc_timezone.04",
+      "family": "utc_timezone",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 5.196610599999985,
+      "tokens": {
+        "prompt_tokens": 211,
+        "completion_tokens": 52,
+        "total_tokens": 263
+      },
+      "raw_answer": "{\"utc\":\"2024-06-01T06:15:30Z\",\"converted\":\"2024-06-01T06:15:30+00:00\"}",
+      "raw_response": "{\"id\":\"chatcmpl-febf3d707e4b40199dc99968bc0159f0\",\"object\":\"chat.completion\",\"created\":1794296144,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"utc\\\":\\\"2024-06-01T06:15:30Z\\\",\\\"converted\\\":\\\"2024-06-01T06:15:30+00:00\\\"}\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":211,\"completion_tokens\":52,\"total_tokens\":263}}",
+      "parsed_answer": {
+        "utc": "2024-06-01T06:15:30Z",
+        "converted": "2024-06-01T06:15:30+00:00"
+      },
+      "error": null
+    },
+    {
+      "id": "utc_timezone.05",
+      "family": "utc_timezone",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 5.1827225000006365,
+      "tokens": {
+        "prompt_tokens": 212,
+        "completion_tokens": 52,
+        "total_tokens": 264
+      },
+      "raw_answer": "{\"utc\":\"2023-12-31T10:10:00Z\",\"converted\":\"2023-12-31T00:10:00-10:00\"}",
+      "raw_response": "{\"id\":\"chatcmpl-86c241d62e6d49c0a5c11786cf8a14d0\",\"object\":\"chat.completion\",\"created\":1794296149,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"utc\\\":\\\"2023-12-31T10:10:00Z\\\",\\\"converted\\\":\\\"2023-12-31T00:10:00-10:00\\\"}\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":212,\"completion_tokens\":52,\"total_tokens\":264}}",
+      "parsed_answer": {
+        "utc": "2023-12-31T10:10:00Z",
+        "converted": "2023-12-31T00:10:00-10:00"
+      },
+      "error": null
+    },
+    {
+      "id": "decimal_half_even.01",
+      "family": "decimal_half_even",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 3.7482296999996834,
+      "tokens": {
+        "prompt_tokens": 184,
+        "completion_tokens": 20,
+        "total_tokens": 204
+      },
+      "raw_answer": "[\"2.0\", \"4.0\", \"-2.0\", \"-4.0\"]",
+      "raw_response": "{\"id\":\"chatcmpl-a52f63ea3dcf477082019b1d1a0dc219\",\"object\":\"chat.completion\",\"created\":1794296154,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[\\\"2.0\\\", \\\"4.0\\\", \\\"-2.0\\\", \\\"-4.0\\\"]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":184,\"completion_tokens\":20,\"total_tokens\":204}}",
+      "parsed_answer": [
+        "2.0",
+        "4.0",
+        "-2.0",
+        "-4.0"
+      ],
+      "error": null
+    },
+    {
+      "id": "decimal_half_even.02",
+      "family": "decimal_half_even",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 3.9932944000001953,
+      "tokens": {
+        "prompt_tokens": 195,
+        "completion_tokens": 24,
+        "total_tokens": 219
+      },
+      "raw_answer": "[\"1.22\", \"1.24\", \"-1.22\", \"-1.24\"]",
+      "raw_response": "{\"id\":\"chatcmpl-ff3e7b91e9e64361959be37b5d52f607\",\"object\":\"chat.completion\",\"created\":1794296158,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[\\\"1.22\\\", \\\"1.24\\\", \\\"-1.22\\\", \\\"-1.24\\\"]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":195,\"completion_tokens\":24,\"total_tokens\":219}}",
+      "parsed_answer": [
+        "1.22",
+        "1.24",
+        "-1.22",
+        "-1.24"
+      ],
+      "error": null
+    },
+    {
+      "id": "decimal_half_even.03",
+      "family": "decimal_half_even",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 3.9124252000001434,
+      "tokens": {
+        "prompt_tokens": 195,
+        "completion_tokens": 24,
+        "total_tokens": 219
+      },
+      "raw_answer": "[\"0.00\", \"-0.00\", \"0.02\", \"-0.02\"]",
+      "raw_response": "{\"id\":\"chatcmpl-23864c4652064e909be4e7b8fd500e4f\",\"object\":\"chat.completion\",\"created\":1794296162,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[\\\"0.00\\\", \\\"-0.00\\\", \\\"0.02\\\", \\\"-0.02\\\"]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":195,\"completion_tokens\":24,\"total_tokens\":219}}",
+      "parsed_answer": [
+        "0.00",
+        "-0.00",
+        "0.02",
+        "-0.02"
+      ],
+      "error": null
+    },
+    {
+      "id": "decimal_half_even.04",
+      "family": "decimal_half_even",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 3.4754941999999573,
+      "tokens": {
+        "prompt_tokens": 188,
+        "completion_tokens": 18,
+        "total_tokens": 206
+      },
+      "raw_answer": "[\"10.00\",\"99.98\",\"1.20\"]",
+      "raw_response": "{\"id\":\"chatcmpl-23f7fb947ad147c8bcbd30760694e5d7\",\"object\":\"chat.completion\",\"created\":1794296166,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[\\\"10.00\\\",\\\"99.98\\\",\\\"1.20\\\"]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":188,\"completion_tokens\":18,\"total_tokens\":206}}",
+      "parsed_answer": [
+        "10.00",
+        "99.98",
+        "1.20"
+      ],
+      "error": null
+    },
+    {
+      "id": "decimal_half_even.05",
+      "family": "decimal_half_even",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 4.327131799999734,
+      "tokens": {
+        "prompt_tokens": 187,
+        "completion_tokens": 32,
+        "total_tokens": 219
+      },
+      "raw_answer": "[\"1.4E+2\", \"1.6E+2\", \"-1.4E+2\", \"-1.6E+2\"]",
+      "raw_response": "{\"id\":\"chatcmpl-bc31b92084624982848e921a5e99fd5f\",\"object\":\"chat.completion\",\"created\":1794296169,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[\\\"1.4E+2\\\", \\\"1.6E+2\\\", \\\"-1.4E+2\\\", \\\"-1.6E+2\\\"]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":187,\"completion_tokens\":32,\"total_tokens\":219}}",
+      "parsed_answer": [
+        "1.4E+2",
+        "1.6E+2",
+        "-1.4E+2",
+        "-1.6E+2"
+      ],
+      "error": null
+    },
+    {
+      "id": "levenshtein.01",
+      "family": "levenshtein",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 2.683622700000342,
+      "tokens": {
+        "prompt_tokens": 140,
+        "completion_tokens": 5,
+        "total_tokens": 145
+      },
+      "raw_answer": "{\"distance\":3}",
+      "raw_response": "{\"id\":\"chatcmpl-afc403f9941b475fbfd5f0b0a9277d1e\",\"object\":\"chat.completion\",\"created\":1794296174,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"distance\\\":3}\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":140,\"completion_tokens\":5,\"total_tokens\":145}}",
+      "parsed_answer": {
+        "distance": 3
+      },
+      "error": null
+    },
+    {
+      "id": "levenshtein.02",
+      "family": "levenshtein",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 2.330831600000238,
+      "tokens": {
+        "prompt_tokens": 136,
+        "completion_tokens": 1,
+        "total_tokens": 137
+      },
+      "raw_answer": "3",
+      "raw_response": "{\"id\":\"chatcmpl-5a5484a72cda434b9bb5a55f7c301bd3\",\"object\":\"chat.completion\",\"created\":1794296176,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"3\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":136,\"completion_tokens\":1,\"total_tokens\":137}}",
+      "parsed_answer": 3,
+      "error": null
+    },
+    {
+      "id": "levenshtein.03",
+      "family": "levenshtein",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 2.378122799999801,
+      "tokens": {
+        "prompt_tokens": 138,
+        "completion_tokens": 1,
+        "total_tokens": 139
+      },
+      "raw_answer": "0",
+      "raw_response": "{\"id\":\"chatcmpl-057eafd7639a4c02820e4292e048b88a\",\"object\":\"chat.completion\",\"created\":1794296179,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"0\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":138,\"completion_tokens\":1,\"total_tokens\":139}}",
+      "parsed_answer": 0,
+      "error": null
+    },
+    {
+      "id": "levenshtein.04",
+      "family": "levenshtein",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 2.1645714999995107,
+      "tokens": {
+        "prompt_tokens": 138,
+        "completion_tokens": 1,
+        "total_tokens": 139
+      },
+      "raw_answer": "2",
+      "raw_response": "{\"id\":\"chatcmpl-58ee0bfc04a3472ca63f0347949910f0\",\"object\":\"chat.completion\",\"created\":1794296181,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"2\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":138,\"completion_tokens\":1,\"total_tokens\":139}}",
+      "parsed_answer": 2,
+      "error": null
+    },
+    {
+      "id": "levenshtein.05",
+      "family": "levenshtein",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 2.47511779999968,
+      "tokens": {
+        "prompt_tokens": 141,
+        "completion_tokens": 5,
+        "total_tokens": 146
+      },
+      "raw_answer": "{\"distance\":2}",
+      "raw_response": "{\"id\":\"chatcmpl-ebbaf89171774c8abdca69c78d5a33ef\",\"object\":\"chat.completion\",\"created\":1794296183,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"distance\\\":2}\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":141,\"completion_tokens\":5,\"total_tokens\":146}}",
+      "parsed_answer": {
+        "distance": 2
+      },
+      "error": null
+    },
+    {
+      "id": "relational_division.01",
+      "family": "relational_division",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 2.57347849999951,
+      "tokens": {
+        "prompt_tokens": 179,
+        "completion_tokens": 3,
+        "total_tokens": 182
+      },
+      "raw_answer": "[\"a\"]",
+      "raw_response": "{\"id\":\"chatcmpl-f92a6a4a90404af69e28aa36d608c56d\",\"object\":\"chat.completion\",\"created\":1794296186,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[\\\"a\\\"]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":179,\"completion_tokens\":3,\"total_tokens\":182}}",
+      "parsed_answer": [
+        "a"
+      ],
+      "error": null
+    },
+    {
+      "id": "relational_division.02",
+      "family": "relational_division",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 2.607847799999945,
+      "tokens": {
+        "prompt_tokens": 178,
+        "completion_tokens": 3,
+        "total_tokens": 181
+      },
+      "raw_answer": "[\"a\"]",
+      "raw_response": "{\"id\":\"chatcmpl-24bfe1f4ca024e9483aee3c324b40807\",\"object\":\"chat.completion\",\"created\":1794296188,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[\\\"a\\\"]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":178,\"completion_tokens\":3,\"total_tokens\":181}}",
+      "parsed_answer": [
+        "a"
+      ],
+      "error": null
+    },
+    {
+      "id": "relational_division.03",
+      "family": "relational_division",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 2.735471299999517,
+      "tokens": {
+        "prompt_tokens": 164,
+        "completion_tokens": 9,
+        "total_tokens": 173
+      },
+      "raw_answer": "{\"result\":[\"a\",\"b\",\"c\"]}",
+      "raw_response": "{\"id\":\"chatcmpl-40b2468ea23243568b41e39b02518d0d\",\"object\":\"chat.completion\",\"created\":1794296191,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"result\\\":[\\\"a\\\",\\\"b\\\",\\\"c\\\"]}\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":164,\"completion_tokens\":9,\"total_tokens\":173}}",
+      "parsed_answer": {
+        "result": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "error": null
+    },
+    {
+      "id": "relational_division.04",
+      "family": "relational_division",
+      "status": "ok",
+      "request_failure": false,
+      "passed": true,
+      "finish_reason": "stop",
+      "wall_seconds": 2.4297773999996934,
+      "tokens": {
+        "prompt_tokens": 169,
+        "completion_tokens": 5,
+        "total_tokens": 174
+      },
+      "raw_answer": "[\"b\",\"c\"]",
+      "raw_response": "{\"id\":\"chatcmpl-994fefda634e4058add6308e49d2aa9b\",\"object\":\"chat.completion\",\"created\":1794296194,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"[\\\"b\\\",\\\"c\\\"]\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":169,\"completion_tokens\":5,\"total_tokens\":174}}",
+      "parsed_answer": [
+        "b",
+        "c"
+      ],
+      "error": null
+    },
+    {
+      "id": "relational_division.05",
+      "family": "relational_division",
+      "status": "ok",
+      "request_failure": false,
+      "passed": false,
+      "finish_reason": "stop",
+      "wall_seconds": 2.2945121000002473,
+      "tokens": {
+        "prompt_tokens": 173,
+        "completion_tokens": 1,
+        "total_tokens": 174
+      },
+      "raw_answer": "null",
+      "raw_response": "{\"id\":\"chatcmpl-d16e5ee9ff4d45a2b458477ce33065e4\",\"object\":\"chat.completion\",\"created\":1794296196,\"model\":\"qwen36-35b-pre-finetune\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"null\",\"refusal\":null},\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":173,\"completion_tokens\":1,\"total_tokens\":174}}",
+      "parsed_answer": null,
+      "error": null
+    }
+  ],
+  "summary": {
+    "aggregate": {
+      "passed": 34,
+      "total": 60,
+      "recorded": 60,
+      "request_failures": 0,
+      "accuracy": 0.5666666666666667
+    },
+    "per_family": {
+      "decimal_half_even": {
+        "passed": 3,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.6
+      },
+      "ipv4_cidr": {
+        "passed": 5,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 1.0
+      },
+      "iso_calendar": {
+        "passed": 1,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.2
+      },
+      "json_merge_patch": {
+        "passed": 3,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.6
+      },
+      "levenshtein": {
+        "passed": 3,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.6
+      },
+      "python_closure_iterator": {
+        "passed": 3,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.6
+      },
+      "regex_fullmatch": {
+        "passed": 2,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.4
+      },
+      "relational_division": {
+        "passed": 3,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.6
+      },
+      "semver_prerelease": {
+        "passed": 2,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.4
+      },
+      "sql_group_null_distinct": {
+        "passed": 2,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.4
+      },
+      "utc_timezone": {
+        "passed": 4,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.8
+      },
+      "utf8_base64": {
+        "passed": 3,
+        "total": 5,
+        "recorded": 5,
+        "request_failures": 0,
+        "accuracy": 0.6
+      }
+    },
+    "median_wall_seconds": 3.644253700000263,
+    "median_completion_tokens_per_wall_second": 3.8178185511674387,
+    "speed_note": "Request wall time includes prompt processing and HTTP; not engine decode throughput. Warmup excluded."
+  }
+}
