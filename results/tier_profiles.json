@@ -1,0 +1,159 @@
+{
+  "model": "D:/colibri-models/qwen36-35b",
+  "ctx": 8192,
+  "tokens": 64,
+  "prompt": "Write the numbers from 1 to 50 separated by commas, nothing else.",
+  "reports": [
+    {
+      "profile": "cpu only (no Vulkan)",
+      "args": [
+        "--auto-tier",
+        "--policy",
+        "quality"
+      ],
+      "env": {},
+      "log": "D:\\Colibri-Suite\\fennec-finetune\\results\\tier-cpu-only-(no-Vulkan).log",
+      "startup_s": 9.9,
+      "runs": [
+        {
+          "ttft_s": 0.7,
+          "total_s": 15.25,
+          "tokens": 64,
+          "tokens_per_s": 4.33,
+          "usage": {
+            "prompt_tokens": 29,
+            "completion_tokens": 64,
+            "total_tokens": 93
+          }
+        },
+        {
+          "ttft_s": 0.69,
+          "total_s": 8.2,
+          "tokens": 64,
+          "tokens_per_s": 8.38,
+          "usage": {
+            "prompt_tokens": 29,
+            "completion_tokens": 64,
+            "total_tokens": 93
+          }
+        },
+        {
+          "ttft_s": 0.56,
+          "total_s": 7.62,
+          "tokens": 64,
+          "tokens_per_s": 8.92,
+          "usage": {
+            "prompt_tokens": 29,
+            "completion_tokens": 64,
+            "total_tokens": 93
+          }
+        }
+      ],
+      "median_tokens_per_s": 8.38,
+      "median_ttft_s": 0.69,
+      "status": "ok"
+    },
+    {
+      "profile": "cpu+gpu hybrid",
+      "args": [
+        "--auto-tier",
+        "--policy",
+        "quality"
+      ],
+      "env": {
+        "COLI_VULKAN": "1"
+      },
+      "log": "D:\\Colibri-Suite\\fennec-finetune\\results\\tier-cpugpu-hybrid.log",
+      "startup_s": 34.8,
+      "runs": [
+        {
+          "ttft_s": 1.19,
+          "total_s": 5.19,
+          "tokens": 64,
+          "tokens_per_s": 15.75,
+          "usage": {
+            "prompt_tokens": 29,
+            "completion_tokens": 64,
+            "total_tokens": 93
+          }
+        },
+        {
+          "ttft_s": 1.17,
+          "total_s": 5.3,
+          "tokens": 64,
+          "tokens_per_s": 15.27,
+          "usage": {
+            "prompt_tokens": 29,
+            "completion_tokens": 64,
+            "total_tokens": 93
+          }
+        },
+        {
+          "ttft_s": 0.8,
+          "total_s": 4.78,
+          "tokens": 64,
+          "tokens_per_s": 15.81,
+          "usage": {
+            "prompt_tokens": 29,
+            "completion_tokens": 64,
+            "total_tokens": 93
+          }
+        }
+      ],
+      "median_tokens_per_s": 15.75,
+      "median_ttft_s": 1.17,
+      "status": "ok"
+    },
+    {
+      "profile": "cpu+gpu, experimental-fast",
+      "args": [
+        "--auto-tier",
+        "--policy",
+        "experimental-fast"
+      ],
+      "env": {
+        "COLI_VULKAN": "1"
+      },
+      "log": "D:\\Colibri-Suite\\fennec-finetune\\results\\tier-cpugpu,-experimental-fast.log",
+      "startup_s": 39.5,
+      "runs": [
+        {
+          "ttft_s": 1.2,
+          "total_s": 5.19,
+          "tokens": 64,
+          "tokens_per_s": 15.81,
+          "usage": {
+            "prompt_tokens": 29,
+            "completion_tokens": 64,
+            "total_tokens": 93
+          }
+        },
+        {
+          "ttft_s": 1.26,
+          "total_s": 5.55,
+          "tokens": 64,
+          "tokens_per_s": 14.72,
+          "usage": {
+            "prompt_tokens": 29,
+            "completion_tokens": 64,
+            "total_tokens": 93
+          }
+        },
+        {
+          "ttft_s": 0.83,
+          "total_s": 4.8,
+          "tokens": 64,
+          "tokens_per_s": 15.88,
+          "usage": {
+            "prompt_tokens": 29,
+            "completion_tokens": 64,
+            "total_tokens": 93
+          }
+        }
+      ],
+      "median_tokens_per_s": 15.81,
+      "median_ttft_s": 1.2,
+      "status": "ok"
+    }
+  ]
+}
