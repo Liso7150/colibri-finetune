@@ -6,6 +6,14 @@ streamed one decoder layer at a time from disk shards; LoRA A/B + AdamW live on
 CUDA and autograd hidden states stay on CPU. Verified on an 8 GB RTX 4060: a full
 forward+backward through 40 MoE layers peaks at **~1.9 GB VRAM**.
 
+## Features
+
+- Streamed LoRA training through AirLLM on an 8 GB GPU (~2 GB peak VRAM).
+- Execution-verified SFT data generation: reference solutions are actually run against tests.
+- Shard-wise LoRA merge, int4 conversion and before/after evaluation.
+- Frozen 60-case holdout with a per-case zero-regression promotion policy.
+- Reproducible evidence: verdict JSON, run logs and comparison graphs in `results/`.
+
 ## Pipeline
 
 1. **Download** the bf16 source — `scripts/download_qwen36_bf16.py`
