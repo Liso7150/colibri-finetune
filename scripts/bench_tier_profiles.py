@@ -31,12 +31,14 @@ RESULTS = Path(__file__).resolve().parents[1] / "results"
 PROMPT = "Write the numbers from 1 to 50 separated by commas, nothing else."
 
 PROFILES = [
-    ("gpu hybrid (reference)", {"COLI_VULKAN": "1"},
+    ("pool 4 GB, gpu auto", {"COLI_VULKAN": "1", "COLI_VK_TIER_HOST_GB": "4"},
      ["--auto-tier", "--policy", "quality"]),
-    ("gpu hybrid + vram 6 GB", {"COLI_VULKAN": "1"},
-     ["--auto-tier", "--policy", "quality", "--vram", "6"]),
-    ("gpu hybrid + repin 32", {"COLI_VULKAN": "1"},
-     ["--auto-tier", "--policy", "quality", "--repin", "32"]),
+    ("pool 4 GB + gpu 4 GB", {"COLI_VULKAN": "1", "COLI_VK_TIER_HOST_GB": "4",
+                              "COLI_VK_TIER_GB": "4"},
+     ["--auto-tier", "--policy", "quality"]),
+    ("pool 6 GB + gpu 4 GB", {"COLI_VULKAN": "1", "COLI_VK_TIER_HOST_GB": "6",
+                              "COLI_VK_TIER_GB": "4"},
+     ["--auto-tier", "--policy", "quality"]),
 ]
 
 

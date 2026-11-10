@@ -1,0 +1,166 @@
+{
+  "model": "D:/colibri-models/qwen36-35b",
+  "ctx": 8192,
+  "tokens": 64,
+  "prompt": "Write the numbers from 1 to 50 separated by commas, nothing else.",
+  "reports": [
+    {
+      "profile": "pool 4 GB, gpu auto",
+      "args": [
+        "--auto-tier",
+        "--policy",
+        "quality"
+      ],
+      "env": {
+        "COLI_VULKAN": "1",
+        "COLI_VK_TIER_HOST_GB": "4"
+      },
+      "log": "D:\\Colibri-Suite\\fennec-finetune\\results\\tier-pool-4-GB,-gpu-auto.log",
+      "startup_s": 19.1,
+      "runs": [
+        {
+          "ttft_s": 0.53,
+          "total_s": 9.03,
+          "tokens": 64,
+          "tokens_per_s": 7.41,
+          "usage": {
+            "prompt_tokens": 29,
+            "completion_tokens": 64,
+            "total_tokens": 93
+          }
+        },
+        {
+          "ttft_s": 0.51,
+          "total_s": 4.76,
+          "tokens": 64,
+          "tokens_per_s": 14.82,
+          "usage": {
+            "prompt_tokens": 29,
+            "completion_tokens": 64,
+            "total_tokens": 93
+          }
+        },
+        {
+          "ttft_s": 0.55,
+          "total_s": 4.42,
+          "tokens": 64,
+          "tokens_per_s": 16.26,
+          "usage": {
+            "prompt_tokens": 29,
+            "completion_tokens": 64,
+            "total_tokens": 93
+          }
+        }
+      ],
+      "median_tokens_per_s": 14.82,
+      "median_ttft_s": 0.53,
+      "status": "ok"
+    },
+    {
+      "profile": "pool 4 GB + gpu 4 GB",
+      "args": [
+        "--auto-tier",
+        "--policy",
+        "quality"
+      ],
+      "env": {
+        "COLI_VULKAN": "1",
+        "COLI_VK_TIER_HOST_GB": "4",
+        "COLI_VK_TIER_GB": "4"
+      },
+      "log": "D:\\Colibri-Suite\\fennec-finetune\\results\\tier-pool-4-GB--gpu-4-GB.log",
+      "startup_s": 26.7,
+      "runs": [
+        {
+          "ttft_s": 0.53,
+          "total_s": 8.49,
+          "tokens": 64,
+          "tokens_per_s": 7.92,
+          "usage": {
+            "prompt_tokens": 29,
+            "completion_tokens": 64,
+            "total_tokens": 93
+          }
+        },
+        {
+          "ttft_s": 0.62,
+          "total_s": 4.8,
+          "tokens": 64,
+          "tokens_per_s": 15.1,
+          "usage": {
+            "prompt_tokens": 29,
+            "completion_tokens": 64,
+            "total_tokens": 93
+          }
+        },
+        {
+          "ttft_s": 0.53,
+          "total_s": 4.75,
+          "tokens": 64,
+          "tokens_per_s": 14.93,
+          "usage": {
+            "prompt_tokens": 29,
+            "completion_tokens": 64,
+            "total_tokens": 93
+          }
+        }
+      ],
+      "median_tokens_per_s": 14.93,
+      "median_ttft_s": 0.53,
+      "status": "ok"
+    },
+    {
+      "profile": "pool 6 GB + gpu 4 GB",
+      "args": [
+        "--auto-tier",
+        "--policy",
+        "quality"
+      ],
+      "env": {
+        "COLI_VULKAN": "1",
+        "COLI_VK_TIER_HOST_GB": "6",
+        "COLI_VK_TIER_GB": "4"
+      },
+      "log": "D:\\Colibri-Suite\\fennec-finetune\\results\\tier-pool-6-GB--gpu-4-GB.log",
+      "startup_s": 26.3,
+      "runs": [
+        {
+          "ttft_s": 0.72,
+          "total_s": 8.53,
+          "tokens": 64,
+          "tokens_per_s": 8.06,
+          "usage": {
+            "prompt_tokens": 29,
+            "completion_tokens": 64,
+            "total_tokens": 93
+          }
+        },
+        {
+          "ttft_s": 0.53,
+          "total_s": 4.76,
+          "tokens": 64,
+          "tokens_per_s": 14.88,
+          "usage": {
+            "prompt_tokens": 29,
+            "completion_tokens": 64,
+            "total_tokens": 93
+          }
+        },
+        {
+          "ttft_s": 0.55,
+          "total_s": 4.84,
+          "tokens": 64,
+          "tokens_per_s": 14.66,
+          "usage": {
+            "prompt_tokens": 29,
+            "completion_tokens": 64,
+            "total_tokens": 93
+          }
+        }
+      ],
+      "median_tokens_per_s": 14.66,
+      "median_ttft_s": 0.55,
+      "status": "ok"
+    }
+  ]
+}
