@@ -54,6 +54,8 @@ zero-regression policy keeps the fine-tuned model. Evidence:
 `results/holdout_compare_finetuned_vs_pre.txt`, `results/holdout_verdict.json`.
 The suite was not used for training and remains a holdout.
 
+![Holdout per-family accuracy](results/holdout_compare.png)
+
 ## Usage
 
 ```bash
