@@ -6,6 +6,13 @@ streamed one decoder layer at a time from disk shards; LoRA A/B + AdamW live on
 CUDA and autograd hidden states stay on CPU. Verified on an 8 GB RTX 4060: a full
 forward+backward through 40 MoE layers peaks at **~1.9 GB VRAM**.
 
+## Memory budget
+
+Measured with `fennec preflight` on the production model: **22.78 GiB weights** and
+**0.62 GiB of KV cache at 8,192 tokens** (81,920 bytes per token), for a 23.40 GiB
+peak against 8.00 GiB VRAM + host RAM — weights tier to the host pool, KV stays in
+memory. The preflight reads `config.json` only; it loads nothing.
+
 ## Features
 
 - Streamed LoRA training through AirLLM on an 8 GB GPU (~2 GB peak VRAM).
