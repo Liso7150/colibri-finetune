@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-11-10 20:46:21",
+  "generated_at": "2026-11-11 08:10:31",
   "host": {
     "platform": "Windows-11-10.0.26300-SP0",
     "cpu_count": 22,
-    "python": "3.14.7",
+    "python": "3.12.10",
     "home_volume_gib": 275.0
   },
   "prompts": [
@@ -11,7 +11,7 @@
     "Name the capital of France in one short sentence.",
     "Write a Python one-liner that reverses a list."
   ],
-  "tokens": 24,
+  "tokens": 32,
   "model": {
     "engine": "D:/colibri-models/qwen36-35b",
     "airllm": "D:/colibri-models/Qwen3.6-35B-A3B-bf16"
@@ -19,7 +19,7 @@
   "engine": {
     "status": "ok",
     "command": [
-      "D:/Colibri/.venv/Scripts/python.exe",
+      "C:\\Users\\Liso1\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
       "D:\\Colibri\\c\\coli",
       "serve",
       "--model",
@@ -30,7 +30,7 @@
       "--ctx",
       "4096",
       "--ngen",
-      "40",
+      "48",
       "--port",
       "8197",
       "--api-key",
@@ -39,46 +39,90 @@
     "log": "D:\\Colibri-Suite\\fennec-finetune\\results\\engine_vs_airllm_engine.log",
     "backend": "vulkan",
     "port": 8197,
-    "startup_s": 41.51,
+    "startup_s": 38.14,
     "model_id": "qwen3.6-colibri",
+    "peak_rss_gib": 15.42,
+    "peak_vram_gib": 6.27,
     "runs": [
       {
         "text": "pong",
-        "ttft_s": 0.604,
-        "seconds": 0.808,
+        "ttft_s": 0.406,
+        "seconds": 0.531,
+        "completion_tokens": 1,
         "prompt": "Reply with exactly the single word: pong",
-        "approx_tokens": 1,
-        "tokens_per_s": 4.902
+        "tokens": 1,
+        "counted": "usage",
+        "tokens_per_s": 8.0
       },
       {
         "text": "The capital of France is Paris.",
-        "ttft_s": 0.868,
-        "seconds": 1.703,
+        "ttft_s": 0.485,
+        "seconds": 1.047,
+        "completion_tokens": 7,
         "prompt": "Name the capital of France in one short sentence.",
-        "approx_tokens": 6,
-        "tokens_per_s": 5.988
+        "tokens": 7,
+        "counted": "usage",
+        "tokens_per_s": 10.676
       },
       {
         "text": "```python\nreversed_list = my_list[::-1]\n```",
-        "ttft_s": 0.862,
-        "seconds": 2.042,
+        "ttft_s": 0.5,
+        "seconds": 1.562,
+        "completion_tokens": 14,
         "prompt": "Write a Python one-liner that reverses a list.",
-        "approx_tokens": 5,
-        "tokens_per_s": 3.39
+        "tokens": 14,
+        "counted": "usage",
+        "tokens_per_s": 12.241
       }
     ],
-    "median_tokens_per_s": 4.902,
-    "median_ttft_s": 0.862
+    "median_tokens_per_s": 10.676,
+    "median_ttft_s": 0.485
   },
   "airllm": {
-    "status": "error",
+    "status": "ok",
     "model": "D:\\colibri-models\\Qwen3.6-35B-A3B-bf16",
-    "max_new_tokens": 24,
+    "max_new_tokens": 4,
     "torch": {
       "version": "2.15.0+cpu",
       "cuda": false
     },
-    "error": "load failed: ValueError: invalid literal for int() with base 10: 'layers'",
-    "load_s": 0.53
+    "package": "airllm",
+    "device": "cpu",
+    "adapter": "explicit layer names for model.language_model.layers",
+    "load_s": 2.39,
+    "chat_template": "explicit Qwen fallback",
+    "peak_rss_gib": 1.37,
+    "peak_vram_gib": 0.36,
+    "runs": [
+      {
+        "prompt": "Reply with exactly the single word: pong",
+        "seconds": 73.547,
+        "tokens": 4,
+        "tokens_per_s": 0.054,
+        "warmup_s": 35.875,
+        "decode_tokens_per_s": 0.0796,
+        "text": "<think>\nHere's"
+      },
+      {
+        "prompt": "Name the capital of France in one short sentence.",
+        "seconds": 73.594,
+        "tokens": 4,
+        "tokens_per_s": 0.054,
+        "warmup_s": 33.672,
+        "decode_tokens_per_s": 0.0751,
+        "text": "<think>\n\n</think>\n\n"
+      },
+      {
+        "prompt": "Write a Python one-liner that reverses a list.",
+        "seconds": 74.281,
+        "tokens": 4,
+        "tokens_per_s": 0.054,
+        "warmup_s": 35.172,
+        "decode_tokens_per_s": 0.0767,
+        "text": "<think>\nHere's"
+      }
+    ],
+    "median_tokens_per_s": 0.054,
+    "median_decode_tokens_per_s": 0.0767
   }
 }

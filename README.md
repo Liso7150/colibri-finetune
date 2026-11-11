@@ -86,21 +86,36 @@ Part of the [Fennec suite](https://github.com/Liso7150/fennec-environment-setup)
 ## Engine vs AirLLM inference benchmark
 
 `scripts/bench_engine_vs_airllm.py` compares the Colibri engine with AirLLM-only
-inference on the same machine, prompts and token budget, and writes
+inference on the same machine and prompts, and writes
 `results/engine_vs_airllm.{json,md}`.
 
 ```bash
-python scripts/bench_engine_vs_airllm.py --backend both --tokens 24
+python scripts/bench_engine_vs_airllm.py --backend both --tokens 32 --airllm-tokens 4
 ```
 
-Result on 2026-11-10 (RTX 4060 8 GB, 22 threads, `qwen36-35b`): the engine served
-every prompt — median **4.9 tok/s**, time-to-first-token **0.86 s**, 41 s engine
-startup. AirLLM 4.0.0 alone could not load that model at all: its generic layer
-splitter assumes `model.layers` while `Qwen3_5MoeForConditionalGeneration` nests
-the blocks under `model.language_model.layers`
-(`ValueError: invalid literal for int() with base 10: 'layers'`), and the
-installed torch build is CPU-only. Verdict: the Colibri engine stays the
-inference path; AirLLM remains the fine-tuning layer.
+AirLLM streams every layer from disk for each token, so `--airllm-tokens` shrinks
+its budget independently; a full 32-token sweep over three prompts takes hours.
+Two gaps in stock AirLLM are closed so the comparison is a measurement rather than
+a crash: checkpoints that nest the decoder under `model.language_model.layers` get
+explicit layer names (stock AirLLM assumes `model.layers` and fails with
+`ValueError: invalid literal for int() with base 10: 'layers'`), and a Qwen chat
+template is supplied when the container ships none.
+
+Result on 2026-11-11 (RTX 4060 8 GB, 22 threads, Python 3.12.10, `qwen36-35b`),
+both phases driven by the same `python` on PATH:
+
+| Backend | Load s | TTFT s | Decode tok/s | Peak RAM GiB | Peak VRAM GiB |
+|---|---|---|---|---|---|
+| Colibri engine (Vulkan) | 38.1 | 0.485 | **10.68** | 15.42 | 6.27 |
+| AirLLM 4.0.0 only (CPU) | 2.4 | n/a | **0.077** | 1.37 | 0.36 |
+
+**Verdict: the Colibri engine stays the inference path — 139x faster decode.**
+AirLLM's one advantage is footprint: 1.37 GiB RAM against 15.42 GiB, because it
+holds a single layer at a time. That buys the memory with roughly 13 s per token,
+which is acceptable for offline fine-tuning and unusable for chat. Decode rates
+are compared like with like: the engine's excludes time-to-first-token, and
+AirLLM's subtracts its timed 1-token warm-up to remove prefill. Full numbers and
+per-prompt output: [`results/engine_vs_airllm.md`](results/engine_vs_airllm.md).
 
 ## Context-payload benchmark (old loop vs 1.4.1 compaction)
 
