@@ -1,0 +1,21 @@
+{
+  "model": "D:\\MEGAsync-sync\\colibri-models\\qwen36-35b",
+  "ctx": 8192,
+  "weights_bytes": 24456460083,
+  "kv_bytes_per_token": 81920,
+  "kv_bytes": 671088640,
+  "peak_bytes": 25127548723,
+  "vram_bytes": 8585740288,
+  "ram_available_bytes": 20770775040,
+  "disk_free_bytes": 393945935872,
+  "weights_fit": "hybrid",
+  "kv_fits": true,
+  "notes": [],
+  "generated_at": "2026-11-13T02:51:48Z",
+  "source": "fennec_core.preflight.plan(model_dir, ctx=8192); reads config.json only, loads no weights",
+  "host": {
+    "platform": "Windows-11-10.0.26300-SP0",
+    "python": "3.12.10"
+  },
+  "model_dir_note": "local absolute path as resolved from ~/.fennec/config.json; not a published location"
+}

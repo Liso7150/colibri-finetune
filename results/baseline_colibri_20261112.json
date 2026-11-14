@@ -1,0 +1,23 @@
+{
+  "model": "D:/MEGAsync-sync/colibri-models/qwen36-35b",
+  "ctx": 32768,
+  "tokens": 64,
+  "prompt": "Write the numbers from 1 to 50 separated by commas, nothing else.",
+  "reports": [
+    {
+      "profile": "pool 4 GB, gpu auto",
+      "args": [
+        "--auto-tier",
+        "--policy",
+        "quality"
+      ],
+      "env": {
+        "COLI_VULKAN": "1",
+        "COLI_VK_TIER_HOST_GB": "4"
+      },
+      "log": "D:\\Fennec-Suite\\fennec-finetune\\results\\tier-pool-4-GB,-gpu-auto.log",
+      "status": "error",
+      "error": "RuntimeError: engine exited with 1"
+    }
+  ]
+}

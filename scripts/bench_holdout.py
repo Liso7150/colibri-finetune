@@ -29,7 +29,7 @@ from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal, ROUND_HALF_EVEN, localcontext
 from pathlib import Path
 
-SUITE_VERSION = "colibri-holdout-1.0.0"
+SUITE_VERSION = "fennec-holdout-1.0.0"
 REPORT_VERSION = 1
 DISCLAIMER = (
     "Measures structured reasoning and Python code tracing, NOT sandboxed program "

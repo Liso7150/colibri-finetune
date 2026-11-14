@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""Benchmark the Colibri engine against AirLLM alone on the same machine.
+"""Benchmark the Fennec engine against AirLLM alone on the same machine.
 
     python bench_engine_vs_airllm.py --backend both --tokens 32
 
-* engine  - starts `c/coli serve` on a free loopback port and streams the fixed
+* engine  - starts `fennec serve` on a free loopback port and streams the fixed
             prompts through /v1/chat/completions, recording time-to-first-token
-            and decode tokens/second.
+            and decode tokens/second. Fennec's native binary self-launches; a
+            Colibri checkout (`python c/coli serve`) is the fallback, resolved by
+            engine_paths exactly as fennec-core does.
 * airllm  - loads a model through AirLLM's layer streaming (no engine code) and
             generates the same prompts greedily. AirLLM returns the sequence in
             one call, so its end-to-end figure includes prefill; the timed 1-token
@@ -34,6 +36,9 @@ import urllib.error
 import urllib.request
 from importlib import import_module
 from pathlib import Path
+
+from engine_paths import (EngineError, default_engine_root, engine_env, env_alias,
+                          resolve, serve_command)
 
 PROMPTS = [
     "Reply with exactly the single word: pong",
@@ -194,30 +199,34 @@ class PeakMemory:
 
 
 def bench_engine(args):
-    engine_root = Path(args.engine_root)
-    launcher = engine_root / "c" / "coli"
-    if not launcher.is_file():
-        return {"status": "error", "error": f"engine launcher missing: {launcher}"}
-    python = args.engine_python or str(Path(sys.executable))
+    try:
+        engine = resolve(args.engine_root)
+    except EngineError as exc:
+        return {"status": "error", "error": str(exc)}
     port = free_port(args.port)
     base_url = f"http://127.0.0.1:{port}"
     log_path = RESULTS / "engine_vs_airllm_engine.log"
-    env = {k: v for k, v in os.environ.items()
-           if k not in {"COLI_CUDA", "COLI_METAL", "COLI_VK_DEV2"}}
-    env.update({"PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"})
+    # Neither spelling may leak a GPU request into the cpu/default arms.
+    dropped = {"COLI_CUDA", "COLI_METAL", "COLI_VK_DEV2",
+               "FENNEC_CUDA", "FENNEC_METAL", "FENNEC_VK_DEV2"}
+    env = engine_env({"PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"},
+                     base={k: v for k, v in os.environ.items() if k not in dropped})
     if args.backend_engine == "vulkan":
         env["COLI_VULKAN"] = "1"
-    command = [python, str(launcher), "serve", "--model", str(Path(args.model).resolve()),
-               "--auto-tier", "--policy", "quality", "--ctx", "4096",
-               "--ngen", str(args.tokens + 16), "--port", str(port)]
     if args.engine_api_key:
-        command += ["--api-key", args.engine_api_key]
+        # Fennec reads the key from the environment; Colibri also takes --api-key.
+        env["COLI_API_KEY"] = args.engine_api_key
+    command = serve_command(engine, Path(args.model).resolve(), port,
+                            extra=["--policy", "quality", "--ctx", "4096",
+                                   "--ngen", str(args.tokens + 16)],
+                            api_key=args.engine_api_key,
+                            python=args.engine_python or str(Path(sys.executable)))
     started = time.monotonic()
     with log_path.open("wb") as log:
-        process = subprocess.Popen(command, cwd=str(engine_root), stdout=log, stderr=subprocess.STDOUT,
+        process = subprocess.Popen(command, cwd=str(engine.root), stdout=log, stderr=subprocess.STDOUT,
                                    stdin=subprocess.DEVNULL, env=env)
     report = {"status": "ok", "command": command, "log": str(log_path),
-              "backend": args.backend_engine, "port": port}
+              "engine": engine.kind, "backend": args.backend_engine, "port": port}
     try:
         model_id = wait_ready(base_url, process, args.startup_timeout, args.engine_api_key or "local")
         report["startup_s"] = round(time.monotonic() - started, 2)
@@ -335,11 +344,17 @@ def bench_airllm(args):
     return report
 
 
+def engine_label(engine):
+    """Name the engine that actually ran; archived reports predate the Fennec port."""
+    return "Fennec engine" if (engine or {}).get("engine") == "fennec" else "Colibri engine"
+
+
 def verdict(engine, airllm):
+    label = engine_label(engine)
     if engine.get("status") != "ok":
         return None
     if airllm.get("status") != "ok":
-        return (f"keep the Colibri engine - AirLLM alone never completed the run "
+        return (f"keep the {label} - AirLLM alone never completed the run "
                 f"({airllm.get('error', 'not run')}).")
     rate = engine.get("median_tokens_per_s")
     other = airllm.get("median_decode_tokens_per_s") or airllm.get("median_tokens_per_s")
@@ -347,13 +362,14 @@ def verdict(engine, airllm):
         return None
     if other > rate:
         return f"AirLLM alone is faster ({other} vs {rate} tok/s); dropping the engine is worth considering."
-    return (f"keep the Colibri engine - {rate} tok/s decode against {other} tok/s for AirLLM alone "
+    return (f"keep the {label} - {rate} tok/s decode against {other} tok/s for AirLLM alone "
             f"({rate / other:.0f}x), both measured decode-only.")
 
 
 def markdown(report):
     engine, airllm = report.get("engine") or {}, report.get("airllm") or {}
-    lines = ["# Colibri engine vs AirLLM alone", "",
+    label = engine_label(engine)
+    lines = [f"# {label} vs AirLLM alone", "",
              f"Generated {report['generated_at']} on {report['host']['platform']} "
              f"({report['host']['cpu_count']} threads, Python {report['host']['python']}).", "",
              f"- Engine model: `{report['model']['engine']}`",
@@ -364,10 +380,10 @@ def markdown(report):
                      "per token, so a full sweep can take hours)")
     lines += ["", "| Backend | Status | Load s | Median TTFT s | Decode tok/s | End-to-end tok/s | Peak RAM GiB | Peak VRAM GiB |",
               "|---|---|---|---|---|---|---|---|"]
-    for name, data in (("Colibri engine", engine), ("AirLLM only", airllm)):
+    for name, data in ((label, engine), ("AirLLM only", airllm)):
         end_to_end = data.get("median_tokens_per_s", "n/a")
         decode = data.get("median_decode_tokens_per_s", "n/a")
-        if name == "Colibri engine":
+        if name == label:
             decode, end_to_end = end_to_end, "n/a"
             rates = sorted(r["tokens"] / r["seconds"] for r in data.get("runs") or [] if r.get("seconds"))
             if rates:
@@ -382,7 +398,7 @@ def markdown(report):
               "rate subtracts the timed 1-token warm-up (prefill + 1 decode) from the timed run (prefill +",
               "N decode) and divides by N-1. Both phases run that warm-up first. Peak RAM is the sampled",
               "resident set of the whole process tree.", ""]
-    for name, data in (("Colibri engine", engine), ("AirLLM only", airllm)):
+    for name, data in ((label, engine), ("AirLLM only", airllm)):
         if data.get("error"):
             lines.append(f"- **{name} error:** `{data['error']}`")
         if data.get("torch"):
@@ -398,7 +414,7 @@ def markdown(report):
     if faster:
         lines += ["", f"**Verdict:** {faster}"]
     lines += ["", "## Per-prompt detail", ""]
-    for name, data in (("Colibri engine", engine), ("AirLLM only", airllm)):
+    for name, data in ((label, engine), ("AirLLM only", airllm)):
         lines.append(f"### {name}")
         for run in data.get("runs") or []:
             text = (run.get("text") or "").strip().replace("\n", " ")[:120]
@@ -413,14 +429,16 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--backend", choices=("engine", "airllm", "both"), default="both")
     ap.add_argument("--backend-engine", choices=("vulkan", "cpu", "default"), default="vulkan",
-                    help="COLI_VULKAN=1 (the shipped GPU path), CPU only, or engine default")
+                    help="COLI_VULKAN=1 / FENNEC_VULKAN=1 (the shipped GPU path), CPU only, or engine default")
     ap.add_argument("--tokens", type=int, default=32)
     ap.add_argument("--prompts", type=int, default=len(PROMPTS),
                     help=f"how many of the {len(PROMPTS)} fixed prompts to run")
-    ap.add_argument("--engine-root", default=os.environ.get("FENNEC_HOME") or str(Path.home() / "Colibri"))
-    ap.add_argument("--engine-python", default=None)
+    ap.add_argument("--engine-root", default=default_engine_root(),
+                    help="Fennec checkout (target/release/fennec) or a Colibri checkout with c/coli")
+    ap.add_argument("--engine-python", default=None,
+                    help="interpreter for the Colibri launcher; ignored by the native Fennec binary")
     ap.add_argument("--engine-api-key", default="local")
-    ap.add_argument("--model", default=os.environ.get("FENNEC_ENGINE_MODEL") or
+    ap.add_argument("--model", default=os.environ.get("FENNEC_ENGINE_MODEL") or env_alias("MODEL") or
                     str(Path(os.environ.get("FENNEC_MODELS") or Path.home() / "fennec-models") / "qwen36-35b"))
     ap.add_argument("--airllm-model", default=os.environ.get("FENNEC_AIRLLM_MODEL") or
                     str(Path(os.environ.get("FENNEC_MODELS") or Path.home() / "fennec-models") / "Qwen3.6-35B-A3B-bf16"))

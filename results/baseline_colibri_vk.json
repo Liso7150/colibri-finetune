@@ -1,0 +1,60 @@
+{
+  "model": "D:/MEGAsync-sync/colibri-models/qwen36-35b",
+  "ctx": 32768,
+  "tokens": 64,
+  "prompt": "Write the numbers from 1 to 50 separated by commas, nothing else.",
+  "reports": [
+    {
+      "profile": "pool 4 GB, gpu auto",
+      "args": [
+        "--auto-tier",
+        "--policy",
+        "quality"
+      ],
+      "env": {
+        "COLI_VULKAN": "1",
+        "COLI_VK_TIER_HOST_GB": "4"
+      },
+      "log": "D:\\Fennec-Suite\\fennec-finetune\\results\\tier-pool-4-GB,-gpu-auto.log",
+      "startup_s": 39.9,
+      "runs": [
+        {
+          "ttft_s": 0.48,
+          "total_s": 8.28,
+          "tokens": 64,
+          "tokens_per_s": 8.08,
+          "usage": {
+            "prompt_tokens": 29,
+            "completion_tokens": 64,
+            "total_tokens": 93
+          }
+        },
+        {
+          "ttft_s": 0.47,
+          "total_s": 4.11,
+          "tokens": 64,
+          "tokens_per_s": 17.31,
+          "usage": {
+            "prompt_tokens": 29,
+            "completion_tokens": 64,
+            "total_tokens": 93
+          }
+        },
+        {
+          "ttft_s": 0.55,
+          "total_s": 3.59,
+          "tokens": 64,
+          "tokens_per_s": 20.68,
+          "usage": {
+            "prompt_tokens": 29,
+            "completion_tokens": 64,
+            "total_tokens": 93
+          }
+        }
+      ],
+      "median_tokens_per_s": 17.31,
+      "median_ttft_s": 0.48,
+      "status": "ok"
+    }
+  ]
+}

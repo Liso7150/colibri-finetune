@@ -16,8 +16,10 @@ import sys
 import tempfile
 from pathlib import Path
 
-ENGINE_ROOT = Path(os.environ.get("FENNEC_HOME") or Path.home() / "Colibri")
-OUT = Path(os.environ.get("FENNEC_RESULTS") or ENGINE_ROOT / "results") / "sft_coding_verified.jsonl"
+SUITE_ROOT = Path(__file__).resolve().parents[1]
+# Verified data belongs to this suite, not to an engine checkout: Fennec is a
+# native binary with no results/ tree, and Colibri's checkout must stay untouched.
+OUT = Path(os.environ.get("FENNEC_RESULTS") or SUITE_ROOT / "results") / "sft_coding_verified.jsonl"
 
 # (instruction, solution_code, test_code). test_code asserts against the solution.
 BANK = [

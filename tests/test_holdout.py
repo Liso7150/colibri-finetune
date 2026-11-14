@@ -107,7 +107,7 @@ class SuiteTests(OfflineTestCase):
 
     def test_suite_fingerprint_is_pinned(self):
         manifest = bench.build_manifest()
-        self.assertEqual(manifest["suite_version"], "colibri-holdout-1.0.0")
+        self.assertEqual(manifest["suite_version"], "fennec-holdout-1.0.0")
         self.assertEqual(manifest["cases_sha256"],
                          "4a627cfc04ca16937b76ff99cd9c6b1d3cc30368fa9ecaf05c9c1239540dcc85")
         self.assertEqual(manifest["cases_sha256"], hashlib.sha256(

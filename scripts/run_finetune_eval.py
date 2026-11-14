@@ -2,6 +2,12 @@
 
 --preflight-only resolves and checks paths without importing torch or loading models.
 No promotion is performed; legacy hard/base suites cannot establish generalization.
+
+The engine is resolved by engine_paths: Fennec (native Rust) first, Colibri's
+`c/coli` launcher as fallback. Merge and graph work with either. Convert and
+evaluate are Colibri-only - Fennec has no converter, no `bench_best_model.py`
+harness and no `qwen36_meta.json` container format - so they refuse with an
+actionable message instead of faking or skipping the stage.
 """
 from __future__ import annotations
 
@@ -19,14 +25,18 @@ import time
 import urllib.request
 import uuid
 
+from engine_paths import (COLIBRI, Engine, command, default_engine_root, engine_env,
+                          require_colibri, resolve)
+
 SCRIPTS = Path(__file__).resolve().parent
 SUITE_ROOT = SCRIPTS.parent
 
 
 def parse_args(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--engine-root", default=os.environ.get("FENNEC_ENGINE_ROOT") or
-                    os.environ.get("FENNEC_HOME") or str(Path.home() / "Colibri"))
+    ap.add_argument("--engine-root", default=default_engine_root(),
+                    help="Fennec checkout (target/release/fennec) or, for the legacy "
+                         "convert/evaluate stages, a Colibri checkout with c/coli")
     ap.add_argument("--models-dir", default=os.environ.get("FENNEC_MODELS") or
                     str(Path.home() / "fennec-models"))
     ap.add_argument("--results-dir", default=str(SUITE_ROOT / "results"))
@@ -94,17 +104,26 @@ def preflight(args):
     root = Path(args.engine_root).resolve()
     models = Path(args.models_dir).resolve()
     results = Path(args.results_dir).resolve()
+    if not root.is_dir() or not models.is_dir():
+        raise ValueError("engine-root and models-dir must be existing directories")
+    if results.exists() and not results.is_dir():
+        raise ValueError("results-dir is not a directory")
+    engine = resolve(root)
     run_id = "eval-" + uuid.uuid4().hex
     plan = {"engine_root": root, "models_dir": models, "results_dir": results,
             "run_dir": results / run_id, "run_id": run_id,
             "python": Path(sys.executable).resolve(),
             "engine_python": Path(args.engine_python or sys.executable).resolve(),
+            "engine_kind": engine.kind, "engine_binary": engine.binary,
             "merge_script": SCRIPTS / "merge_lora_qwen36.py",
             "graph_script": SCRIPTS / "make_finetune_graph.py",
             "convert_script": root / "c/tools/convert_qwen36.py",
             "bench_script": root / "scripts/bench_best_model.py",
-            "launcher": root / "c/coli",
-            "binary": root / "c" / ("qwen36.exe" if os.name == "nt" else "qwen36"),
+            "launcher": engine.binary,
+            # The Colibri container runtime behind COLI_ENGINE. Fennec has no
+            # equivalent, so the convert/evaluate stages refuse below.
+            "binary": (root / "c" / ("qwen36.exe" if os.name == "nt" else "qwen36")
+                       if engine.kind == COLIBRI else None),
             "base": Path(args.base or models / "Qwen3.6-35B-A3B-bf16").resolve(),
             "adapter": Path(args.adapter or models / "qwen36-lora-adapter.pt").resolve(),
             "merged": Path(args.merged or models / ("Qwen3.6-35B-A3B-bf16-lora" +
@@ -116,10 +135,6 @@ def preflight(args):
             "port": args.port, "scaling": args.scaling,
             "scope": "retention_only", "promotion_eligible": False,
             "tensor_validation": "deferred to merge; preflight never imports torch"}
-    if not root.is_dir() or not models.is_dir():
-        raise ValueError("engine-root and models-dir must be existing directories")
-    if results.exists() and not results.is_dir():
-        raise ValueError("results-dir is not a directory")
     require_new(plan["run_dir"])
     require_file(plan["python"])
     require_file(plan["engine_python"])
@@ -140,12 +155,19 @@ def preflight(args):
         from merge_lora_qwen36 import adapter_metadata
         plan["scaling"], _ = adapter_metadata(plan["adapter"], plan["base"], args.scaling)
     if "convert" in args.stages:
+        require_colibri(engine, "int4 container conversion (c/tools/convert_qwen36.py)")
         require_file(plan["convert_script"])
         if "merge" not in args.stages:
             require_model(plan["merged"])
             if plan["candidate"] == plan["merged"] or plan["merged"] in plan["candidate"].parents:
                 raise ValueError("conversion output must be separate from input")
     if "evaluate" in args.stages:
+        # No Fennec equivalent exists for any of these three: the harness is exec'd
+        # in process, the container runtime is a Colibri binary, and the converted
+        # container metadata is Colibri's own format. Refuse instead of skipping.
+        require_colibri(engine, "the legacy retention eval (in-process exec of "
+                        "scripts/bench_best_model.py, c/qwen36.exe via COLI_ENGINE, "
+                        "qwen36_meta.json containers)")
         for name in ("launcher", "binary", "bench_script"):
             require_file(plan[name])
         bench_code(plan["bench_script"], plan["run_dir"])
@@ -221,15 +243,18 @@ def evaluate_model(plan, model, label):
     port = plan["port"]
     require_free_port(port)
     model_id = plan["run_id"] + "-" + label
-    env = dict(os.environ, COLI_VULKAN="1", COLI_ENGINE=str(plan["binary"]),
-               PYTHONDONTWRITEBYTECODE="1")
-    command = [str(plan["engine_python"]), str(plan["launcher"]), "serve", "--model", str(model),
-               "--auto-tier", "--policy", "quality", "--ctx", "8192", "--ngen", "700",
-               "--host", "127.0.0.1", "--port", str(port), "--api-key", "local", "--model-id", model_id]
+    env = engine_env({"COLI_VULKAN": "1", "COLI_ENGINE": str(plan["binary"]),
+                      "PYTHONDONTWRITEBYTECODE": "1"})
+    # Preflight refuses Fennec here, so this is always the Colibri launcher argv.
+    engine = Engine(plan["engine_kind"], Path(plan["launcher"]), Path(plan["engine_root"]))
+    argv = command(engine, ["serve", "--model", str(model),
+                            "--auto-tier", "--policy", "quality", "--ctx", "8192", "--ngen", "700",
+                            "--host", "127.0.0.1", "--port", str(port), "--api-key", "local",
+                            "--model-id", model_id], python=plan["engine_python"])
     options = {"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP} if os.name == "nt" else {"start_new_session": True}
     with (plan["run_dir"] / f"serve_{label}.log").open("xb") as log:
         require_free_port(port)
-        process = subprocess.Popen(command, cwd=str(plan["engine_root"]), env=env,
+        process = subprocess.Popen(argv, cwd=str(plan["engine_root"]), env=env,
                                    stdout=log, stderr=log, **options)
         try:
             deadline = time.monotonic() + 300

@@ -7,10 +7,14 @@ engine is spawned and stopped by this script; nothing else is touched.
 
     python bench_tier_profiles.py --pairs 1
 
-Profiles are the knobs `coli serve` exposes for placement: the resource policy,
-the VRAM budget, the host-RAM expert pool (COLI_VK_TIER_HOST_GB) and the CPU
-thread count. NPU is absent on purpose: `--xdna` is AMD-only and the Intel NPU
-has no path into the engine.
+Profiles are the knobs `fennec serve` exposes for placement: the resource policy,
+the VRAM budget, the host-RAM expert pool (COLI_VK_TIER_HOST_GB, alias
+FENNEC_VK_TIER_HOST_GB) and the CPU thread count. NPU is absent on purpose:
+`--xdna` is AMD-only and the Intel NPU has no path into the engine.
+
+The engine is resolved by engine_paths: Fennec's native binary self-launches,
+and a Colibri checkout (`python c/coli serve`) is the fallback. `--auto-tier` is
+always applied, so the profiles below only carry what differs between them.
 
 Results: results/tier_profiles.{json,md}
 """
@@ -21,24 +25,26 @@ import json
 import os
 import socket
 import subprocess
-import sys
 import time
 import urllib.error
 import urllib.request
 from pathlib import Path
+
+from engine_paths import (EngineError, default_engine_root, env_alias, resolve,
+                          serve_command, strip_engine_vars)
 
 RESULTS = Path(__file__).resolve().parents[1] / "results"
 PROMPT = "Write the numbers from 1 to 50 separated by commas, nothing else."
 
 PROFILES = [
     ("pool 4 GB, gpu auto", {"COLI_VULKAN": "1", "COLI_VK_TIER_HOST_GB": "4"},
-     ["--auto-tier", "--policy", "quality"]),
+     ["--policy", "quality"]),
     ("pool 4 GB + gpu 4 GB", {"COLI_VULKAN": "1", "COLI_VK_TIER_HOST_GB": "4",
                               "COLI_VK_TIER_GB": "4"},
-     ["--auto-tier", "--policy", "quality"]),
+     ["--policy", "quality"]),
     ("pool 6 GB + gpu 4 GB", {"COLI_VULKAN": "1", "COLI_VK_TIER_HOST_GB": "6",
                               "COLI_VK_TIER_GB": "4"},
-     ["--auto-tier", "--policy", "quality"]),
+     ["--policy", "quality"]),
 ]
 
 
@@ -107,7 +113,7 @@ def stream(base, model, max_tokens):
 
 
 def stop_tree(process):
-    """Kill the launcher and its engine child; on Windows terminate() orphans it."""
+    """Kill the engine tree (Colibri's launcher plus its child); on Windows terminate() orphans it."""
     if process.poll() is not None:
         return
     if os.name == "nt":
@@ -121,19 +127,20 @@ def stop_tree(process):
         process.kill()
 
 
-def run_profile(name, extra_env, extra_args, args):
+def run_profile(name, extra_env, extra_args, args, engine):
     port = free_port()
     base = f"http://127.0.0.1:{port}"
     log = RESULTS / f"tier-{name.replace(' ', '-').replace('+', '')}.log"
-    env = {k: v for k, v in os.environ.items() if not k.startswith("COLI_")}
-    env.update(extra_env, PYTHONIOENCODING="utf-8", PYTHONUTF8="1")
-    command = [sys.executable, str(Path(args.engine_root) / "c" / "coli"), "serve",
-               "--model", args.model, "--ctx", str(args.ctx), "--ngen", str(args.ngen),
-               "--port", str(port), "--api-key", "local", *extra_args]
-    report = {"profile": name, "args": extra_args, "env": extra_env, "log": str(log)}
+    env = strip_engine_vars(os.environ)
+    env.update(extra_env, COLI_API_KEY="local", PYTHONIOENCODING="utf-8", PYTHONUTF8="1")
+    command = serve_command(engine, args.model, port,
+                            extra=["--ctx", str(args.ctx), "--ngen", str(args.ngen), *extra_args],
+                            api_key="local")
+    report = {"profile": name, "engine": engine.kind, "args": extra_args,
+              "env": extra_env, "log": str(log)}
     started = time.monotonic()
     with log.open("wb") as handle:
-        process = subprocess.Popen(command, cwd=str(Path(args.engine_root)), env=env,
+        process = subprocess.Popen(command, cwd=str(engine.root), env=env,
                                    stdout=handle, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL)
     try:
         model = wait_ready(base, process)
@@ -153,8 +160,10 @@ def run_profile(name, extra_env, extra_args, args):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--engine-root", default=os.environ.get("FENNEC_ENGINE_ROOT", str(Path.home() / "Colibri")))
-    parser.add_argument("--model", default=os.environ.get("FENNEC_MODEL", ""))
+    parser.add_argument("--engine-root", default=default_engine_root(),
+                        help="Fennec checkout (target/release/fennec) or a Colibri checkout with c/coli")
+    parser.add_argument("--model", default=env_alias("MODEL") or "",
+                        help="model directory; FENNEC_MODEL or COLI_MODEL")
     parser.add_argument("--ctx", type=int, default=8192)
     parser.add_argument("--ngen", type=int, default=128)
     parser.add_argument("--tokens", type=int, default=64)
@@ -163,14 +172,18 @@ def main(argv=None):
     parser.add_argument("--out", default=str(RESULTS / "tier_profiles"))
     args = parser.parse_args(argv)
     if not args.model:
-        raise SystemExit("--model or FENNEC_MODEL is required")
+        raise SystemExit("--model or FENNEC_MODEL (or COLI_MODEL) is required")
+    try:
+        engine = resolve(args.engine_root)
+    except EngineError as exc:
+        raise SystemExit(str(exc))
 
     reports = []
     for name, env, extra in PROFILES:
         if args.only and args.only.lower() not in name.lower():
             continue
         print(f"--- {name} ---", flush=True)
-        report = run_profile(name, env, extra, args)
+        report = run_profile(name, env, extra, args, engine)
         reports.append(report)
         if report["status"] == "ok":
             print(f"    {report['median_tokens_per_s']} tok/s, ttft {report['median_ttft_s']} s, "
@@ -182,6 +195,8 @@ def main(argv=None):
     out.parent.mkdir(parents=True, exist_ok=True)
     out.with_suffix(".json").write_text(json.dumps({"model": args.model, "ctx": args.ctx,
                                                     "tokens": args.tokens, "prompt": PROMPT,
+                                                    "engine": engine.kind,
+                                                    "engine_binary": str(engine.binary),
                                                     "reports": reports}, indent=2) + "\n",
                                         encoding="utf-8")
     out.with_suffix(".md").write_text(render(reports, args), encoding="utf-8")
